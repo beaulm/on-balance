@@ -20,10 +20,9 @@ scripts/           # build/export helpers
 ```
 
 ## Getting Started
-1. Choose a license in `LICENSE` (see `LICENSE-TEXT-CC-BY-SA-4.0.txt` or `...-NC-...`).  
-2. Install deps: `npm i`.  
-3. Build printables: `make pdf` or `make epub` (requires pandoc; see `docs/SETUP_PDF.md`).  
-4. Run checks: `npm run check`.
+1. Install deps: `npm i`.  
+2. Build printables: `make pdf` or `make epub` (requires pandoc; see `docs/SETUP_PDF.md`).  
+3. Run checks: `npm run check`.
 
 ## Versioning
 - SemVer per module (content): `major.minor.patch`  
@@ -41,3 +40,8 @@ See `docs/policies/ACCESSIBILITY_CHECKLIST.md`. All modules must pass before pub
 
 ## Credit
 Signed as **Beau & Contributors — The On Balance Project**. See `AUTHORS.md` and `CONTRIBUTORS.md`.
+
+## Licensing
+Content: CC BY-SA 4.0
+Code: Apache-2.0
+(see LICENSE & LICENSES/)

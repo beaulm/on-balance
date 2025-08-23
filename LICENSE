@@ -1,1 +1,7 @@
-TBD — choose CC BY-SA 4.0 (recommended) or CC BY-NC-SA 4.0 and replace this file accordingly.
+On Balance — Dual License Notice
+
+Textual content under content/ and docs/ is licensed under Creative Commons Attribution–ShareAlike 4.0 (CC BY-SA 4.0). See LICENSES/CC-BY-SA-4.0.txt.
+
+Code in this repository (scripts/, site/, .github/, Makefile, and any source files) is licensed under the Apache License, Version 2.0. See LICENSES/Apache-2.0.txt.
+
+Unless stated otherwise in a file header, the above applies.
