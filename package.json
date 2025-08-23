@@ -1,0 +1,12 @@
+{
+  "name": "on-balance",
+  "private": true,
+  "version": "0.1.2",
+  "scripts": {
+    "lint:md": "npx markdownlint **/*.md -c .markdownlint.json",
+    "check": "npm run lint:md"
+  },
+  "devDependencies": {
+    "markdownlint-cli": "^0.45.0"
+  }
+}

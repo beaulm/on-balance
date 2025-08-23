@@ -1,0 +1,7 @@
+pdf-engine: xelatex
+from: markdown
+variables:
+  mainfont: "DejaVu Serif"
+  sansfont: "DejaVu Sans"
+  monofont: "DejaVu Sans Mono"
+  mathfont: "Latin Modern Math"

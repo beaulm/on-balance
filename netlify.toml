@@ -1,0 +1,3 @@
+[build]
+  command = "npm run build || echo 'No site build yet'"
+  publish = "site"
