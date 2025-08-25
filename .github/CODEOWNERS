@@ -1,6 +1,7 @@
-*            @beaulm
-/content/**  @beaulm
-/docs/**     @beaulm
-/site/**     @beaulm
-/scripts/**  @beaulm
-/.github/**  @beaulm
+/content/**         @beaulm
+/docs/**            @beaulm
+/site/**            @beaulm
+/scripts/**         @beaulm
+/.github/**         @beaulm
+/.github/CODEOWNERS @beaulm
+*                   @beaulm
