@@ -1,15 +1,35 @@
 name: CI
-on:
-  pull_request:
-  push:
-    branches: [ main ]
+
+on: [pull_request]
+
+# Least-privilege token for all jobs (only needs repo read)
+permissions:
+  contents: read
+
+# Cancel superseded runs for the *same workflow & ref* (unique group per workflow).
+# Prevents redundant minutes when pushing multiple times to one PR.
+# See: docs on concurrency groups.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
+    name: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm ci || npm i
-      - run: npm run check
+          cache: 'npm'              # built-in cache for ~/.npm keyed by package-lock.json
+      - run: npm ci                 # lockfile present in repo -> deterministic install
+      - run: npm run check          # markdownlint
+
+  build_epub:
+    name: build_epub
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y pandoc
+      - run: make epub
