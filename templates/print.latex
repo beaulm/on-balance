@@ -1,0 +1,35 @@
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\documentclass[$fontsize$,oneside]{article}
+\usepackage[margin=1in]{geometry}
+
+% Fonts: keep simple and safe for XeLaTeX without touching math.
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\setmonofont{Latin Modern Mono}
+
+% (No unicode-math, no \setmathfont here.)
+
+\usepackage{setspace}
+\usepackage{microtype}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue}
+
+% Language hook (only if pandoc passes lang)
+$if(lang)$
+\usepackage{polyglossia}
+\setdefaultlanguage{$lang$}
+$endif$
+
+\setlength{\parskip}{6pt}
+\linespread{1.05}
+
+% Pandoc tight list macro (Pandoc inserts \tightlist for tight lists)
+\providecommand{\tightlist}{%
+\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\begin{document}
+$if(title)$\begin{center}\LARGE\bfseries $title$ \end{center}\par$endif$
+$if(author)$\begin{center}$for(author)$$author$$sep$ \quad $endfor$ \end{center}\par$endif$
+$body$
+\end{document}
