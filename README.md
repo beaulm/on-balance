@@ -4,7 +4,7 @@
 **Tracks:** *Self-Actualization for the 21st Century* (practice) • *A Treatise on Chance* (theory)
 
 This repo is the source of truth (Markdown). We publish to a static site and export printables (PDF/EPUB).  
-Contributions welcome via PRs under the license chosen below.
+Contributions welcome via PRs under the licenses below.
 
 ## Structure
 ```txt
@@ -21,7 +21,7 @@ scripts/           # build/export helpers
 
 ## Getting Started
 1. Install deps: `npm i`.  
-2. Build printables: `make pdf` or `make epub` (requires pandoc; see `docs/SETUP_PDF.md`).  
+2. Build printables: `make pdf` or `make epub` (requires pandoc; see [SETUP_PDF.md](./docs/SETUP_PDF.md)).  
 3. Run checks: `npm run check`.
 
 ## Versioning
@@ -29,19 +29,20 @@ scripts/           # build/export helpers
   - **major**: meaning/structure changes  
   - **minor**: examples/sections/printables added  
   - **patch**: clarity/typos
-- See `CHANGELOG.md` and each module front-matter.
+- See [CHANGELOG](./CHANGELOG.md) and each module front-matter.
 
 ## Accessibility
-See `docs/policies/ACCESSIBILITY_CHECKLIST.md`. All modules must pass before publishing.
+See the [accessibility checklist](./docs/policies/ACCESSIBILITY_CHECKLIST.md). All modules must pass before publishing.
 
 ## Feedback
 - Open an issue (`bug`, `accessibility`, `evidence-gap`, `request`)  
 - Anonymous reader form (link TBD) lives in each module.
 
 ## Credit
-Signed as **Beau & Contributors — The On Balance Project**. See `AUTHORS.md` and `CONTRIBUTORS.md`.
+**Beau & Contributors — The On Balance Project**.
+See [AUTHORS](./AUTHORS.md) and [CONTRIBUTORS](./CONTRIBUTORS.md).
 
 ## Licensing
-Content: CC BY-SA 4.0
-Code: Apache-2.0
-(see LICENSE & LICENSES/)
+Content: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+Code: [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.html)
+(see [LICENSE](./LICENSE) & [LICENSES/](./LICENSES/))
