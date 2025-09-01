@@ -33,3 +33,11 @@ jobs:
       - uses: actions/checkout@v4
       - run: sudo apt-get update && sudo apt-get install -y pandoc
       - run: make epub
+
+  build_pdf:
+    name: build_pdf
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y pandoc texlive-latex-base
+      - run: make pdf
