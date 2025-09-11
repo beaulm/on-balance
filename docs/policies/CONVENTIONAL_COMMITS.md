@@ -91,12 +91,13 @@ git checkout -b backup-main
 # Return to main and filter
 git checkout main
 git filter-branch --msg-filter '
-  if [[ "$GIT_COMMIT_MESSAGE" == "Add"* ]]; then
-    echo "feat: $(echo "$GIT_COMMIT_MESSAGE" | sed s/^Add/add/)"
-  elif [[ "$GIT_COMMIT_MESSAGE" == "Fix"* ]]; then
-    echo "fix: $(echo "$GIT_COMMIT_MESSAGE" | sed s/^Fix/fix/)"
+  msg=$(cat)
+  if [[ "$msg" == Add* ]]; then
+    echo "feat: ${msg/Add/add}"
+  elif [[ "$msg" == Fix* ]]; then
+    echo "fix: ${msg/Fix/fix}"
   else
-    cat
+    echo "$msg"
   fi
 ' HEAD
 ```
