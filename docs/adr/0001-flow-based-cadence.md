@@ -4,6 +4,7 @@
 **Status:** Proposed  
 **Decision makers:** @beaulm  
 **Related:** #11
+**Review Date:** 2025-11-26
 
 ---
 
