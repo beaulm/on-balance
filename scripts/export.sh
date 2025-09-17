@@ -22,7 +22,7 @@ if ! command -v pandoc >/dev/null 2>&1; then
   exit 1
 fi
 
-find "$SRC" -name 'index.md' | while read -r f; do
+find "$SRC" -name 'README.md' | while read -r f; do
   moddir=$(dirname "$f")
   name=$(basename "$moddir")
   pandoc $DEFAULTS "$f" -o "$OUT/${name}.epub" || echo "EPUB export failed for $name"

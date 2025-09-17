@@ -6,7 +6,7 @@ Pandoc needs a LaTeX engine to make PDFs. Any of these work: `xelatex`, `lualate
 
 ```bash
 sudo apt update
-sudo apt install -y texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texlive-xetex lmodern
+sudo apt install -y pandoc texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texlive-xetex lmodern
 ```
 
 Then run:
@@ -29,5 +29,5 @@ sudo tlmgr update --self && sudo tlmgr install collection-latexrecommended colle
 - You can also export DOCX by running:
 
 ```bash
-find content -name 'index.md' -exec sh -c 'out=printables/"$(basename $(dirname {})).docx"; pandoc "{}" -o "$out"' \;
+find content -name 'README.md' -exec sh -c 'out=printables/"$(basename $(dirname {})).docx"; pandoc "{}" -o "$out"' \;
 ```

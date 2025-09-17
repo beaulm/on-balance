@@ -8,15 +8,18 @@ Contributions welcome via PRs under the licenses below.
 
 ## Structure
 ```txt
-content/           # modules in Markdown (MD/MDX)
-docs/adr/          # architectural decision records
-docs/policies/     # accessibility and safety policies
-docs/              # setup docs
-evidence/          # anonymized pilot summaries
-printables/        # exported PDFs/EPUBs
-site/              # static site (placeholder + Netlify ready)
-scripts/           # build/export helpers
-.github/           # CI, templates
+content/
+├── self-actualization/  # The practical arm - modules and practices
+│   ├── 03-attention-as-lever/
+│   └── essays/         # Standalone pieces within self-actualization
+docs/
+├── adr/               # Architectural decision records
+├── ops/               # Operational docs (heartbeat, synthesis)
+└── policies/          # Accessibility and safety policies
+printables/            # Auto-generated PDFs and EPUBs
+scripts/               # Build and export helpers
+site/                  # Static site (placeholder + Netlify ready)
+.github/               # CI, templates
 ```
 
 ## Getting Started
