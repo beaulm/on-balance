@@ -8,9 +8,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Structure
 
-- `content/modules/*/` - Individual practice modules, each with `index.md` as the main content
+- `content/self-actualization/*/` - Individual practice modules, each with `README.md` as the main content
+- `content/self-actualization/essays/` - Standalone pieces within self-actualization track
 - `docs/adr/` - Architectural Decision Records documenting project decisions
 - `docs/policies/` - Accessibility guidelines, pandoc configuration, and conventional commits
+- `docs/ops/` - Operational docs (heartbeat, synthesis templates)
 - `printables/` - Generated PDFs and EPUBs (build artifacts)
 - `scripts/export.sh` - Core export script for PDF/EPUB generation
 - `site/` - Static site generation (placeholder + Netlify deployment)
@@ -37,8 +39,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Module Structure
 Each module follows this pattern:
 ```
-content/modules/{module-name}/
-├── index.md          # Main content with YAML frontmatter
+content/self-actualization/{module-name}/
+├── README.md         # Main content with YAML frontmatter
 ├── worksheet.md      # Practice worksheets
 └── [variations].md   # Additional formats/templates
 ```
@@ -72,7 +74,7 @@ Required YAML metadata includes:
 ## Export System
 
 The `scripts/export.sh` script:
-1. Finds all `index.md` files in content modules
+1. Finds all `README.md` files in content modules
 2. Uses pandoc with defaults from `docs/policies/pandoc.yaml` if available
 3. Generates both PDF and EPUB for each module
 4. Gracefully handles missing LaTeX engines
