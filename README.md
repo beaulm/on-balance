@@ -28,11 +28,13 @@ site/                  # Static site (placeholder + Netlify ready)
 3. Run checks: `npm run check`.
 
 ## Versioning
-- SemVer per module (content): `major.minor.patch`  
-  - **major**: meaning/structure changes  
-  - **minor**: examples/sections/printables added  
+- SemVer per module (content): `major.minor.patch`
+  - **major**: meaning/structure changes
+  - **minor**: examples/sections/printables added
   - **patch**: clarity/typos
 - See [CHANGELOG](./CHANGELOG.md) and each module front-matter.
+- Follow the [CHANGELOG maintenance workflow](./docs/ops/changelog-workflow.md) when
+  preparing releases.
 
 ## Accessibility
 See the [accessibility checklist](./docs/policies/ACCESSIBILITY_CHECKLIST.md). All modules must pass before publishing.
