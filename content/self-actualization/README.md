@@ -4,11 +4,11 @@ Practical modules for navigating uncertainty with agency and care.
 
 ## Philosophy
 
-Under uncertainty, we can't control outcomesbut we can choose our responses. These modules focus on building capacity for wise action when the path isn't clear.
+Under uncertainty, we can't control outcomes, but we can choose our responses. These modules focus on building capacity for wise action when the path isn't clear.
 
 ## Available Modules
 
-- **[03  Attention as Lever](./03-attention-as-lever/)**: Attention funds reality. Spend it where care can compound.
+- **[03 - Attention as Lever](./03-attention-as-lever/)**: Attention funds reality. Spend it where care can compound.
 
 ## Getting Started
 
