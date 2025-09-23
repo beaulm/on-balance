@@ -1,6 +1,6 @@
 ## Unreleased
 - infra: refactor directory structure for better organization (#20)
-  - Move content from `content/modules/` to `content/self-actualization/`
+  - Move content from `content/modules/` to `content/`
   - Rename module index files from `index.md` to `README.md` for better compatibility
   - Add dedicated `essays/` directory for standalone pieces
   - Update export script to use new content paths

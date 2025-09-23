@@ -1,17 +1,12 @@
 # On Balance — Open Playbook
 
-**Umbrella:** On Balance  
-**Tracks:** *Self-Actualization for the 21st Century* (practice) • *A Treatise on Chance* (theory)
-
 This repo is the source of truth (Markdown). We publish to a static site and export printables (PDF/EPUB).  
 Contributions welcome via PRs under the licenses below.
 
 ## Structure
 ```txt
 content/
-├── self-actualization/  # The practical arm - modules and practices
-│   ├── 03-attention-as-lever/
-│   └── essays/         # Standalone pieces within self-actualization
+├── attention-as-lever/
 docs/
 ├── adr/               # Architectural decision records
 ├── ops/               # Operational docs (heartbeat, synthesis)

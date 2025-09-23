@@ -2,8 +2,6 @@
 
 ## What's coming, what help is needed
 
-### Self-Actualization Track (Practical)
-
 **Immediate (Q4 2025)**
 - Complete directory structure migration
 - Add remaining core modules (01-orientation, 02-chance-and-skill)

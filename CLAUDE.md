@@ -8,8 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Structure
 
-- `content/self-actualization/*/` - Individual practice modules, each with `README.md` as the main content
-- `content/self-actualization/essays/` - Standalone pieces within self-actualization track
+- `content/*/` - Individual practice modules, each with `README.md` as the main content
 - `docs/adr/` - Architectural Decision Records documenting project decisions
 - `docs/policies/` - Accessibility guidelines, pandoc configuration, and conventional commits
 - `docs/ops/` - Operational docs (heartbeat, synthesis templates)
@@ -39,7 +38,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Module Structure
 Each module follows this pattern:
 ```
-content/self-actualization/{module-name}/
+content/{module-name}/
 ├── README.md         # Main content with YAML frontmatter
 ├── worksheet.md      # Practice worksheets
 └── [variations].md   # Additional formats/templates
