@@ -92,13 +92,19 @@ git checkout -b backup-main
 git checkout main
 git filter-branch --msg-filter '
   msg=$(cat)
-  if [[ "$msg" == Add* ]]; then
-    echo "feat: ${msg/Add/add}"
-  elif [[ "$msg" == Fix* ]]; then
-    echo "fix: ${msg/Fix/fix}"
-  else
-    echo "$msg"
-  fi
+  case "$msg" in
+    Add*)
+      rest=${msg#Add}
+      printf "feat: add%s\n" "$rest"
+      ;;
+    Fix*)
+      rest=${msg#Fix}
+      printf "fix: fix%s\n" "$rest"
+      ;;
+    *)
+      printf "%s\n" "$msg"
+      ;;
+  esac
 ' HEAD
 ```
 
