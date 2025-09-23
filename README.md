@@ -1,22 +1,20 @@
 # On Balance — Open Playbook
 
-**Umbrella:** On Balance  
-**Tracks:** *Self-Actualization for the 21st Century* (practice) • *A Treatise on Chance* (theory)
-
 This repo is the source of truth (Markdown). We publish to a static site and export printables (PDF/EPUB).  
 Contributions welcome via PRs under the licenses below.
 
 ## Structure
 ```txt
-content/           # modules in Markdown (MD/MDX)
-docs/adr/          # architectural decision records
-docs/policies/     # accessibility and safety policies
-docs/              # setup docs
-evidence/          # anonymized pilot summaries
-printables/        # exported PDFs/EPUBs
-site/              # static site (placeholder + Netlify ready)
-scripts/           # build/export helpers
-.github/           # CI, templates
+content/
+├── attention-as-lever/
+docs/
+├── adr/               # Architectural decision records
+├── ops/               # Operational docs (heartbeat, synthesis)
+└── policies/          # Accessibility and safety policies
+printables/            # Auto-generated PDFs and EPUBs
+scripts/               # Build and export helpers
+site/                  # Static site (placeholder + Netlify ready)
+.github/               # CI, templates
 ```
 
 ## Getting Started
@@ -25,11 +23,13 @@ scripts/           # build/export helpers
 3. Run checks: `npm run check`.
 
 ## Versioning
-- SemVer per module (content): `major.minor.patch`  
-  - **major**: meaning/structure changes  
-  - **minor**: examples/sections/printables added  
+- SemVer per module (content): `major.minor.patch`
+  - **major**: meaning/structure changes
+  - **minor**: examples/sections/printables added
   - **patch**: clarity/typos
 - See [CHANGELOG](./CHANGELOG.md) and each module front-matter.
+- Follow the [CHANGELOG maintenance workflow](./docs/ops/changelog-workflow.md) when
+  preparing releases.
 
 ## Accessibility
 See the [accessibility checklist](./docs/policies/ACCESSIBILITY_CHECKLIST.md). All modules must pass before publishing.
