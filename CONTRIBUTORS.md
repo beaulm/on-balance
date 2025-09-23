@@ -1,1 +1,3 @@
-_Add yourself via PR_
+# Contributors
+
+Add yourself via PR

@@ -4,6 +4,7 @@ This process keeps the public change log and version markers in sync with the
 work that lands in the repository.
 
 ## 1. Capture entries as work lands
+
 - Keep an `## Unreleased` section at the top of `CHANGELOG.md`. Add a one-line
   summary for every merged PR.
 - Prefix each bullet with the Conventional Commit type (and optional scope) from
@@ -11,6 +12,7 @@ work that lands in the repository.
 - Link to the merged PR or issue where it helps future readers find context.
 
 ## 2. Prep for a release
+
 - Decide the next semantic version by reviewing which modules changed; follow
   the guidance in the repository README and module front matter.
 - Update any version metadata that ships with the release (module front matter
@@ -20,6 +22,7 @@ work that lands in the repository.
   the new release version when needed.
 
 ## 3. Publish the log entry
+
 - Move the accumulated bullets from `## Unreleased` into a new top section titled
   `## <YYYY-MM-DD> — v<new-version>`.
 - Group bullets by theme (Content, Docs, Infra, etc.) if that makes the entry
@@ -28,6 +31,7 @@ work that lands in the repository.
   `npm run check`.
 
 ## 4. After the release
+
 - Commit the changelog and version bumps together with a `docs(changelog): …`
   style message.
 - (Optional) Note the release in the heartbeat or synthesis docs so operations

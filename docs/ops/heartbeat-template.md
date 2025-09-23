@@ -1,6 +1,7 @@
 # Weekly Heartbeat — Week of [DATE]
 
 ## Board Movement
+
 - **Completed (Now → Done):**
   - [Item 1] - Brief description
   - [Item 2] - Brief description
@@ -14,25 +15,29 @@
   - [Item 2] - Why now?
 
 ## Metrics Snapshot
+
 - **PRs merged:** X
 - **Issues closed:** X  
 - **Current WIP:** X/2
 - **Build status:** ✅ Green / ⚠️ Yellow / ❌ Red
 
 ## Notable Outcomes
+
 - Key achievements or breakthroughs
 - Quality improvements or fixes
 - Process learnings
 
 ## Blockers & Needs
+
 - Current impediments
 - Support needed
 - Technical debt to address
 
 ## Next Week Focus
+
 - Top 1-2 priorities
 - Expected completions
 - Dependencies to resolve
 
 ---
-*Heartbeat duration: ~10 minutes*
+Heartbeat duration: ~10 minutes
