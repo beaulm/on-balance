@@ -6,7 +6,7 @@ This document outlines the conventional commit standards for the On Balance proj
 
 We follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
 
-```
+```text
 <type>[optional scope]: <description>
 
 [optional body]
@@ -31,6 +31,7 @@ We follow the [Conventional Commits](https://www.conventionalcommits.org/) speci
 ### Scopes
 
 Common scopes used in this project:
+
 - **adr**: Architectural Decision Records
 - **pdf**: PDF generation/export functionality
 - **ci**: Continuous Integration
@@ -40,7 +41,7 @@ Common scopes used in this project:
 
 ### Examples
 
-```
+```text
 feat(modules): add attention-as-lever practice module
 
 docs(adr): adopt flow-based cadence over sprints
@@ -55,11 +56,13 @@ docs(license): clarify dual licensing
 ## Branch Naming Convention
 
 Branch names should follow this pattern:
-```
+
+```text
 <type>/<descriptive-name>-<issue-number>
 ```
 
-### Examples
+### Branch Name Examples
+
 - `docs/conventional-commits-23`
 - `feat/attention-module-12`
 - `fix/pdf-export-issue-45`
@@ -70,6 +73,7 @@ Branch names should follow this pattern:
 If you need to clean up commit messages to follow conventional commits:
 
 ### Interactive Rebase (for recent commits)
+
 ```bash
 # Rebase last 5 commits interactively
 git rebase -i HEAD~5
@@ -79,11 +83,13 @@ git rebase -i HEAD~5
 ```
 
 ### Amend Last Commit Message
+
 ```bash
 git commit --amend -m "feat(modules): add new practice module"
 ```
 
 ### Filter Branch (for extensive history rewrite)
+
 ```bash
 # Create backup branch first
 git checkout -b backup-main
@@ -109,6 +115,7 @@ git filter-branch --msg-filter '
 ```
 
 ### Check Commit Messages
+
 ```bash
 # View recent commits to verify format
 git log --oneline -10

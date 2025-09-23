@@ -2,19 +2,22 @@
 
 ## What's coming, what help is needed
 
-**Immediate (Q4 2025)**
+### Immediate (Q4 2025)
+
 - Complete directory structure migration
 - Add remaining core modules (01-orientation, 02-chance-and-skill)
 - Establish automated PDF/EPUB export pipeline
 - Implement feedback collection system
 
-**Near-term (Q1-Q2 2026)**
+### Near-term (Q1-Q2 2026)
+
 - Module supplements (facilitator guides, compact worksheets)
 - Internationalization framework and first translations
 - Enhanced static site with module navigation
 - Evidence synthesis from pilot programs
 
-**Medium-term (Q3-Q4 2026)**
+### Medium-term (Q3-Q4 2026)
+
 - Complete 15-module self-actualization sequence
 - Community contribution guidelines and templates
 - Accessibility audit and compliance verification
@@ -22,14 +25,16 @@
 
 ### Treatise on Chance Track (Theoretical)
 
-**Future (TBD)**
+### Future (TBD)
+
 - Foundational theoretical framework
 - Integration with practical modules
 - Academic collaboration opportunities
 
 ### Infrastructure & Community
 
-**Ongoing**
+### Ongoing
+
 - Monthly feedback synthesis
 - Quarterly roadmap reviews
 - Continuous accessibility improvements

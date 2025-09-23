@@ -19,15 +19,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Development Commands
 
 ### Essential Commands
+
 - `npm install` - Install dependencies (markdownlint)
 - `npm run check` - Run all checks (currently just markdown linting)
 - `npm run lint:md` - Lint all markdown files using markdownlint
 
 ### Build Commands
+
 - `make pdf` - Export all modules to PDF format (requires pandoc + LaTeX)
 - `make epub` - Export all modules to EPUB format (requires pandoc)
 
 ### Export Requirements
+
 - **Pandoc** is required for all exports
 - **LaTeX engine** (xelatex, lualatex, or pdflatex) needed for PDF generation
 - See `docs/SETUP_PDF.md` for detailed installation instructions
@@ -36,8 +39,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Content Architecture
 
 ### Module Structure
+
 Each module follows this pattern:
-```
+
+```text
 content/{module-name}/
 ├── README.md         # Main content with YAML frontmatter
 ├── worksheet.md      # Practice worksheets
@@ -45,7 +50,9 @@ content/{module-name}/
 ```
 
 ### Module Frontmatter
+
 Required YAML metadata includes:
+
 - `title` - Module display name
 - `version` - SemVer versioning (major.minor.patch)
 - `last_updated` - ISO date format
@@ -55,6 +62,7 @@ Required YAML metadata includes:
 - `license` - Content licensing (CC BY-SA 4.0)
 
 ### Versioning Strategy
+
 - **Major**: Meaning or structural changes
 - **Minor**: New examples, sections, or printables
 - **Patch**: Clarity improvements, typo fixes
@@ -62,17 +70,20 @@ Required YAML metadata includes:
 ## Quality Standards
 
 ### Markdown Linting
+
 - Configured via `.markdownlint.json`
 - Disabled rules: MD013 (line length), MD033 (HTML tags), MD041 (first line heading)
 - All markdown must pass linting before commits
 
 ### Accessibility Requirements
+
 - All modules must pass accessibility checklist in `docs/policies/ACCESSIBILITY_CHECKLIST.md`
 - Required before publishing any content
 
 ## Export System
 
 The `scripts/export.sh` script:
+
 1. Finds all `README.md` files in content modules
 2. Uses pandoc with defaults from `docs/policies/pandoc.yaml` if available
 3. Generates both PDF and EPUB for each module

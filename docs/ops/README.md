@@ -5,12 +5,14 @@ This directory contains templates and documentation for On Balance project opera
 ## Workflow Cadence
 
 ### Weekly Heartbeat (10 minutes)
+
 - **Purpose:** Track board movement, identify blockers, maintain flow
 - **Template:** [heartbeat-template.md](heartbeat-template.md)
 - **Schedule:** Every Monday morning
 - **Output:** Create `heartbeat/YYYY-MM-DD.md` with current week's status
 
 ### Monthly Synthesis (30-45 minutes)  
+
 - **Purpose:** Analyze themes, adjust policies, plan next bets
 - **Template:** [synthesis-template.md](synthesis-template.md)
 - **Schedule:** First Monday of each month
@@ -18,7 +20,7 @@ This directory contains templates and documentation for On Balance project opera
 
 ## File Organization
 
-```
+```text
 docs/ops/
 ├── README.md                  # This file
 ├── heartbeat-template.md      # Weekly heartbeat template
@@ -67,6 +69,7 @@ These metrics are captured in both heartbeats (snapshot) and synthesis (trends/a
 ## Board Management
 
 The GitHub Project board follows these principles:
+
 - **Columns:** Now → Next → Later → Done
 - **WIP Limits:** Now ≤ 2 items (solo maintainer)
 - **Pull System:** Only move Next → Now when under WIP limit

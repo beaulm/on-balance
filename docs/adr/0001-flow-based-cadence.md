@@ -37,34 +37,40 @@ This ADR defines **how we work**; module content remains independent.
 ## Details
 
 ### Board & policies
+
 - **Columns:** *Now* (in progress), *Next* (ready), *Later* (backlog), *Blocked*, *Done*.  
 - **Pull, don’t push:** Move from *Next* to *Now* only when under WIP limit.  
 - **WIP limits (initial):** Solo: *Now* ≤ 2 items. Revisit when collaborators join.  
 - **Issue as the unit of work:** Every change starts with an Issue. PRs link via `Closes #NN`.
 
 ### Branching & PRs
+
 - **Naming:** `type/slug-<issue#>` (e.g., `adr/flow-cadence-11`, `infra/ci-cache-22`).  
 - **Draft PRs early:** Create a Draft PR as soon as the direction is clear; flip to “Ready” when CI is green.  
 - **Merge policy:** **Squash & merge** only; delete head branches after merge.  
 - **Templates:** Use specialized PR templates (`adr.md`, `infra.md`, `content.md`) and a minimal default.
 
 ### Protection & CI (main)
+
 - **Required checks:** `lint`, `build_epub`.  
 - **Linear history:** required; no merge commits.  
 - **Up-to-date before merge:** enabled.  
 - **Future option:** Enable *merge queue* if/when PR volume rises.
 
 ### Cadence rituals
+
 - **Weekly heartbeat (10 min):** Update board, note what shipped, promote 1–3 *Next* items.  
 - **Monthly synthesis (30–45 min):** What compounded? Which bets paid off? Adjust WIP, policies, or metrics if needed.
 
 ### Metrics (lightweight)
+
 - **PR lead time:** PR opened → merged (rolling median).  
 - **Deployment frequency:** How often we publish a printable/site release.  
 - **Change failure rate:** % of PRs that require revert/hotfix.  
 - **Time to restore:** Duration from detection to fix for a broken build/content regression.
 
 ### Definition of Done (DoD)
+
 - CI green; lints and EPUB build pass.  
 - PR uses the correct template and includes `Closes #NN`.  
 - Any reader-facing change has plain-language summary and stays print-friendly.  
@@ -86,32 +92,36 @@ This ADR defines **how we work**; module content remains independent.
 
 ## Consequences
 
-**Positive**
+### Positive
+
 - Shorter feedback loops; easier reviews; always-releasable `main`.  
 - Process scales with collaborators (just tighten WIP, add code-owner reviews, or enable merge queue).  
 - Clear visibility of work and priorities via the Project board.
 
-**Trade-offs / Risks**
+### Trade-offs / Risks
+
 - Requires discipline to keep WIP low and PRs small.  
 - Flow metrics are proxies; we’ll recalibrate if we’re optimizing the wrong thing.  
 - If PR volume grows, we may need to enable merge queue to maintain velocity.
 
 ## Adoption plan
+
 1. Apply/verify branch protection on `main` (status checks, linear history, up-to-date, auto-delete).  
 2. Keep the Project board public and use “Auto-add” for Issues/PRs.  
 3. Use `Closes #NN` in every PR; prefer Draft PRs early.  
 4. Revisit WIP limits and metrics after the first month; formalize heartbeat & synthesis notes in `/docs/ops/`.
 
 ## References
+
 - Kanban principles: visualize work, limit WIP, manage flow, evolve policies — Atlassian guide.  
-  https://www.atlassian.com/agile/project-management/kanban-principles
+  <https://www.atlassian.com/agile/project-management/kanban-principles>
 - Trunk-based development & small batches — Atlassian CI/CD overview.  
-  https://www.atlassian.com/continuous-delivery/continuous-integration/trunk-based-development
+  <https://www.atlassian.com/continuous-delivery/continuous-integration/trunk-based-development>
 - GitHub Flow: short-lived branches, PRs, reviews, status checks.  
-  https://docs.github.com/en/enterprise-cloud@latest/get-started/using-github/github-flow
+  <https://docs.github.com/en/enterprise-cloud@latest/get-started/using-github/github-flow>
 - Branch protection: required checks, linear history, up-to-date requirement.  
-  https://docs.github.com/articles/about-required-reviews-for-pull-requests
+  <https://docs.github.com/articles/about-required-reviews-for-pull-requests>
 - Merge queue (optional, for higher volume).  
-  https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue
+  <https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue>
 - DORA “four keys” metrics (throughput + stability).  
-  https://dora.dev/guides/dora-metrics-four-keys/
+  <https://dora.dev/guides/dora-metrics-four-keys/>
