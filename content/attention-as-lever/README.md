@@ -1,7 +1,7 @@
 ---
 title: "Attention as Lever"
 version: "1.0.0"
-last_updated: "2025-09-25"
+last_updated: "2025-10-03"
 maintainers: ["Beau", "Contributors"]
 summary: "Attention funds reality. Spend it where care can compound."
 mvp_time_per_day: "≤10 minutes"
@@ -9,7 +9,7 @@ tags: ["attention","practice","audit"]
 license: "CC BY-SA 4.0"
 ---
 
-## Attention as Lever
+# Attention as Lever
 
 ## **The Foundation: What You Feed Grows**
 
@@ -35,7 +35,7 @@ And that shift? It doesn’t just change you.
 
 ## **Why This Matters**
 
-### **The $86,400 Question**
+### **The 86,400 Question**
 
 You wake up each morning with 86,400 seconds. That’s it. Same as everyone else. No rollover, no savings account, no borrowing from tomorrow.
 
@@ -52,8 +52,8 @@ But here’s what I’ve learned: time isn’t the scarce resource we think it i
    Every act of attending elevates one pattern by suppressing others. To focus on what matters, you must first create space by choosing what not to feed. It’s prune‑and‑grow. The cost of clarity is letting go.
 
 3. **The pace paradox**  
-   We consume at 2× speed, check phones during conversations, pride ourselves on multitasking. In training our nervous systems for speed, we lose the ability to be present with actual life. Kids talking. Plants growing. Understanding emerging. Love deepening. Those happen at the pace of presence, not productivity.
-
+   We consume at 2× speed, check phones during conversations, and pride ourselves on multitasking. In training our nervous systems for speed, we lose the ability to be present with actual life. Kids talking. Plants growing. Understanding emerging. Love deepening.  
+   Those happen at the pace of presence, not productivity. And love — real love, not the performance of it — is perhaps the deepest pattern amplification we have access to. To love something is to attend to it with quality, consistency, and care. Love is attention metabolized into commitment.  
 4. **Friction is a feature**  
    Tech spends billions removing friction. One‑click buying. Infinite scroll. Auto‑play. But friction creates intentionality. The pause between impulse and action — that tiny gap — is where choice lives. Without friction, we’re sophisticated reaction machines.
 
@@ -104,8 +104,6 @@ My biggest unconscious pattern was music — I had it on *a lot*. By playing mus
 
 No app‑blocker can silence a song in your head, but **external structure gave me leverage on internal loops.** Small, gentle boundaries slowed me down enough to notice what I was feeding. And once slowed, I could do the deeper work — the work of returning to the breath.
 
-**External fences create stability; mindfulness changes substance.** Fences shape the container; attention transforms the contents.
-
 ### **Days 3–5: The Gentle Fences (and One Anti‑Fence)**
 
 I created a few small experiments — two fences and one “inverse fence” that seeded presence on purpose.
@@ -118,13 +116,13 @@ I created a few small experiments — two fences and one “inverse fence” tha
 
 And throughout the day, whenever I noticed a song looping, I redirected lightly to breathing. *Catch & release.* They still show up, but they unhook faster now.
 
+**External fences create stability; mindfulness changes substance.** Fences shape the container; attention transforms the contents.
+
 ### **Days 6–7: The Emergence**
 
 Something shifted. The space created by not feeding loops didn’t stay empty. It filled with… something else. Clarity? Presence? I’m not sure what to call it.
 
 I started catching myself before the third loop instead of after the thirtieth. I could feel the difference between thought that was flowing and thought I was forcing; between being present *with* thinking and being lost *in* it.
-
-For years, I compulsively **did** to avoid **being**. Now I compulsively **be**. That’s a sentence I never thought I’d write. I didn’t even like being alive until recently. Now I do. (That’s a story for another essay.)
 
 ---
 
@@ -154,6 +152,8 @@ Want to try this yourself? Here’s the gentlest possible version.
 * During/after the container, take one tiny step toward [something meaningful](./worksheet.md#days-6-7-conscious-choice)  
   * Open the document. Put on the shoes. Send the text.  
 * Notice what emerges in the cleared space
+
+Remember: This isn't about perfection. It's about perception. Every moment you notice your attention is a victory, whether you successfully redirect it or not.
 
 ### **Daily Reflection (60–90 seconds)**
 
@@ -211,6 +211,6 @@ You have 86,400 seconds tomorrow. They’re going to pass either way. The only q
 
 ---
 
-*This is part one of a three‑part series on consciousness and collective liberation. Next: “Being, Thinking, Feeling, Doing” — navigating your internal landscape.*
+*This is part one of a three‑part series on consciousness and collective liberation. Next: “The Alignment System: Finding Flow Between Being, Doing, Feeling, and Thinking”.*
 
 *For practice worksheets, group exercises, and additional resources, see [the companion materials](./worksheet.md).*
