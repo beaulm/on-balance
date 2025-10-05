@@ -1,5 +1,9 @@
 ## Unreleased
 
+- content: expand Attention as Lever to full essay format with companion worksheet (#10)
+  - Expand Module 3 from outline to complete essay with theory and practice
+  - Add comprehensive practice worksheet with 7-day experiment framework
+  - Fix markdown linting errors and update linting configuration
 - infra: refactor directory structure for better organization (#20)
   - Move content from `content/modules/` to `content/`
   - Rename module index files from `index.md` to `README.md` for better compatibility
