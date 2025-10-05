@@ -95,7 +95,7 @@ My personal leaks:
 
 When I finally audited my drains, I found none of the usual suspects. Not phone. Not news. Not gossip. **My drains were internal** — songs on loop, thoughts on spiral. There’s a difference between external and internal drains, but both leak presence just the same.
 
-*If you want help finding your drains, see the companion materials: “[Finding Your Drains.](./worksheet.md#finding-your-drains)”*
+*If you want help finding your drains, see the companion materials: "[Finding Your Drains](./worksheet.md#finding-your-drains)"*
 
 ### **Before the Fences: Removing The Masks**
 
