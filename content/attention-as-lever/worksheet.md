@@ -1,6 +1,6 @@
 # **Attention as Lever \- Practice Worksheet**
 
-Companion guide for the 7-day attention experiment
+*Companion guide for the 7-day attention experiment*
 
 ## **Quick Start Guide**
 
@@ -84,24 +84,24 @@ Before you begin, spend 5-10 minutes with this deeper discovery process:
 
 **Common Attention Leaks:**
 
-[ ] Social media scrolling  
-[ ] News/doom scrolling  
-[ ] Mental loops/rumination  
-[ ] Checking email/messages repeatedly  
-[ ] Work thoughts during personal time  
-[ ] Personal drama during work time  
-[ ] Shopping/browsing you don't need  
-[ ] Checking stats/numbers/prices  
-[ ] Overthinking past conversations  
-[ ] Planning conversations that won't happen  
-[ ] Songs stuck on repeat  
-[ ] Video/streaming "one more episode"  
-[ ] Gaming "one more round"  
-[ ] Productivity porn (reading about vs doing)  
-[ ] Actual porn  
-[ ] Comparison/stalking specific people online  
-[ ] Argument rehearsal in your mind  
-[ ] Other:\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+* [ ] Social media scrolling  
+* [ ] News/doom scrolling
+* [ ] Mental loops/rumination
+* [ ] Checking email/messages repeatedly  
+* [ ] Work thoughts during personal time  
+* [ ] Personal drama during work time  
+* [ ] Shopping/browsing you don't need  
+* [ ] Checking stats/numbers/prices
+* [ ] Overthinking past conversations  
+* [ ] Planning conversations that won't happen  
+* [ ] Songs stuck on repeat  
+* [ ] Video/streaming "one more episode"  
+* [ ] Gaming "one more round"
+* [ ] Productivity porn (reading about vs doing)
+* [ ] Actual porn
+* [ ] Comparison/stalking specific people online
+* [ ] Argument rehearsal in your mind
+* [ ] Other:\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 **The Paradox Check:**
 
@@ -161,17 +161,17 @@ My specific \#1 drain: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\
 * 15 minutes in morning without \[your leak\]  
 * When urge arises: 3 breaths
 
-#### **Option B: Transition-Based**
+**Option B: Transition-Based**
 
 * No \[leak\] during transitions (walking, waiting, bathroom)  
 * These natural pauses become conscious
 
-#### **Option C: Container-Based**
+**Option C: Container-Based**
 
 * \[Leak\] only in designated space/time  
 * E.g. news only at kitchen table, 5-10pm
 
-#### **Option D: Inverse-Fence**
+**Option D: Inverse-Fence**
 
 * Strengthen reliance against \[leak\]  
 * E.g. 20‑min meditation, silent tea ritual, walk without audio for 10 min
@@ -179,7 +179,7 @@ My specific \#1 drain: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\
 **Daily Tracker:**
 
 Day 3: Fenced? Y/N | Noticed urges: \_\_\_ times | Feeling: \_\_\_/5  
-Day 4: Fenced? Y/N | Noticed urges: \_\_\_ times | Feeling: \_\_\_/5  
+Day 4: Fenced? Y/N | Noticed urges: \_\_\_ times | Feeling: \_\_\_/5
 Day 5: Fenced? Y/N | Noticed urges: \_\_\_ times | Feeling: \_\_\_/5
 
 ### **Days 6-7: Conscious Choice**
@@ -202,25 +202,25 @@ Ask yourself these questions and notice what arises (first thought, best thought
 
 ---
 
-1. **The Energy Test**: What activities make you lose track of time in a good way?  
+2. **The Energy Test**: What activities make you lose track of time in a good way?  
 
 ---
 
-1. **The Jealousy Test**: What do you see others doing that sparks envy (envy points to desire)?  
+3. **The Jealousy Test**: What do you see others doing that sparks envy (envy points to desire)?  
 
 ---
 
-1. **The Child Test**: What did you love doing before the world told you it wasn't practical?  
+4. **The Child Test**: What did you love doing before the world told you it wasn't practical?  
 
 ---
 
-1. **The Helper Test**: What do people ask you for help with that you actually enjoy giving?  
+5. **The Helper Test**: What do people ask you for help with that you actually enjoy giving?  
 
 ---
 
 **Common Meaningful Directions:**
 
-#### **Creating Something**
+**Creating Something**
 
 * Open the document (writing)  
 * Pick up the instrument (music)  
@@ -228,7 +228,7 @@ Ask yourself these questions and notice what arises (first thought, best thought
 * Code for 5 minutes (project)  
 * Cook one new recipe (culinary)
 
-#### **Connecting Deeply**
+**Connecting Deeply**
 
 * Text that friend you miss  
 * Write one thank you note  
@@ -236,7 +236,7 @@ Ask yourself these questions and notice what arises (first thought, best thought
 * Play with kids/pets presently  
 * Call someone who matters
 
-#### **Moving Your Body**
+**Moving Your Body**
 
 * Put on exercise clothes  
 * Step outside for air  
@@ -244,7 +244,7 @@ Ask yourself these questions and notice what arises (first thought, best thought
 * Dance to one song  
 * Walk around the block
 
-#### **Learning/Growing**
+**Learning/Growing**
 
 * Read one page of that book  
 * Watch 5 min of tutorial  
@@ -252,7 +252,7 @@ Ask yourself these questions and notice what arises (first thought, best thought
 * Try one new technique  
 * Ask one curious question
 
-#### **Tending/Caring**
+**Tending/Caring**
 
 * Water one plant  
 * Clear one surface  
@@ -260,7 +260,7 @@ Ask yourself these questions and notice what arises (first thought, best thought
 * Organize one drawer  
 * Care for one neglected area
 
-#### **The Key: Make It Laughably Small**
+**The Key: Make It Laughably Small**
 
 If "write chapter" feels heavy → "open document"
 
@@ -358,7 +358,7 @@ Remember:
 
 ### **Common Challenges & Solutions**
 
-#### **"I keep forgetting"**
+**"I keep forgetting"**
 
 * Set 3 gentle phone alarms  
 * Post-it notes in key spots  
@@ -366,7 +366,7 @@ Remember:
 * Tell someone (accountability)  
 * Lower the bar (forgetting is data too)
 
-#### **"15 minutes feels impossible"**
+**"15 minutes feels impossible"**
 
 * Start with 2 minutes  
 * Build by 1 minute every 2 days  
@@ -374,7 +374,7 @@ Remember:
 * Success \= any conscious choice  
 * Some days will be harder
 
-#### **"I feel anxious without my phone/news/etc"**
+**"I feel anxious without my phone/news/etc"**
 
 * Keep it nearby but create friction  
 * Face-down, across room, logged out  
@@ -382,7 +382,7 @@ Remember:
 * Breathe through it (it will pass)  
 * Have a backup activity ready
 
-#### **"Nothing's changing"**
+**"Nothing's changing"**
 
 * Change takes time (trust the process)  
 * Look for subtle shifts (noticed faster? caught earlier?)  
@@ -390,7 +390,7 @@ Remember:
 * Try different fence times/types  
 * Success isn't perfection
 
-#### **"I'm thinking about the fence all day"**
+**"I'm thinking about the fence all day"**
 
 * You're over-efforting  
 * Set fence times and forget between  
@@ -408,15 +408,15 @@ DATE: \_\_\_\_\_\_\_
 
 Morning:
 
-[ ] Fence completed (time: \_\_\_\_\_)  
-[ ] Noticed patterns  
-[ ] Took one step toward \_\_\_\_\_\_\_\_
+* [ ] Fence completed (time: \_\_\_\_\_)  
+* [ ] Noticed patterns  
+* [ ] Took one step toward \_\_\_\_\_\_\_\_
 
 Evening:  
 
-[ ] Fence completed (time: \_\_\_\_\_)  
-[ ] Reflected on day  
-[ ] Tomorrow's intention: \_\_\_\_\_\_\_\_
+* [ ] Fence completed (time: \_\_\_\_\_)  
+* [ ] Reflected on day  
+* [ ] Tomorrow's intention: \_\_\_\_\_\_\_\_
 
 Today's wins (any size): \_\_\_\_\_\_\_\_
 
@@ -481,12 +481,12 @@ Notice how your attention affects others:
 
 ### **Starting an Attention Circle**
 
-#### **Week 1: Individual Practice**
+**Week 1: Individual Practice**
 
 * Everyone does their own 7-day experiment  
 * Daily check-in via text: "Fenced today ✓"
 
-#### **Week 2: Share & Learn**
+**Week 2: Share & Learn**
 
 * Meet for 60 minutes  
 * Each person shares (3 min):  
@@ -495,13 +495,13 @@ Notice how your attention affects others:
   * Their emerging insight  
 * No advice, just witnessing
 
-#### **Week 3: Collective Experiment**
+**Week 3: Collective Experiment**
 
 * Choose one shared fence time  
 * Everyone fences simultaneously (different leaks)  
 * Notice the collective field shift
 
-#### **Week 4: Integration**
+**Week 4: Integration**
 
 * What patterns do we share?  
 * How do our attention patterns interact?  
@@ -556,4 +556,4 @@ If this practice surfaces difficult emotions:
 
 *This worksheet is a living document. Adapt freely. Share what works. Leave what doesn't.*
 
-Version 1.0 | Part of "On Balance" series | CC BY-SA 4.0
+*Version 1.0 | Part of "On Balance" series | CC BY-SA 4.0*

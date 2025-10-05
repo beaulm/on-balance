@@ -52,8 +52,9 @@ But here’s what I’ve learned: time isn’t the scarce resource we think it i
    Every act of attending elevates one pattern by suppressing others. To focus on what matters, you must first create space by choosing what not to feed. It’s prune‑and‑grow. The cost of clarity is letting go.
 
 3. **The pace paradox**  
-   We consume at 2× speed, check phones during conversations, and pride ourselves on multitasking. In training our nervous systems for speed, we lose the ability to be present with actual life. Kids talking. Plants growing. Understanding emerging. Love deepening.  
-   Those happen at the pace of presence, not productivity. And love — real love, not the performance of it — is perhaps the deepest pattern amplification we have access to. To love something is to attend to it with quality, consistency, and care. Love is attention metabolized into commitment.  
+   We listen to podcasts at 2× speed, check phones during conversations, and pride ourselves on multitasking. In training our nervous systems for speed, we lose the ability to be present with actual life. Kids talking. Plants growing. Understanding emerging. Love deepening.  
+   Those happen at the pace of presence, not productivity. And love — real love, not the performance of it — is perhaps the deepest pattern amplification we have access to. To love something is to attend to it with quality, consistency, and care. Love is attention metabolized into commitment.
+
 4. **Friction is a feature**  
    Tech spends billions removing friction. One‑click buying. Infinite scroll. Auto‑play. But friction creates intentionality. The pause between impulse and action — that tiny gap — is where choice lives. Without friction, we’re sophisticated reaction machines.
 
