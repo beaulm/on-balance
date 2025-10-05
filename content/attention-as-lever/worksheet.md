@@ -179,7 +179,7 @@ My specific \#1 drain: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\
 **Daily Tracker:**
 
 Day 3: Fenced? Y/N | Noticed urges: \_\_\_ times | Feeling: \_\_\_/5  
-Day 4: Fenced? Y/N | Noticed urges: \_\_\_ times | Feeling: \_\_\_/5
+Day 4: Fenced? Y/N | Noticed urges: \_\_\_ times | Feeling: \_\_\_/5  
 Day 5: Fenced? Y/N | Noticed urges: \_\_\_ times | Feeling: \_\_\_/5
 
 ### **Days 6-7: Conscious Choice**
