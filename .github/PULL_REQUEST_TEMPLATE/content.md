@@ -5,7 +5,7 @@
 
 ## Accessibility Checklist
 - [ ] Plain-language summary (≤120 words)
-- [ ] Reading grade ≤9
+- [ ] Reading grade ≤9 (stretch goal for future revisions)
 - [ ] Alt text / transcripts (if any media)
 - [ ] Print-friendly
 - [ ] Keyboard navigable
