@@ -15,6 +15,10 @@ work that lands in the repository.
 
 - Decide the next semantic version by reviewing which modules changed; follow
   the guidance in the repository README and module front matter.
+- **Repository version** (in `package.json`):
+  - Reflects overall project maturity and infrastructure readiness
+  - Pre-1.0: Beta phase until full reading experience is production-ready (live site + polished PDF/EPUB output)
+  - Version bumps should align with significant content or infrastructure milestones
 - Update any version metadata that ships with the release (module front matter
   fields such as `version` and `last_updated`, printable exports, or supporting
   worksheets).

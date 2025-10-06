@@ -63,9 +63,17 @@ Required YAML metadata includes:
 
 ### Versioning Strategy
 
+**Module versioning** (content SemVer):
+
 - **Major**: Meaning or structural changes
 - **Minor**: New examples, sections, or printables
 - **Patch**: Clarity improvements, typo fixes
+
+**Repository versioning** (package.json):
+
+- Follows [changelog workflow](docs/ops/changelog-workflow.md)
+- Version bumps coordinated with CHANGELOG.md releases
+- Pre-1.0: Beta phase until full reading experience is production-ready (live site + polished PDF/EPUB output)
 
 ## Quality Standards
 
