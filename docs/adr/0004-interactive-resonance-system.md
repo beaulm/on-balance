@@ -48,6 +48,7 @@ A naive "upvote" system creates preferential attachment: popular passages get mo
 Build an **Interactive Resonance System** that allows users to highlight text and provide contextual feedback, with data stored in Git and anti-Matthew-Effect mechanisms built in.
 
 **Tech Stack:**
+
 - **Astro** with MDX for content (preserves markdown, adds interactivity)
 - **React** components for highlight-and-annotate UI
 - **Netlify** for hosting + Functions for feedback write-back
@@ -100,6 +101,7 @@ To calculate diversity-weighted resonance without requiring personal data:
 
 **1. Practice Diversity Score**
 Track which modules/sections users have engaged with (stored in localStorage):
+
 ```javascript
 {
   modules_completed: ['m1', 'm3'],
@@ -113,12 +115,14 @@ Track which modules/sections users have engaged with (stored in localStorage):
 Users can optionally contribute context (profession, practice background, etc.) but this is NOT required for diversity calculation.
 
 **3. Behavioral Fingerprinting (Anonymous)**
+
 - Navigation patterns (which sections they visit, in what order)
 - Time spent on different content types (theory vs. worksheets)
 - Referrer diversity (how they found the content)
 
 **4. Diversity Metric**
 For a given passage, diversity = entropy of the practice paths that led people to resonate:
+
 ```javascript
 diversity_score = -Σ(p_i * log(p_i))
 // where p_i = proportion of resonators from practice path i
@@ -130,6 +134,7 @@ diversity_score = -Σ(p_i * log(p_i))
 
 **1. Temporal Decay**
 Recent resonance weighted higher to allow new patterns to emerge:
+
 ```javascript
 display_weight = raw_resonance * exp(-λ * age_in_days)
 // λ = 0.05 means ~14-day half-life
@@ -137,6 +142,7 @@ display_weight = raw_resonance * exp(-λ * age_in_days)
 
 **2. Diversity Boosting**
 Passages that resonate across different practice paths get amplified:
+
 ```javascript
 display_weight = raw_resonance * (1 + α * diversity_score)
 // α = 0.3 means high diversity adds 30% boost
@@ -144,10 +150,12 @@ display_weight = raw_resonance * (1 + α * diversity_score)
 
 **3. Threshold Display**
 Only show highlights above minimum threshold (e.g., 3+ distinct users):
+
 - Prevents early noise from being amplified
 - Requires actual pattern before visibility
 
 **4. Personal vs. Collective Views**
+
 - **Default view**: Your highlights + aggregate patterns
 - **Toggle**: "Show resonance from people with similar practice paths"
 - **Option**: Hide all collective data, see only your own
@@ -157,6 +165,7 @@ Passages with both high resonance AND high dissonance are flagged as "learning e
 
 **6. Saturation Limits**
 Maximum highlight intensity caps at some threshold (e.g., 95th percentile):
+
 - Prevents runaway popularity from dominating the page
 - Keeps visual hierarchy balanced
 
@@ -164,16 +173,20 @@ Maximum highlight intensity caps at some threshold (e.g., 95th percentile):
 
 **Resonance (👍):**
 Subtle warm glow (gold/amber, low opacity), scales with diversity-weighted score:
+
 ```css
 background: linear-gradient(transparent, rgba(255,200,100,0.15));
 ```
+
 Hover tooltip: "12 people from 8 practice paths resonated here"
 
 **Dissonance (😕):**
 Cool glow (blue/purple), celebrated as valuable:
+
 ```css
 background: linear-gradient(transparent, rgba(150,150,255,0.15));
 ```
+
 Hover: "5 people found tension here — learning edge"
 
 **References (🔗):**
@@ -185,7 +198,8 @@ Badge with count, expandable to see contributions. These flow through a light re
 ### Data Schema (Git Storage)
 
 **Feedback commits structured as:**
-```
+
+```text
 data/resonance/
   module-01/
     passage-abc123.json   # One file per passage
@@ -194,6 +208,7 @@ data/resonance/
 ```
 
 **Passage file format:**
+
 ```json
 {
   "passage_id": "m01-p15",
@@ -220,6 +235,7 @@ data/resonance/
 ```
 
 **Write-back flow:**
+
 1. User highlights text, selects feedback type, submits
 2. Netlify Function receives request
 3. Function creates/updates passage file
@@ -231,6 +247,7 @@ data/resonance/
 ### Implementation Phases
 
 **Phase 1 (Months 1-2): Foundation**
+
 - [ ] Build Astro site with MDX content
 - [ ] Deploy to Netlify
 - [ ] Implement basic highlight-to-select UI (React component)
@@ -239,18 +256,21 @@ data/resonance/
 - [ ] Basic visualization (warm glow on resonant passages)
 
 **Phase 2 (Months 2-3): Full Feedback Types**
+
 - [ ] Add remaining feedback types (dissonance, reference, suggest, translate)
 - [ ] Implement diversity tracking (practice context in localStorage)
 - [ ] Build diversity-weighted scoring algorithm
 - [ ] Add personal vs. collective view toggle
 
 **Phase 3 (Months 3-4): Matthew Effect Mitigation**
+
 - [ ] Implement temporal decay
 - [ ] Add diversity boosting
 - [ ] Build threshold display logic
 - [ ] Create "learning edges" view (high tension passages)
 
 **Phase 4 (Months 4-6): Knowledge Graph**
+
 - [ ] Reference connection visualization
 - [ ] Cross-module pattern detection
 - [ ] "Cognitively Invariant Patterns" dashboard
@@ -263,11 +283,13 @@ data/resonance/
 Embed GitHub Discussions as comments at the bottom of each module.
 
 **Pros:**
+
 - Easy to implement (just embed a script)
 - Uses GitHub, aligns with our stack
 - Free
 
 **Cons:**
+
 - Comments at bottom, not inline with text
 - No highlight-to-annotate flow
 - Not designed for "resonance" feedback (discussion-oriented)
@@ -280,11 +302,13 @@ Embed GitHub Discussions as comments at the bottom of each module.
 Open-source web annotation tool, allows highlighting and commenting.
 
 **Pros:**
+
 - Mature annotation UI
 - Open-source, values-aligned
 - Has API for data export
 
 **Cons:**
+
 - Data stored in their database, not our Git repo
 - UI is discussion-focused, not optimized for quick "resonance" signals
 - Adds external dependency
@@ -297,11 +321,13 @@ Open-source web annotation tool, allows highlighting and commenting.
 Store feedback in a real-time database instead of Git.
 
 **Pros:**
+
 - Faster writes (no Git commit overhead)
 - Real-time updates (no rebuild needed)
 - Easier to query/analyze
 
 **Cons:**
+
 - Adds infrastructure cost
 - New service to maintain
 - Loses Git audit trail
@@ -315,11 +341,13 @@ Store feedback in a real-time database instead of Git.
 Use smart contracts for immutable feedback storage.
 
 **Pros:**
+
 - Truly decentralized
 - Tamper-proof
 - Philosophically interesting
 
 **Cons:**
+
 - Expensive (gas fees for every feedback event)
 - Slow (block confirmation times)
 - Environmental concerns (depending on chain)
