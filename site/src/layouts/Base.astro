@@ -1,0 +1,76 @@
+---
+interface Props {
+  title?: string;
+}
+
+const { title = 'On Balance' } = Astro.props;
+const { frontmatter } = Astro.props;
+const pageTitle = frontmatter?.title || title;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+    <style>
+      :root {
+        --color-text: #333;
+        --color-bg: #fefefe;
+        --color-accent: #666;
+        --max-width: 42rem;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        font-family: system-ui, -apple-system, sans-serif;
+        background: var(--color-bg);
+        color: var(--color-text);
+        line-height: 1.6;
+      }
+
+      body {
+        max-width: var(--max-width);
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+
+      h1, h2, h3 {
+        line-height: 1.2;
+        margin: 1.5em 0 0.5em;
+      }
+
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.5rem; }
+
+      p {
+        margin: 1em 0;
+      }
+
+      strong {
+        font-weight: 600;
+      }
+
+      hr {
+        border: none;
+        border-top: 1px solid #ddd;
+        margin: 2rem 0;
+      }
+
+      em {
+        color: var(--color-accent);
+      }
+    </style>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
