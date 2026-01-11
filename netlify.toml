@@ -1,3 +1,3 @@
 [build]
-  command = "npm run build || echo 'No site build yet'"
-  publish = "site"
+  command = "cd site && npm install && npm run build"
+  publish = "site/dist"
