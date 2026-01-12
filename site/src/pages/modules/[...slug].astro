@@ -27,9 +27,7 @@ const { Content } = await render(entry);
         )}
       </div>
     </header>
-    <div class="content">
-      <Content />
-    </div>
+    <Content />
   </article>
 </Base>
 
@@ -47,11 +45,6 @@ const { Content } = await render(entry);
 
   header h1 {
     margin: 0 0 0.5rem 0;
-  }
-
-  /* Hide the first H1 in content (redundant with header title) */
-  .content > h1:first-child {
-    display: none;
   }
 
   .summary {
