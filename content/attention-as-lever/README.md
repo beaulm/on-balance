@@ -9,8 +9,6 @@ tags: ["attention","practice","audit"]
 license: "CC BY-SA 4.0"
 ---
 
-# Attention as Lever
-
 ## **The Foundation: What You Feed Grows**
 
 I thought I was present. I’m generally intentional, I meditate daily, practice mindfulness, track my energy, and monitor my alignment — or at least I go through phases of those things.

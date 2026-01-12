@@ -1,0 +1,63 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const modules = await getCollection('modules');
+  return modules.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Base title={entry.data.title}>
+  <article>
+    <header>
+      <h1>{entry.data.title}</h1>
+      <p class="summary">{entry.data.summary}</p>
+      <div class="meta">
+        <span>v{entry.data.version}</span>
+        <span>Updated {entry.data.last_updated}</span>
+        {entry.data.mvp_time_per_day && (
+          <span>Practice: {entry.data.mvp_time_per_day}/day</span>
+        )}
+      </div>
+    </header>
+    <Content />
+  </article>
+</Base>
+
+<style>
+  article {
+    max-width: 65ch;
+    margin: 0 auto;
+  }
+
+  header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ddd;
+  }
+
+  header h1 {
+    margin: 0 0 0.5rem 0;
+  }
+
+  .summary {
+    font-size: 1.1rem;
+    color: #555;
+    font-style: italic;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .meta {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.875rem;
+    color: #666;
+  }
+</style>
