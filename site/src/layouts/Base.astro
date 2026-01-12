@@ -16,7 +16,7 @@ const pageTitle = frontmatter?.title || title;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
-    <style>
+    <style is:global>
       :root {
         --color-text: #333;
         --color-bg: #fefefe;
