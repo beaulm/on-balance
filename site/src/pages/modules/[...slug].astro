@@ -17,12 +17,13 @@ const { Content } = await render(entry);
 <Base title={entry.data.title}>
   <article>
     <header>
-      <h1>{entry.data.title}</h1>
       <p class="summary">{entry.data.summary}</p>
       <div class="meta">
-        <span>Version {entry.data.version}</span>
+        <span>v{entry.data.version}</span>
         <span>Updated {entry.data.last_updated}</span>
-        <span>{entry.data.mvp_time_per_day}</span>
+        {entry.data.mvp_time_per_day && (
+          <span>Practice: {entry.data.mvp_time_per_day}/day</span>
+        )}
       </div>
     </header>
     <Content />
@@ -36,20 +37,14 @@ const { Content } = await render(entry);
   }
 
   header {
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #ddd;
-  }
-
-  h1 {
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
   }
 
   .summary {
     font-size: 1.1rem;
     color: #555;
     font-style: italic;
-    margin-bottom: 1rem;
+    margin: 0 0 0.75rem 0;
   }
 
   .meta {

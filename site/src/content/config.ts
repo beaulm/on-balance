@@ -20,6 +20,21 @@ const modules = defineCollection({
   }),
 });
 
+// Supplemental content (worksheets, etc) - no required frontmatter
+const supplements = defineCollection({
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/content/modules',
+    // Exclude README files (handled by modules collection)
+    // and generate clean IDs like "attention-as-lever/worksheet"
+    generateId: ({ entry }) => entry.replace(/\.md$/i, ''),
+  }),
+  schema: z.object({
+    title: z.string().optional(),
+  }).passthrough(), // Allow any additional frontmatter
+});
+
 export const collections = {
   modules,
+  supplements,
 };
