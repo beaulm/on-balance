@@ -56,8 +56,16 @@ const { Content } = await render(entry);
 
   .meta {
     display: flex;
+    flex-wrap: wrap;
     gap: 1.5rem;
     font-size: 0.875rem;
     color: #666;
+  }
+
+  @media (max-width: 640px) {
+    .meta {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
   }
 </style>
