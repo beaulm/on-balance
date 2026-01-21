@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import TextSelectionHandler from '../../components/TextSelectionHandler';
 
 export async function getStaticPaths() {
   const modules = await getCollection('modules');
@@ -27,7 +28,9 @@ const { Content } = await render(entry);
         )}
       </div>
     </header>
-    <Content />
+    <TextSelectionHandler client:load>
+      <Content />
+    </TextSelectionHandler>
   </article>
 </Base>
 
