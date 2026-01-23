@@ -133,13 +133,14 @@ export default function TextSelectionHandler({
     const container = containerRef.current;
     if (!container) return;
 
-    // Use mouseup for desktop
+    // Use mouseup for desktop - listen on document to catch selections
+    // that start inside container but end outside (common with long blocks)
     const handleMouseUp = () => {
       // Small delay to ensure selection is complete
       requestAnimationFrame(handleSelectionChange);
     };
 
-    // Use touchend for mobile
+    // Use touchend for mobile - also on document for same reason
     const handleTouchEnd = () => {
       // Longer delay for mobile selection UI
       setTimeout(handleSelectionChange, 100);
@@ -152,13 +153,15 @@ export default function TextSelectionHandler({
       }
     };
 
-    container.addEventListener('mouseup', handleMouseUp);
-    container.addEventListener('touchend', handleTouchEnd);
+    // Listen on document to catch selections that end outside the container
+    // The handler already verifies the selection is within our container
+    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('touchend', handleTouchEnd);
     document.addEventListener('keyup', handleKeyUp);
 
     return () => {
-      container.removeEventListener('mouseup', handleMouseUp);
-      container.removeEventListener('touchend', handleTouchEnd);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('touchend', handleTouchEnd);
       document.removeEventListener('keyup', handleKeyUp);
     };
   }, [handleSelectionChange]);
