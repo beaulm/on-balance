@@ -16,56 +16,19 @@ interface TextSelectionHandlerProps {
 
 /**
  * Calculates the character offset of a point within a container element.
- * Walks through all text nodes to find the absolute position.
- *
- * Handles both Text nodes (where offset is character position) and Element nodes
- * (where offset is child node index, which happens at selection boundaries).
+ * Uses Range API to handle both Text nodes (offset = character position)
+ * and Element nodes (offset = child index, happens at selection boundaries).
  */
 function getAbsoluteOffset(container: Element, node: Node, offset: number): number {
-  let absoluteOffset = 0;
-  const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
-
-  // If node is an Element, we need to find the text position at the child index
-  // This happens when selection starts/ends at element boundaries
-  if (node.nodeType === Node.ELEMENT_NODE) {
-    const targetChild = node.childNodes[offset];
-    // Count all text before the target child position
-    let currentNode = walker.nextNode();
-    while (currentNode) {
-      // Stop if we've reached or passed the target position
-      if (targetChild && !node.contains(currentNode)) {
-        break;
-      }
-      if (targetChild && targetChild.contains(currentNode)) {
-        break;
-      }
-      if (!targetChild && node.contains(currentNode)) {
-        // If offset points past all children, count all text in the element
-        absoluteOffset += currentNode.textContent?.length || 0;
-      } else if (targetChild) {
-        // Check if this text node comes before our target
-        const position = targetChild.compareDocumentPosition(currentNode);
-        if (position & Node.DOCUMENT_POSITION_PRECEDING) {
-          break;
-        }
-        absoluteOffset += currentNode.textContent?.length || 0;
-      }
-      currentNode = walker.nextNode();
-    }
-    return absoluteOffset;
+  try {
+    const range = document.createRange();
+    range.selectNodeContents(container);
+    range.setEnd(node, offset);
+    return range.toString().length;
+  } catch {
+    // Fallback if range creation fails (e.g., node not in container)
+    return 0;
   }
-
-  // For Text nodes, walk until we find the matching node
-  let currentNode = walker.nextNode();
-  while (currentNode) {
-    if (currentNode === node) {
-      return absoluteOffset + offset;
-    }
-    absoluteOffset += currentNode.textContent?.length || 0;
-    currentNode = walker.nextNode();
-  }
-
-  return absoluteOffset;
 }
 
 /**
