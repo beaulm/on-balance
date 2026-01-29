@@ -52,8 +52,9 @@ export default function ResonancePopup({
     const preferBelow = isTouchDevice || isMobileWidth;
 
     // Check if there's room above/below the selection
-    const spaceAbove = rect.top - window.scrollY;
-    const spaceBelow = viewportHeight - (rect.bottom - window.scrollY);
+    // rect is already in viewport coordinates (for position: fixed)
+    const spaceAbove = rect.top;
+    const spaceBelow = viewportHeight - rect.bottom;
 
     let above: boolean;
     if (preferBelow) {
@@ -75,7 +76,7 @@ export default function ResonancePopup({
 
     // Calculate left position (center on selection, but keep on screen)
     let left = rect.left + rect.width / 2 - popupWidth / 2;
-    left = Math.max(margin, Math.min(left, viewportWidth - popupWidth - margin + window.scrollX));
+    left = Math.max(margin, Math.min(left, viewportWidth - popupWidth - margin));
 
     setPosition({ top, left });
   }, [selection]);
@@ -170,7 +171,7 @@ export default function ResonancePopup({
       role="dialog"
       aria-label="Resonance feedback"
       style={{
-        position: 'absolute',
+        position: 'fixed',
         top: position.top,
         left: position.left,
         zIndex: 1000,

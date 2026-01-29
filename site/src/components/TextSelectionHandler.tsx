@@ -125,13 +125,13 @@ export default function TextSelectionHandler({
     const fullText = getTextContent(container);
     const { prefix, suffix } = getContext(fullText, startOffset, endOffset, contextLength);
 
-    // Get bounding rect for popup positioning
+    // Get bounding rect for popup positioning (viewport coordinates for position: fixed)
     const boundingRect = range.getBoundingClientRect();
     const rect: SelectionRect = {
-      top: boundingRect.top + window.scrollY,
-      left: boundingRect.left + window.scrollX,
-      bottom: boundingRect.bottom + window.scrollY,
-      right: boundingRect.right + window.scrollX,
+      top: boundingRect.top,
+      left: boundingRect.left,
+      bottom: boundingRect.bottom,
+      right: boundingRect.right,
       width: boundingRect.width,
       height: boundingRect.height,
     };
