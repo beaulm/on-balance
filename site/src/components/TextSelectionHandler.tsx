@@ -1,11 +1,21 @@
 import { useEffect, useRef, useCallback, type ReactNode } from 'react';
 
+export interface SelectionRect {
+  top: number;
+  left: number;
+  bottom: number;
+  right: number;
+  width: number;
+  height: number;
+}
+
 export interface SelectionData {
   exact: string;
   prefix: string;
   suffix: string;
   startOffset: number;
   endOffset: number;
+  rect: SelectionRect;
 }
 
 interface TextSelectionHandlerProps {
@@ -115,12 +125,24 @@ export default function TextSelectionHandler({
     const fullText = getTextContent(container);
     const { prefix, suffix } = getContext(fullText, startOffset, endOffset, contextLength);
 
+    // Get bounding rect for popup positioning
+    const boundingRect = range.getBoundingClientRect();
+    const rect: SelectionRect = {
+      top: boundingRect.top + window.scrollY,
+      left: boundingRect.left + window.scrollX,
+      bottom: boundingRect.bottom + window.scrollY,
+      right: boundingRect.right + window.scrollX,
+      width: boundingRect.width,
+      height: boundingRect.height,
+    };
+
     const selectionData: SelectionData = {
       exact: trimmedText,
       prefix,
       suffix,
       startOffset,
       endOffset,
+      rect,
     };
 
     // Debug logging (can be removed later)
