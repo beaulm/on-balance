@@ -16,9 +16,19 @@ export default function ResonancePopup({
 }: ResonancePopupProps) {
   const popupRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const dismissTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const errorTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [submitState, setSubmitState] = useState<SubmitState>('idle');
   const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
   const [showAbove, setShowAbove] = useState(true);
+
+  // Clean up timeouts on unmount or selection change
+  useEffect(() => {
+    return () => {
+      if (dismissTimeoutRef.current) clearTimeout(dismissTimeoutRef.current);
+      if (errorTimeoutRef.current) clearTimeout(errorTimeoutRef.current);
+    };
+  }, [selection]);
 
   // Calculate popup position when selection changes
   useEffect(() => {
@@ -35,10 +45,24 @@ export default function ResonancePopup({
     const viewportHeight = window.innerHeight;
     const viewportWidth = window.innerWidth;
 
-    // Check if there's room above the selection
+    // Detect mobile/touch device - native selection UI appears above on mobile,
+    // so we prefer showing our popup below to avoid overlap
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const isMobileWidth = viewportWidth < 768;
+    const preferBelow = isTouchDevice || isMobileWidth;
+
+    // Check if there's room above/below the selection
     const spaceAbove = rect.top - window.scrollY;
     const spaceBelow = viewportHeight - (rect.bottom - window.scrollY);
-    const above = spaceAbove > popupHeight + margin || spaceAbove > spaceBelow;
+
+    let above: boolean;
+    if (preferBelow) {
+      // On mobile, prefer below unless there's really no room
+      above = spaceBelow < popupHeight + margin && spaceAbove > popupHeight + margin;
+    } else {
+      // On desktop, prefer above if there's room
+      above = spaceAbove > popupHeight + margin || spaceAbove > spaceBelow;
+    }
     setShowAbove(above);
 
     // Calculate top position
@@ -64,6 +88,10 @@ export default function ResonancePopup({
   const handleResonance = useCallback(async () => {
     if (!selection || submitState === 'submitting') return;
 
+    // Clear any existing timeouts
+    if (dismissTimeoutRef.current) clearTimeout(dismissTimeoutRef.current);
+    if (errorTimeoutRef.current) clearTimeout(errorTimeoutRef.current);
+
     setSubmitState('submitting');
 
     try {
@@ -71,14 +99,14 @@ export default function ResonancePopup({
       onResonance(selection);
       setSubmitState('success');
 
-      // Auto-dismiss after success
-      setTimeout(() => {
+      // Auto-dismiss after success (timeout cleaned up on unmount)
+      dismissTimeoutRef.current = setTimeout(() => {
         onDismiss();
       }, 800);
     } catch {
       setSubmitState('error');
-      // Reset after error
-      setTimeout(() => {
+      // Reset after error (timeout cleaned up on unmount)
+      errorTimeoutRef.current = setTimeout(() => {
         setSubmitState('idle');
       }, 2000);
     }
