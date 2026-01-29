@@ -162,12 +162,6 @@ export default function TextSelectionHandler({
       requestAnimationFrame(handleSelectionChange);
     };
 
-    // Use touchend for mobile - also on document for same reason
-    const handleTouchEnd = () => {
-      // Longer delay for mobile selection UI
-      setTimeout(handleSelectionChange, 100);
-    };
-
     // Handle keyboard selection (Shift+Arrow keys)
     const handleKeyUp = (e: KeyboardEvent) => {
       if (e.shiftKey) {
@@ -175,16 +169,23 @@ export default function TextSelectionHandler({
       }
     };
 
+    // Use selectionchange for more reliable detection, especially on mobile
+    // This fires when the selection actually changes, not on touch/mouse events
+    const handleSelectionChangeEvent = () => {
+      // Small delay to let the selection stabilize
+      requestAnimationFrame(handleSelectionChange);
+    };
+
     // Listen on document to catch selections that end outside the container
     // The handler already verifies the selection is within our container
     document.addEventListener('mouseup', handleMouseUp);
-    document.addEventListener('touchend', handleTouchEnd);
     document.addEventListener('keyup', handleKeyUp);
+    document.addEventListener('selectionchange', handleSelectionChangeEvent);
 
     return () => {
       document.removeEventListener('mouseup', handleMouseUp);
-      document.removeEventListener('touchend', handleTouchEnd);
       document.removeEventListener('keyup', handleKeyUp);
+      document.removeEventListener('selectionchange', handleSelectionChangeEvent);
     };
   }, [handleSelectionChange]);
 
