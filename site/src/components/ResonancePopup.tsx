@@ -32,9 +32,15 @@ export default function ResonancePopup({
 
   // Calculate popup position when selection changes
   useEffect(() => {
+    // Clear any pending timeouts when selection changes
+    if (dismissTimeoutRef.current) clearTimeout(dismissTimeoutRef.current);
+    if (errorTimeoutRef.current) clearTimeout(errorTimeoutRef.current);
+
+    // Reset state for each new selection (including when selection becomes null)
+    setSubmitState('idle');
+
     if (!selection) {
       setPosition(null);
-      setSubmitState('idle');
       return;
     }
 
