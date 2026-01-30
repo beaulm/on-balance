@@ -80,13 +80,17 @@ export default function TextSelectionHandler({
   contextLength = 50,
 }: TextSelectionHandlerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const lastSelectionRef = useRef<{ startOffset: number; endOffset: number } | null>(null);
 
   const handleSelectionChange = useCallback(() => {
     const selection = window.getSelection();
 
     // Check for empty or collapsed selection
     if (!selection || selection.isCollapsed || !selection.rangeCount) {
-      onSelection?.(null);
+      if (lastSelectionRef.current !== null) {
+        lastSelectionRef.current = null;
+        onSelection?.(null);
+      }
       return;
     }
 
@@ -135,6 +139,19 @@ export default function TextSelectionHandler({
       width: boundingRect.width,
       height: boundingRect.height,
     };
+
+    // Only trigger onSelection if the selection actually changed
+    const lastSelection = lastSelectionRef.current;
+    if (
+      lastSelection &&
+      lastSelection.startOffset === startOffset &&
+      lastSelection.endOffset === endOffset
+    ) {
+      // Selection hasn't changed, don't trigger update
+      return;
+    }
+
+    lastSelectionRef.current = { startOffset, endOffset };
 
     const selectionData: SelectionData = {
       exact: trimmedText,
