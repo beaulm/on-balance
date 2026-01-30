@@ -155,6 +155,8 @@ export default function TextSelectionHandler({
     const container = containerRef.current;
     if (!container) return;
 
+    let selectionChangeTimeout: ReturnType<typeof setTimeout> | null = null;
+
     // Use mouseup for desktop - listen on document to catch selections
     // that start inside container but end outside (common with long blocks)
     const handleMouseUp = () => {
@@ -170,10 +172,12 @@ export default function TextSelectionHandler({
     };
 
     // Use selectionchange for more reliable detection, especially on mobile
-    // This fires when the selection actually changes, not on touch/mouse events
+    // Debounce to avoid rapid re-triggering during drag selection
     const handleSelectionChangeEvent = () => {
-      // Small delay to let the selection stabilize
-      requestAnimationFrame(handleSelectionChange);
+      if (selectionChangeTimeout) clearTimeout(selectionChangeTimeout);
+      selectionChangeTimeout = setTimeout(() => {
+        handleSelectionChange();
+      }, 200); // Wait for selection to stabilize
     };
 
     // Listen on document to catch selections that end outside the container
@@ -183,6 +187,7 @@ export default function TextSelectionHandler({
     document.addEventListener('selectionchange', handleSelectionChangeEvent);
 
     return () => {
+      if (selectionChangeTimeout) clearTimeout(selectionChangeTimeout);
       document.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('keyup', handleKeyUp);
       document.removeEventListener('selectionchange', handleSelectionChangeEvent);
