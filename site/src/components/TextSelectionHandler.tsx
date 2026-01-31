@@ -109,9 +109,12 @@ export default function TextSelectionHandler({
     const rawSelectedText = selection.toString();
     const trimmedText = rawSelectedText.trim();
 
-    // Ignore empty selections
+    // Ignore empty/whitespace-only selections
     if (!trimmedText) {
-      onSelection?.(null);
+      if (lastSelectionRef.current !== null) {
+        lastSelectionRef.current = null;
+        onSelection?.(null);
+      }
       return;
     }
 
@@ -174,6 +177,10 @@ export default function TextSelectionHandler({
 
     let selectionChangeTimeout: ReturnType<typeof setTimeout> | null = null;
 
+    // Detect mobile for longer debounce (allows native selection UI to work)
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const debounceMs = isTouchDevice ? 400 : 200;
+
     // Use mouseup for desktop - listen on document to catch selections
     // that start inside container but end outside (common with long blocks)
     const handleMouseUp = () => {
@@ -194,7 +201,7 @@ export default function TextSelectionHandler({
       if (selectionChangeTimeout) clearTimeout(selectionChangeTimeout);
       selectionChangeTimeout = setTimeout(() => {
         handleSelectionChange();
-      }, 200); // Wait for selection to stabilize
+      }, debounceMs); // Wait for selection to stabilize (longer on mobile)
     };
 
     // Listen on document to catch selections that end outside the container
