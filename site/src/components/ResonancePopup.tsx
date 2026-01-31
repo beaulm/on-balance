@@ -253,6 +253,7 @@ export default function ResonancePopup({
         />
         <button
           ref={buttonRef}
+          onMouseDown={(e) => e.preventDefault()} // Prevent click from collapsing selection
           onClick={handleResonance}
           disabled={submitState === 'submitting' || submitState === 'success'}
           aria-label="Mark this text as resonating with you"
