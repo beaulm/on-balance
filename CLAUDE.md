@@ -29,6 +29,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `make pdf` - Export all modules to PDF format (requires pandoc + LaTeX)
 - `make epub` - Export all modules to EPUB format (requires pandoc)
 
+### Site Development
+
+All site commands run from the `site/` directory:
+
+- `npm run dev` - Start local dev server at localhost:4321
+- `npm run build` - Build production site to `site/dist/`
+- `npm run preview` - Preview production build locally
+
 ### Export Requirements
 
 - **Pandoc** is required for all exports
