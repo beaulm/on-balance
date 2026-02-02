@@ -1,11 +1,21 @@
 import { useEffect, useRef, useCallback, type ReactNode } from 'react';
 
+export interface SelectionRect {
+  top: number;
+  left: number;
+  bottom: number;
+  right: number;
+  width: number;
+  height: number;
+}
+
 export interface SelectionData {
   exact: string;
   prefix: string;
   suffix: string;
   startOffset: number;
   endOffset: number;
+  rect: SelectionRect;
 }
 
 interface TextSelectionHandlerProps {
@@ -70,13 +80,17 @@ export default function TextSelectionHandler({
   contextLength = 50,
 }: TextSelectionHandlerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const lastSelectionRef = useRef<{ startOffset: number; endOffset: number } | null>(null);
 
   const handleSelectionChange = useCallback(() => {
     const selection = window.getSelection();
 
     // Check for empty or collapsed selection
     if (!selection || selection.isCollapsed || !selection.rangeCount) {
-      onSelection?.(null);
+      if (lastSelectionRef.current !== null) {
+        lastSelectionRef.current = null;
+        onSelection?.(null);
+      }
       return;
     }
 
@@ -95,9 +109,12 @@ export default function TextSelectionHandler({
     const rawSelectedText = selection.toString();
     const trimmedText = rawSelectedText.trim();
 
-    // Ignore empty selections
+    // Ignore empty/whitespace-only selections
     if (!trimmedText) {
-      onSelection?.(null);
+      if (lastSelectionRef.current !== null) {
+        lastSelectionRef.current = null;
+        onSelection?.(null);
+      }
       return;
     }
 
@@ -115,12 +132,37 @@ export default function TextSelectionHandler({
     const fullText = getTextContent(container);
     const { prefix, suffix } = getContext(fullText, startOffset, endOffset, contextLength);
 
+    // Get bounding rect for popup positioning (viewport coordinates for position: fixed)
+    const boundingRect = range.getBoundingClientRect();
+    const rect: SelectionRect = {
+      top: boundingRect.top,
+      left: boundingRect.left,
+      bottom: boundingRect.bottom,
+      right: boundingRect.right,
+      width: boundingRect.width,
+      height: boundingRect.height,
+    };
+
+    // Only trigger onSelection if the selection actually changed
+    const lastSelection = lastSelectionRef.current;
+    if (
+      lastSelection &&
+      lastSelection.startOffset === startOffset &&
+      lastSelection.endOffset === endOffset
+    ) {
+      // Selection hasn't changed, don't trigger update
+      return;
+    }
+
+    lastSelectionRef.current = { startOffset, endOffset };
+
     const selectionData: SelectionData = {
       exact: trimmedText,
       prefix,
       suffix,
       startOffset,
       endOffset,
+      rect,
     };
 
     // Debug logging (can be removed later)
@@ -133,17 +175,17 @@ export default function TextSelectionHandler({
     const container = containerRef.current;
     if (!container) return;
 
+    let selectionChangeTimeout: ReturnType<typeof setTimeout> | null = null;
+
+    // Detect mobile for longer debounce (allows native selection UI to work)
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const debounceMs = isTouchDevice ? 400 : 200;
+
     // Use mouseup for desktop - listen on document to catch selections
     // that start inside container but end outside (common with long blocks)
     const handleMouseUp = () => {
       // Small delay to ensure selection is complete
       requestAnimationFrame(handleSelectionChange);
-    };
-
-    // Use touchend for mobile - also on document for same reason
-    const handleTouchEnd = () => {
-      // Longer delay for mobile selection UI
-      setTimeout(handleSelectionChange, 100);
     };
 
     // Handle keyboard selection (Shift+Arrow keys)
@@ -153,16 +195,26 @@ export default function TextSelectionHandler({
       }
     };
 
+    // Use selectionchange for more reliable detection, especially on mobile
+    // Debounce to avoid rapid re-triggering during drag selection
+    const handleSelectionChangeEvent = () => {
+      if (selectionChangeTimeout) clearTimeout(selectionChangeTimeout);
+      selectionChangeTimeout = setTimeout(() => {
+        handleSelectionChange();
+      }, debounceMs); // Wait for selection to stabilize (longer on mobile)
+    };
+
     // Listen on document to catch selections that end outside the container
     // The handler already verifies the selection is within our container
     document.addEventListener('mouseup', handleMouseUp);
-    document.addEventListener('touchend', handleTouchEnd);
     document.addEventListener('keyup', handleKeyUp);
+    document.addEventListener('selectionchange', handleSelectionChangeEvent);
 
     return () => {
+      if (selectionChangeTimeout) clearTimeout(selectionChangeTimeout);
       document.removeEventListener('mouseup', handleMouseUp);
-      document.removeEventListener('touchend', handleTouchEnd);
       document.removeEventListener('keyup', handleKeyUp);
+      document.removeEventListener('selectionchange', handleSelectionChangeEvent);
     };
   }, [handleSelectionChange]);
 

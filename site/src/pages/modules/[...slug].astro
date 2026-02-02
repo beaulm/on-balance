@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import TextSelectionHandler from '../../components/TextSelectionHandler';
+import ResonanceWrapper from '../../components/ResonanceWrapper';
 
 export async function getStaticPaths() {
   const modules = await getCollection('modules');
@@ -28,9 +28,9 @@ const { Content } = await render(entry);
         )}
       </div>
     </header>
-    <TextSelectionHandler client:load>
+    <ResonanceWrapper client:load>
       <Content />
-    </TextSelectionHandler>
+    </ResonanceWrapper>
   </article>
 </Base>
 
