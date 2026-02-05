@@ -3,7 +3,7 @@ import type { SelectionData } from './TextSelectionHandler';
 
 interface ResonancePopupProps {
   selection: SelectionData | null;
-  onResonance: (selection: SelectionData) => void;
+  onResonance: (selection: SelectionData) => void | Promise<void>;
   onDismiss: () => void;
 }
 
@@ -103,7 +103,7 @@ export default function ResonancePopup({
 
     try {
       // For now, just call the callback - actual submission will be in later issues
-      onResonance(selection);
+      await onResonance(selection);
       setSubmitState('success');
 
       // Auto-dismiss after success (timeout cleaned up on unmount)

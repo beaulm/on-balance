@@ -1,22 +1,24 @@
 import { useState, useCallback, type ReactNode } from 'react';
 import TextSelectionHandler, { type SelectionData } from './TextSelectionHandler';
 import ResonancePopup from './ResonancePopup';
+import { formatSelectionData, sendResonance } from '../lib/resonance';
 
 interface ResonanceWrapperProps {
   children: ReactNode;
+  moduleSlug: string;
 }
 
-export default function ResonanceWrapper({ children }: ResonanceWrapperProps) {
+export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrapperProps) {
   const [selection, setSelection] = useState<SelectionData | null>(null);
 
   const handleSelection = useCallback((newSelection: SelectionData | null) => {
     setSelection(newSelection);
   }, []);
 
-  const handleResonance = useCallback((selectionData: SelectionData) => {
-    // For now, just log - actual persistence will be in later issues (#47, #48)
-    console.log('[ResonanceWrapper] Resonance recorded:', selectionData);
-  }, []);
+  const handleResonance = useCallback(async (selectionData: SelectionData) => {
+    const payload = await formatSelectionData(moduleSlug, selectionData);
+    await sendResonance(payload);
+  }, [moduleSlug]);
 
   const handleDismiss = useCallback(() => {
     setSelection(null);

@@ -60,16 +60,8 @@ function getContext(
   const prefixStart = Math.max(0, startOffset - contextLength);
   const suffixEnd = Math.min(fullText.length, endOffset + contextLength);
 
-  let prefix = fullText.slice(prefixStart, startOffset);
-  let suffix = fullText.slice(endOffset, suffixEnd);
-
-  // Add ellipsis if we're not at the boundaries
-  if (prefixStart > 0) {
-    prefix = '...' + prefix;
-  }
-  if (suffixEnd < fullText.length) {
-    suffix = suffix + '...';
-  }
+  const prefix = fullText.slice(prefixStart, startOffset);
+  const suffix = fullText.slice(endOffset, suffixEnd);
 
   return { prefix, suffix };
 }
