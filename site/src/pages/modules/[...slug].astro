@@ -28,7 +28,7 @@ const { Content } = await render(entry);
         )}
       </div>
     </header>
-    <ResonanceWrapper client:load>
+    <ResonanceWrapper moduleSlug={entry.id} client:load>
       <Content />
     </ResonanceWrapper>
   </article>
