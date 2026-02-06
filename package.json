@@ -3,8 +3,8 @@
   "private": true,
   "version": "0.2.0",
   "scripts": {
-    "lint:md": "npx markdownlint \"**/*.md\" -c .markdownlint.json --ignore node_modules",
-    "lint:md:fix": "npx markdownlint \"**/*.md\" -c .markdownlint.json --ignore node_modules --fix",
+    "lint:md": "npx markdownlint \"**/*.md\" -c .markdownlint.json --ignore node_modules --ignore site/node_modules",
+    "lint:md:fix": "npx markdownlint \"**/*.md\" -c .markdownlint.json --ignore node_modules --ignore site/node_modules --fix",
     "check": "npm run lint:md"
   },
   "devDependencies": {
