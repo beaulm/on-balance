@@ -75,6 +75,14 @@ export async function formatSelectionData(
 }
 
 export async function sendResonance(payload: ResonancePayload): Promise<void> {
-  // Stub: real fetch call deferred to #47
-  console.log('[Resonance] payload:', payload);
+  const response = await fetch('/.netlify/functions/record-resonance', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const body = await response.json().catch(() => ({}));
+    console.error('[Resonance] server error:', response.status, body);
+  }
 }
