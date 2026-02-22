@@ -71,6 +71,30 @@ function isValidBody(data: unknown): data is ResonanceBody {
   return true;
 }
 
+const SAFE_PATH_SEGMENT = /^[a-zA-Z0-9_-]+$/;
+
+function isSafePathSegment(segment: string): boolean {
+  return SAFE_PATH_SEGMENT.test(segment);
+}
+
+function toBase64(str: string): string {
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+
+function fromBase64(b64: string): string {
+  const binary = atob(b64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return new TextDecoder().decode(bytes);
+}
+
 async function githubFetch(
   path: string,
   options: RequestInit = {},
@@ -95,7 +119,7 @@ async function getExistingFile(
   if (!res.ok) throw new Error(`GitHub GET ${res.status}: ${await res.text()}`);
 
   const data = (await res.json()) as { sha: string; content: string };
-  const decoded = atob(data.content.replace(/\n/g, ''));
+  const decoded = fromBase64(data.content.replace(/\n/g, ''));
   const parsed = JSON.parse(decoded) as ResonanceFile;
   return { sha: data.sha, resonates: parsed.resonates };
 }
@@ -108,7 +132,7 @@ async function writeFile(
 ): Promise<globalThis.Response> {
   const payload: Record<string, string> = {
     message,
-    content: btoa(content),
+    content: toBase64(content),
     branch: BRANCH,
   };
   if (sha) payload.sha = sha;
@@ -125,6 +149,9 @@ async function writeFile(
 }
 
 async function persistResonance(body: ResonanceBody): Promise<void> {
+  if (!isSafePathSegment(body.module) || !isSafePathSegment(body.passage_id)) {
+    throw new Error('Invalid module or passage_id');
+  }
   const filePath = `data/resonance/${body.module}/${body.passage_id}.json`;
   const entry: ResonanceEntry = {
     timestamp: body.timestamp,
