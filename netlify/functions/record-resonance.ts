@@ -1,3 +1,7 @@
+declare const Netlify: {
+  env: { get(key: string): string | undefined };
+};
+
 interface ResonanceBody {
   module: string;
   passage_id: string;
@@ -12,6 +16,26 @@ interface ResonanceBody {
     endOffset: number;
   };
 }
+
+interface ResonanceEntry {
+  timestamp: string;
+  user_fingerprint: string;
+  selector: ResonanceBody['selector'];
+}
+
+interface ResonanceFile {
+  passage_id: string;
+  resonates: ResonanceEntry[];
+}
+
+interface ExistingFile {
+  sha: string;
+  resonates: ResonanceEntry[];
+}
+
+const REPO = 'beaulm/on-balance';
+const BRANCH = 'data/resonance';
+const API_BASE = `https://api.github.com/repos/${REPO}/contents`;
 
 const CORS_HEADERS: Record<string, string> = {
   'Access-Control-Allow-Origin': '*',
@@ -47,6 +71,131 @@ function isValidBody(data: unknown): data is ResonanceBody {
   return true;
 }
 
+const SAFE_PATH_SEGMENT = /^[a-zA-Z0-9_-]+$/;
+
+function isSafePathSegment(segment: string): boolean {
+  return SAFE_PATH_SEGMENT.test(segment);
+}
+
+function toBase64(str: string): string {
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+
+function fromBase64(b64: string): string {
+  const binary = atob(b64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return new TextDecoder().decode(bytes);
+}
+
+async function githubFetch(
+  path: string,
+  options: RequestInit = {},
+): Promise<globalThis.Response> {
+  const token = Netlify.env.get('GITHUB_TOKEN');
+  return fetch(`${API_BASE}/${path}?ref=${BRANCH}`, {
+    ...options,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/vnd.github+json',
+      'Content-Type': 'application/json',
+      ...(options.headers as Record<string, string> | undefined),
+    },
+  });
+}
+
+async function getExistingFile(
+  filePath: string,
+): Promise<ExistingFile | null> {
+  const res = await githubFetch(filePath);
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`GitHub GET ${res.status}: ${await res.text()}`);
+
+  const data = (await res.json()) as { sha: string; content: string };
+  const decoded = fromBase64(data.content.replace(/\n/g, ''));
+  const parsed = JSON.parse(decoded) as ResonanceFile;
+  return { sha: data.sha, resonates: parsed.resonates };
+}
+
+async function writeFile(
+  filePath: string,
+  message: string,
+  content: string,
+  sha?: string,
+): Promise<globalThis.Response> {
+  const payload: Record<string, string> = {
+    message,
+    content: toBase64(content),
+    branch: BRANCH,
+  };
+  if (sha) payload.sha = sha;
+
+  return fetch(`${API_BASE}/${filePath}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${Netlify.env.get('GITHUB_TOKEN')}`,
+      Accept: 'application/vnd.github+json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+}
+
+async function persistResonance(body: ResonanceBody): Promise<void> {
+  if (!isSafePathSegment(body.module) || !isSafePathSegment(body.passage_id)) {
+    throw new Error('Invalid module or passage_id');
+  }
+  const filePath = `data/resonance/${body.module}/${body.passage_id}.json`;
+  const entry: ResonanceEntry = {
+    timestamp: body.timestamp,
+    user_fingerprint: body.user_fingerprint,
+    selector: body.selector,
+  };
+
+  const attempt = async (): Promise<globalThis.Response> => {
+    const existing = await getExistingFile(filePath);
+
+    let fileContent: ResonanceFile;
+    let sha: string | undefined;
+
+    if (existing) {
+      existing.resonates.push(entry);
+      fileContent = { passage_id: body.passage_id, resonates: existing.resonates };
+      sha = existing.sha;
+    } else {
+      fileContent = { passage_id: body.passage_id, resonates: [entry] };
+    }
+
+    const json = JSON.stringify(fileContent, null, 2) + '\n';
+    const message = existing
+      ? `data: append resonance to ${body.passage_id}`
+      : `data: create resonance for ${body.passage_id}`;
+
+    return writeFile(filePath, message, json, sha);
+  };
+
+  const res = await attempt();
+
+  if (res.status === 409) {
+    const retry = await attempt();
+    if (!retry.ok) {
+      throw new Error(`GitHub PUT conflict retry ${retry.status}: ${await retry.text()}`);
+    }
+    return;
+  }
+
+  if (!res.ok) {
+    throw new Error(`GitHub PUT ${res.status}: ${await res.text()}`);
+  }
+}
+
 export default async (request: Request) => {
   if (request.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: CORS_HEADERS });
@@ -54,6 +203,10 @@ export default async (request: Request) => {
 
   if (request.method !== 'POST') {
     return jsonResponse({ error: 'Method not allowed' }, 405);
+  }
+
+  if (!Netlify.env.get('GITHUB_TOKEN')) {
+    return jsonResponse({ error: 'GitHub integration not configured' }, 503);
   }
 
   let body: unknown;
@@ -67,7 +220,12 @@ export default async (request: Request) => {
     return jsonResponse({ error: 'Invalid payload: missing or malformed fields' }, 400);
   }
 
-  console.log('[Resonance] recorded:', JSON.stringify(body));
+  try {
+    await persistResonance(body);
+  } catch (err) {
+    console.error('[Resonance] GitHub API error:', err);
+    return jsonResponse({ error: 'Failed to persist resonance' }, 500);
+  }
 
   return jsonResponse({ status: 'success', message: 'Resonance recorded' }, 200);
 };
