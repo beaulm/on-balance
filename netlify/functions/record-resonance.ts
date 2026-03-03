@@ -37,17 +37,83 @@ const REPO = 'beaulm/on-balance';
 const BRANCH = 'data/resonance';
 const API_BASE = `https://api.github.com/repos/${REPO}/contents`;
 
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const RATE_LIMIT_MAX = 10;
+
+const requestLog = new Map<string, number[]>();
+
+const ALLOWED_ORIGINS: string[] = [
+  'http://localhost:4321',
+  'http://localhost:8888',
+];
+
+function getAllowedOrigins(): string[] {
+  const siteUrl = Netlify.env.get('URL');
+  if (siteUrl) {
+    return [...ALLOWED_ORIGINS, siteUrl];
+  }
+  return ALLOWED_ORIGINS;
+}
+
 const CORS_HEADERS: Record<string, string> = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-function jsonResponse(body: Record<string, unknown>, status: number): Response {
+function errorResponse(
+  message: string,
+  code: string,
+  status: number,
+  extraHeaders?: Record<string, string>,
+): Response {
+  return new Response(
+    JSON.stringify({ status: 'error', message, code }),
+    {
+      status,
+      headers: { ...CORS_HEADERS, 'Content-Type': 'application/json', ...extraHeaders },
+    },
+  );
+}
+
+function successResponse(body: Record<string, unknown>, status = 200): Response {
   return new Response(JSON.stringify(body), {
     status,
     headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
   });
+}
+
+function checkRateLimit(fingerprint: string): { limited: boolean; retryAfter?: number } {
+  const now = Date.now();
+  const cutoff = now - RATE_LIMIT_WINDOW_MS;
+
+  // Clean up stale entries
+  for (const [key, timestamps] of requestLog) {
+    const fresh = timestamps.filter((t) => t > cutoff);
+    if (fresh.length === 0) {
+      requestLog.delete(key);
+    } else {
+      requestLog.set(key, fresh);
+    }
+  }
+
+  const timestamps = requestLog.get(fingerprint) ?? [];
+  if (timestamps.length >= RATE_LIMIT_MAX) {
+    const oldest = timestamps[0];
+    const retryAfter = Math.ceil((oldest + RATE_LIMIT_WINDOW_MS - now) / 1000);
+    return { limited: true, retryAfter };
+  }
+
+  timestamps.push(now);
+  requestLog.set(fingerprint, timestamps);
+  return { limited: false };
+}
+
+function isValidTimestamp(timestamp: string): boolean {
+  const parsed = Date.parse(timestamp);
+  if (isNaN(parsed)) return false;
+  const drift = Math.abs(Date.now() - parsed);
+  return drift <= 5 * 60 * 1000; // 5 minutes
 }
 
 function isValidBody(data: unknown): data is ResonanceBody {
@@ -202,30 +268,59 @@ export default async (request: Request) => {
   }
 
   if (request.method !== 'POST') {
-    return jsonResponse({ error: 'Method not allowed' }, 405);
+    return errorResponse('Method not allowed', 'METHOD_NOT_ALLOWED', 405);
+  }
+
+  // Origin check: block requests from unknown origins, allow missing Origin (non-browser)
+  const origin = request.headers.get('Origin');
+  if (origin && !getAllowedOrigins().includes(origin)) {
+    return errorResponse('Forbidden', 'FORBIDDEN', 403);
   }
 
   if (!Netlify.env.get('GITHUB_TOKEN')) {
-    return jsonResponse({ error: 'GitHub integration not configured' }, 503);
+    return errorResponse('GitHub integration not configured', 'SERVICE_UNAVAILABLE', 503);
   }
 
   let body: unknown;
   try {
     body = await request.json();
   } catch {
-    return jsonResponse({ error: 'Invalid JSON' }, 400);
+    return errorResponse('Invalid JSON', 'INVALID_REQUEST', 400);
   }
 
   if (!isValidBody(body)) {
-    return jsonResponse({ error: 'Invalid payload: missing or malformed fields' }, 400);
+    return errorResponse(
+      'Invalid payload: missing or malformed fields',
+      'INVALID_REQUEST',
+      400,
+    );
+  }
+
+  if (!isValidTimestamp(body.timestamp)) {
+    return errorResponse(
+      'Timestamp must be a valid ISO 8601 date within 5 minutes of server time',
+      'INVALID_REQUEST',
+      400,
+    );
+  }
+
+  // Rate limiting per user_fingerprint
+  const rateCheck = checkRateLimit(body.user_fingerprint);
+  if (rateCheck.limited) {
+    return errorResponse(
+      'Too many requests',
+      'RATE_LIMIT_EXCEEDED',
+      429,
+      { 'Retry-After': String(rateCheck.retryAfter) },
+    );
   }
 
   try {
     await persistResonance(body);
   } catch (err) {
     console.error('[Resonance] GitHub API error:', err);
-    return jsonResponse({ error: 'Failed to persist resonance' }, 500);
+    return errorResponse('Failed to persist resonance', 'STORAGE_ERROR', 500);
   }
 
-  return jsonResponse({ status: 'success', message: 'Resonance recorded' }, 200);
+  return successResponse({ status: 'success', message: 'Resonance recorded' });
 };
