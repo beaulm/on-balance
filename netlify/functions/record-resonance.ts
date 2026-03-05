@@ -87,26 +87,27 @@ function checkRateLimit(fingerprint: string): { limited: boolean; retryAfter?: n
   const now = Date.now();
   const cutoff = now - RATE_LIMIT_WINDOW_MS;
 
-  // Clean up stale entries
-  for (const [key, timestamps] of requestLog) {
-    const fresh = timestamps.filter((t) => t > cutoff);
-    if (fresh.length === 0) {
-      requestLog.delete(key);
-    } else {
-      requestLog.set(key, fresh);
-    }
+  // Clean up only the fingerprint being checked
+  const timestamps = (requestLog.get(fingerprint) ?? []).filter((t) => t > cutoff);
+  if (timestamps.length === 0) {
+    requestLog.delete(fingerprint);
+  } else {
+    requestLog.set(fingerprint, timestamps);
   }
 
-  const timestamps = requestLog.get(fingerprint) ?? [];
   if (timestamps.length >= RATE_LIMIT_MAX) {
     const oldest = timestamps[0];
     const retryAfter = Math.ceil((oldest + RATE_LIMIT_WINDOW_MS - now) / 1000);
     return { limited: true, retryAfter };
   }
 
-  timestamps.push(now);
-  requestLog.set(fingerprint, timestamps);
   return { limited: false };
+}
+
+function recordRequest(fingerprint: string): void {
+  const timestamps = requestLog.get(fingerprint) ?? [];
+  timestamps.push(Date.now());
+  requestLog.set(fingerprint, timestamps);
 }
 
 function isValidTimestamp(timestamp: string): boolean {
@@ -321,6 +322,9 @@ export default async (request: Request) => {
     console.error('[Resonance] GitHub API error:', err);
     return errorResponse('Failed to persist resonance', 'STORAGE_ERROR', 500);
   }
+
+  // Record quota only after successful persistence
+  recordRequest(body.user_fingerprint);
 
   return successResponse({ status: 'success', message: 'Resonance recorded' });
 };
