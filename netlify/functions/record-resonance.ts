@@ -39,8 +39,21 @@ const API_BASE = `https://api.github.com/repos/${REPO}/contents`;
 
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
 const RATE_LIMIT_MAX = 10;
+const MAX_MAP_SIZE = 10_000;
 
 const requestLog = new Map<string, number[]>();
+
+function evictStale(): void {
+  const cutoff = Date.now() - RATE_LIMIT_WINDOW_MS;
+  for (const [key, timestamps] of requestLog) {
+    const valid = timestamps.filter((t) => t > cutoff);
+    if (valid.length === 0) {
+      requestLog.delete(key);
+    } else {
+      requestLog.set(key, valid);
+    }
+  }
+}
 
 const ALLOWED_ORIGINS: string[] = [
   'http://localhost:4321',
@@ -84,10 +97,13 @@ function successResponse(body: Record<string, unknown>, status = 200): Response 
 }
 
 function checkRateLimit(fingerprint: string): { limited: boolean; retryAfter?: number } {
+  if (requestLog.size >= MAX_MAP_SIZE) {
+    evictStale();
+  }
+
   const now = Date.now();
   const cutoff = now - RATE_LIMIT_WINDOW_MS;
 
-  // Clean up only the fingerprint being checked
   const timestamps = (requestLog.get(fingerprint) ?? []).filter((t) => t > cutoff);
   if (timestamps.length === 0) {
     requestLog.delete(fingerprint);
