@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-762592055baa",
+  "resonates": [
+    {
+      "timestamp": "2026-03-25T19:29:20.839Z",
+      "user_fingerprint": "90c9486e-d662-4cbd-996d-1a7f3b6896e9",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "There’s a principle here, something fundamental: Attention is pattern amplification",
+        "prefix": "a, house prices. We all leak attention somewhere.\n",
+        "suffix": ". To attend is to bring certain patterns into the ",
+        "startOffset": 774,
+        "endOffset": 857
+      }
+    }
+  ]
+}
