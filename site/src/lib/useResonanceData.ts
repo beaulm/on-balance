@@ -34,7 +34,18 @@ export function useResonanceData(moduleSlug: string) {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    if (cache.has(moduleSlug)) return;
+    // Sync state immediately when moduleSlug changes (cached or not)
+    const cached = cache.get(moduleSlug);
+    if (cached) {
+      setPassages(cached);
+      setLoading(false);
+      setError(null);
+      return;
+    }
+
+    setPassages([]);
+    setLoading(true);
+    setError(null);
 
     const controller = new AbortController();
 
