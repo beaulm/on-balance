@@ -1,0 +1,185 @@
+{
+  "passage_id": "attention-as-lever-64d2dd63bc40",
+  "resonates": [
+    {
+      "timestamp": "2026-03-10T08:00:00.000Z",
+      "user_fingerprint": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Attention is pattern amplification.",
+        "prefix": "something fundamental: ",
+        "suffix": " To attend is to bri",
+        "startOffset": 830,
+        "endOffset": 864
+      }
+    },
+    {
+      "timestamp": "2026-03-10T12:00:00.000Z",
+      "user_fingerprint": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Attention is pattern amplification.",
+        "prefix": "something fundamental: ",
+        "suffix": " To attend is to bri",
+        "startOffset": 830,
+        "endOffset": 864
+      }
+    },
+    {
+      "timestamp": "2026-03-10T20:00:00.000Z",
+      "user_fingerprint": "c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Attention is pattern amplification.",
+        "prefix": "something fundamental: ",
+        "suffix": " To attend is to bri",
+        "startOffset": 830,
+        "endOffset": 864
+      }
+    },
+    {
+      "timestamp": "2026-03-11T05:00:00.000Z",
+      "user_fingerprint": "d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f80",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Attention is pattern amplification.",
+        "prefix": "something fundamental: ",
+        "suffix": " To attend is to bri",
+        "startOffset": 830,
+        "endOffset": 864
+      }
+    },
+    {
+      "timestamp": "2026-03-11T20:00:00.000Z",
+      "user_fingerprint": "e5f6a7b8-c9d0-4e1f-2a3b-4c5d6e7f8091",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Attention is pattern amplification.",
+        "prefix": "something fundamental: ",
+        "suffix": " To attend is to bri",
+        "startOffset": 830,
+        "endOffset": 864
+      }
+    },
+    {
+      "timestamp": "2026-03-12T10:00:00.000Z",
+      "user_fingerprint": "f6a7b8c9-d0e1-4f2a-3b4c-5d6e7f809102",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Attention is pattern amplification.",
+        "prefix": "something fundamental: ",
+        "suffix": " To attend is to bri",
+        "startOffset": 830,
+        "endOffset": 864
+      }
+    },
+    {
+      "timestamp": "2026-03-13T08:00:00.000Z",
+      "user_fingerprint": "a7b8c9d0-e1f2-4a3b-4c5d-6e7f80910213",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Attention is pattern amplification.",
+        "prefix": "something fundamental: ",
+        "suffix": " To attend is to bri",
+        "startOffset": 830,
+        "endOffset": 864
+      }
+    },
+    {
+      "timestamp": "2026-03-14T03:00:00.000Z",
+      "user_fingerprint": "b8c9d0e1-f2a3-4b4c-5d6e-7f8091021324",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Attention is pattern amplification.",
+        "prefix": "something fundamental: ",
+        "suffix": " To attend is to bri",
+        "startOffset": 830,
+        "endOffset": 864
+      }
+    },
+    {
+      "timestamp": "2026-03-15T08:00:00.000Z",
+      "user_fingerprint": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Attention is pattern amplification.",
+        "prefix": "something fundamental: ",
+        "suffix": " To attend is to bri",
+        "startOffset": 830,
+        "endOffset": 864
+      }
+    },
+    {
+      "timestamp": "2026-03-16T08:00:00.000Z",
+      "user_fingerprint": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Attention is pattern amplification.",
+        "prefix": "something fundamental: ",
+        "suffix": " To attend is to bri",
+        "startOffset": 830,
+        "endOffset": 864
+      }
+    },
+    {
+      "timestamp": "2026-03-17T20:00:00.000Z",
+      "user_fingerprint": "c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Attention is pattern amplification.",
+        "prefix": "something fundamental: ",
+        "suffix": " To attend is to bri",
+        "startOffset": 830,
+        "endOffset": 864
+      }
+    },
+    {
+      "timestamp": "2026-03-19T01:00:00.000Z",
+      "user_fingerprint": "d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f80",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Attention is pattern amplification.",
+        "prefix": "something fundamental: ",
+        "suffix": " To attend is to bri",
+        "startOffset": 830,
+        "endOffset": 864
+      }
+    },
+    {
+      "timestamp": "2026-03-20T20:00:00.000Z",
+      "user_fingerprint": "e5f6a7b8-c9d0-4e1f-2a3b-4c5d6e7f8091",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Attention is pattern amplification.",
+        "prefix": "something fundamental: ",
+        "suffix": " To attend is to bri",
+        "startOffset": 830,
+        "endOffset": 864
+      }
+    },
+    {
+      "timestamp": "2026-03-22T06:00:00.000Z",
+      "user_fingerprint": "f6a7b8c9-d0e1-4f2a-3b4c-5d6e7f809102",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Attention is pattern amplification.",
+        "prefix": "something fundamental: ",
+        "suffix": " To attend is to bri",
+        "startOffset": 830,
+        "endOffset": 864
+      }
+    },
+    {
+      "timestamp": "2026-03-24T08:00:00.000Z",
+      "user_fingerprint": "a7b8c9d0-e1f2-4a3b-4c5d-6e7f80910213",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Attention is pattern amplification.",
+        "prefix": "something fundamental: ",
+        "suffix": " To attend is to bri",
+        "startOffset": 830,
+        "endOffset": 864
+      }
+    }
+  ]
+}

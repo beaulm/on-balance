@@ -1,0 +1,29 @@
+{
+  "passage_id": "attention-as-lever-358b3baaf649",
+  "resonates": [
+    {
+      "timestamp": "2026-03-10T08:00:00.000Z",
+      "user_fingerprint": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "External fences create stability; mindfulness changes substance.",
+        "prefix": "unhook faster now.\\n\\n**",
+        "suffix": "** Fences shape the c",
+        "startOffset": 4680,
+        "endOffset": 4743
+      }
+    },
+    {
+      "timestamp": "2026-03-10T12:00:00.000Z",
+      "user_fingerprint": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "External fences create stability; mindfulness changes substance.",
+        "prefix": "unhook faster now.\\n\\n**",
+        "suffix": "** Fences shape the c",
+        "startOffset": 4680,
+        "endOffset": 4743
+      }
+    }
+  ]
+}

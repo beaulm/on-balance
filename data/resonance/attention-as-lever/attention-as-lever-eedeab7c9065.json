@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-eedeab7c9065",
+  "resonates": [
+    {
+      "timestamp": "2026-03-10T08:00:00.000Z",
+      "user_fingerprint": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "What will you grow with them?",
+        "prefix": "only question is: **",
+        "suffix": "**\\n\\n---\\n\\n*This is pa",
+        "startOffset": 7180,
+        "endOffset": 7209
+      }
+    }
+  ]
+}
