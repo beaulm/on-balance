@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-de216967a667",
+  "resonates": [
+    {
+      "timestamp": "2026-03-25T19:36:26.630Z",
+      "user_fingerprint": "90c9486e-d662-4cbd-996d-1a7f3b6896e9",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "I thought I was present.",
+        "prefix": " The Foundation: What You Feed Grows\n",
+        "suffix": " I’m generally intentional, I meditate daily, prac",
+        "startOffset": 37,
+        "endOffset": 61
+      }
+    }
+  ]
+}
