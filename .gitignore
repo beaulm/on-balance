@@ -6,3 +6,6 @@ dist/
 .cache/
 .venv/
 *.log
+
+# Local Netlify folder
+.netlify

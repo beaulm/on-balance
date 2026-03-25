@@ -2,6 +2,16 @@ declare const Netlify: {
   env: { get(key: string): string | undefined };
 };
 
+function getEnv(key: string): string | undefined {
+  try {
+    const value = Netlify.env.get(key);
+    if (value !== undefined) return value;
+  } catch {
+    // Netlify global not available in local dev
+  }
+  return process.env[key];
+}
+
 interface ResonanceBody {
   module: string;
   passage_id: string;
@@ -61,7 +71,7 @@ const ALLOWED_ORIGINS: string[] = [
 ];
 
 function getAllowedOrigins(): string[] {
-  const siteUrl = Netlify.env.get('URL');
+  const siteUrl = getEnv('URL');
   if (siteUrl) {
     return [...ALLOWED_ORIGINS, siteUrl];
   }
@@ -182,7 +192,7 @@ async function githubFetch(
   path: string,
   options: RequestInit = {},
 ): Promise<globalThis.Response> {
-  const token = Netlify.env.get('GITHUB_TOKEN');
+  const token = getEnv('GITHUB_TOKEN');
   return fetch(`${API_BASE}/${path}?ref=${BRANCH}`, {
     ...options,
     headers: {
@@ -223,7 +233,7 @@ async function writeFile(
   return fetch(`${API_BASE}/${filePath}`, {
     method: 'PUT',
     headers: {
-      Authorization: `Bearer ${Netlify.env.get('GITHUB_TOKEN')}`,
+      Authorization: `Bearer ${getEnv('GITHUB_TOKEN')}`,
       Accept: 'application/vnd.github+json',
       'Content-Type': 'application/json',
     },
@@ -294,7 +304,7 @@ export default async (request: Request) => {
     return errorResponse('Forbidden', 'FORBIDDEN', 403);
   }
 
-  if (!Netlify.env.get('GITHUB_TOKEN')) {
+  if (!getEnv('GITHUB_TOKEN')) {
     return errorResponse('GitHub integration not configured', 'SERVICE_UNAVAILABLE', 503);
   }
 
