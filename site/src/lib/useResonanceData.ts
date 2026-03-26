@@ -12,6 +12,7 @@ export interface ResonancePassage {
 
 interface ApiResponse {
   module: string;
+  partial?: boolean;
   passages: Array<{
     passage_id: string;
     count: number;
@@ -67,7 +68,10 @@ export function useResonanceData(moduleSlug: string) {
           selector: p.selector,
         }));
 
-        cache.set(moduleSlug, mapped);
+        // Only cache complete responses; partial data should be refetched
+        if (!data.partial) {
+          cache.set(moduleSlug, mapped);
+        }
         setPassages(mapped);
       } catch (err) {
         if ((err as Error).name !== 'AbortError') {

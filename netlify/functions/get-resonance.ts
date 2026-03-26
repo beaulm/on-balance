@@ -92,15 +92,20 @@ async function githubFetch(path: string): Promise<globalThis.Response> {
 }
 
 async function fetchFileContent(filePath: string): Promise<ResonanceFile | null> {
-  const res = await githubFetch(filePath);
-  if (!res.ok) {
-    console.warn(`[get-resonance] Failed to fetch ${filePath}: ${res.status}`);
+  try {
+    const res = await githubFetch(filePath);
+    if (!res.ok) {
+      console.warn(`[get-resonance] Failed to fetch ${filePath}: ${res.status}`);
+      return null;
+    }
+
+    const data = (await res.json()) as { content: string };
+    const decoded = fromBase64(data.content.replace(/\n/g, ''));
+    return JSON.parse(decoded) as ResonanceFile;
+  } catch (err) {
+    console.warn(`[get-resonance] Failed to decode ${filePath}:`, err);
     return null;
   }
-
-  const data = (await res.json()) as { content: string };
-  const decoded = fromBase64(data.content.replace(/\n/g, ''));
-  return JSON.parse(decoded) as ResonanceFile;
 }
 
 export default async (request: Request) => {
