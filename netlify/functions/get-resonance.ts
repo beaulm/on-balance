@@ -93,7 +93,10 @@ async function githubFetch(path: string): Promise<globalThis.Response> {
 
 async function fetchFileContent(filePath: string): Promise<ResonanceFile | null> {
   const res = await githubFetch(filePath);
-  if (!res.ok) return null;
+  if (!res.ok) {
+    console.warn(`[get-resonance] Failed to fetch ${filePath}: ${res.status}`);
+    return null;
+  }
 
   const data = (await res.json()) as { content: string };
   const decoded = fromBase64(data.content.replace(/\n/g, ''));
@@ -159,8 +162,13 @@ export default async (request: Request) => {
 
   // Build summarized response: passage_id, count, and first selector
   const passages: PassageSummary[] = [];
+  let failed = 0;
   for (const file of fileContents) {
-    if (!file || file.resonates.length === 0) continue;
+    if (!file) {
+      failed++;
+      continue;
+    }
+    if (file.resonates.length === 0) continue;
     const first = file.resonates[0];
     passages.push({
       passage_id: file.passage_id,
@@ -173,8 +181,15 @@ export default async (request: Request) => {
     });
   }
 
+  if (failed > 0) {
+    console.warn(`[get-resonance] ${failed}/${jsonFiles.length} file fetches failed for ${moduleSlug}`);
+  }
+
+  const body: Record<string, unknown> = { module: moduleSlug, passages };
+  if (failed > 0) body.partial = true;
+
   return new Response(
-    JSON.stringify({ module: moduleSlug, passages }),
+    JSON.stringify(body),
     {
       status: 200,
       headers: {
