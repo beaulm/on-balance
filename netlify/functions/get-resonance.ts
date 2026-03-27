@@ -59,6 +59,19 @@ function getAllowedOrigins(): string[] {
   return ALLOWED_ORIGINS;
 }
 
+function isAllowedOrigin(origin: string, requestUrl: string): boolean {
+  if (getAllowedOrigins().includes(origin)) return true;
+
+  // Allow same-origin requests (covers production, deploy previews, branch deploys)
+  try {
+    if (origin === new URL(requestUrl).origin) return true;
+  } catch {
+    // malformed URL — fall through
+  }
+
+  return false;
+}
+
 const CORS_HEADERS: Record<string, string> = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
@@ -118,7 +131,7 @@ export default async (request: Request) => {
   }
 
   const origin = request.headers.get('Origin');
-  if (origin && !getAllowedOrigins().includes(origin)) {
+  if (origin && !isAllowedOrigin(origin, request.url)) {
     return errorResponse('Forbidden', 'FORBIDDEN', 403);
   }
 
