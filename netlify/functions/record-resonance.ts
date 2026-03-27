@@ -71,11 +71,16 @@ const ALLOWED_ORIGINS: string[] = [
 ];
 
 function getAllowedOrigins(): string[] {
+  const origins = [...ALLOWED_ORIGINS];
   const siteUrl = getEnv('URL');
   if (siteUrl) {
-    return [...ALLOWED_ORIGINS, siteUrl];
+    origins.push(siteUrl);
   }
-  return ALLOWED_ORIGINS;
+  const deployUrl = getEnv('DEPLOY_PRIME_URL');
+  if (deployUrl) {
+    origins.push(deployUrl);
+  }
+  return origins;
 }
 
 const CORS_HEADERS: Record<string, string> = {
