@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-74842753aa67",
+  "resonates": [
+    {
+      "timestamp": "2026-03-27T17:53:18.212Z",
+      "user_fingerprint": "90c9486e-d662-4cbd-996d-1a7f3b6896e9",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Every act of attending elevates one pattern by suppressing others. To focus on what matters, you must first create space by choosing what not to feed. It’s prune‑and‑grow. The cost of clarity is letting go.",
+        "prefix": "our brain’s architecture.\n\n\nAttention is zero‑sum\n",
+        "suffix": "\n\n\nThe pace paradox\nWe listen to podcasts at 2× sp",
+        "startOffset": 2752,
+        "endOffset": 2958
+      }
+    }
+  ]
+}
