@@ -12,6 +12,18 @@
         "startOffset": 2819,
         "endOffset": 2902
       }
+    },
+    {
+      "timestamp": "2026-03-27T18:15:45.576Z",
+      "user_fingerprint": "90c9486e-d662-4cbd-996d-1a7f3b6896e9",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "To focus on what matters, you must first create space by choosing what not to feed.",
+        "prefix": "nding elevates one pattern by suppressing others. ",
+        "suffix": " It’s prune‑and‑grow. The cost of clarity is letti",
+        "startOffset": 2819,
+        "endOffset": 2902
+      }
     }
   ]
 }
