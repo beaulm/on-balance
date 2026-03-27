@@ -79,22 +79,14 @@ function getAllowedOrigins(): string[] {
   return origins;
 }
 
-function isAllowedOrigin(origin: string): boolean {
+function isAllowedOrigin(origin: string, requestUrl: string): boolean {
   if (getAllowedOrigins().includes(origin)) return true;
 
-  // Allow Netlify deploy preview / branch deploy origins.
-  // These follow the pattern https://<slug>--<site>.netlify.app
-  const siteUrl = getEnv('URL');
-  if (siteUrl) {
-    try {
-      const siteName = new URL(siteUrl).hostname.replace('.netlify.app', '');
-      const previewPattern = new RegExp(
-        `^https://[a-z0-9-]+--${siteName}\\.netlify\\.app$`,
-      );
-      if (previewPattern.test(origin)) return true;
-    } catch {
-      // malformed URL — fall through
-    }
+  // Allow same-origin requests (covers production, deploy previews, branch deploys)
+  try {
+    if (origin === new URL(requestUrl).origin) return true;
+  } catch {
+    // malformed URL — fall through
   }
 
   return false;
@@ -322,7 +314,7 @@ export default async (request: Request) => {
 
   // Origin check: block requests from unknown origins, allow missing Origin (non-browser)
   const origin = request.headers.get('Origin');
-  if (origin && !isAllowedOrigin(origin)) {
+  if (origin && !isAllowedOrigin(origin, request.url)) {
     return errorResponse('Forbidden', 'FORBIDDEN', 403);
   }
 
