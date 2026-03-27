@@ -84,5 +84,6 @@ export async function sendResonance(payload: ResonancePayload): Promise<void> {
   if (!response.ok) {
     const body = await response.json().catch(() => ({}));
     console.error('[Resonance] server error:', response.status, body);
+    throw new Error(`Resonance request failed: ${response.status}`);
   }
 }
