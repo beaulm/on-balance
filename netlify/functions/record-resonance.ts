@@ -2,6 +2,16 @@ declare const Netlify: {
   env: { get(key: string): string | undefined };
 };
 
+function getEnv(key: string): string | undefined {
+  try {
+    const value = Netlify.env.get(key);
+    if (value !== undefined) return value;
+  } catch {
+    // Netlify global not available in local dev
+  }
+  return process.env[key];
+}
+
 interface ResonanceBody {
   module: string;
   passage_id: string;
@@ -61,11 +71,25 @@ const ALLOWED_ORIGINS: string[] = [
 ];
 
 function getAllowedOrigins(): string[] {
-  const siteUrl = Netlify.env.get('URL');
+  const origins = [...ALLOWED_ORIGINS];
+  const siteUrl = getEnv('URL');
   if (siteUrl) {
-    return [...ALLOWED_ORIGINS, siteUrl];
+    origins.push(siteUrl);
   }
-  return ALLOWED_ORIGINS;
+  return origins;
+}
+
+function isAllowedOrigin(origin: string, requestUrl: string): boolean {
+  if (getAllowedOrigins().includes(origin)) return true;
+
+  // Allow same-origin requests (covers production, deploy previews, branch deploys)
+  try {
+    if (origin === new URL(requestUrl).origin) return true;
+  } catch {
+    // malformed URL — fall through
+  }
+
+  return false;
 }
 
 const CORS_HEADERS: Record<string, string> = {
@@ -182,7 +206,7 @@ async function githubFetch(
   path: string,
   options: RequestInit = {},
 ): Promise<globalThis.Response> {
-  const token = Netlify.env.get('GITHUB_TOKEN');
+  const token = getEnv('GITHUB_TOKEN');
   return fetch(`${API_BASE}/${path}?ref=${BRANCH}`, {
     ...options,
     headers: {
@@ -223,7 +247,7 @@ async function writeFile(
   return fetch(`${API_BASE}/${filePath}`, {
     method: 'PUT',
     headers: {
-      Authorization: `Bearer ${Netlify.env.get('GITHUB_TOKEN')}`,
+      Authorization: `Bearer ${getEnv('GITHUB_TOKEN')}`,
       Accept: 'application/vnd.github+json',
       'Content-Type': 'application/json',
     },
@@ -290,11 +314,11 @@ export default async (request: Request) => {
 
   // Origin check: block requests from unknown origins, allow missing Origin (non-browser)
   const origin = request.headers.get('Origin');
-  if (origin && !getAllowedOrigins().includes(origin)) {
+  if (origin && !isAllowedOrigin(origin, request.url)) {
     return errorResponse('Forbidden', 'FORBIDDEN', 403);
   }
 
-  if (!Netlify.env.get('GITHUB_TOKEN')) {
+  if (!getEnv('GITHUB_TOKEN')) {
     return errorResponse('GitHub integration not configured', 'SERVICE_UNAVAILABLE', 503);
   }
 
