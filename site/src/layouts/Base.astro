@@ -145,6 +145,12 @@ const pageTitle = frontmatter?.title || title;
         padding: 0;
       }
 
+      mark[data-resonance]:focus-visible {
+        outline: 2px solid rgba(255, 200, 100, 0.6);
+        outline-offset: 1px;
+        border-radius: 2px;
+      }
+
       @media (max-width: 640px) {
         body {
           padding: 1.5rem 1rem;
