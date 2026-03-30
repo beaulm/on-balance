@@ -45,7 +45,9 @@ export function useResonanceTooltip(
     activeRangeRef.current = null;
     setTooltip(null);
     setAriaLiveText('');
-  }, [clearHoverTimeout]);
+    const container = containerRef.current;
+    if (container) container.style.cursor = '';
+  }, [clearHoverTimeout, containerRef]);
 
   const showTooltipForMatch = useCallback((match: MatchResult) => {
     activeRangeRef.current = match.range;
