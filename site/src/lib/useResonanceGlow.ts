@@ -28,7 +28,9 @@ function applyHighlightAPI(matches: MatchResult[]): void {
   }
 }
 
-function applyMarkFallback(matches: MatchResult[]): void {
+function applyMarkFallback(matches: MatchResult[]): MatchResult[] {
+  const applied = new Set<MatchResult>();
+
   // Process in reverse document order to avoid offset shifts
   const sorted = [...matches].sort((a, b) => {
     const posA = a.range.compareBoundaryPoints(Range.START_TO_START, b.range);
@@ -46,10 +48,13 @@ function applyMarkFallback(matches: MatchResult[]): void {
       );
       mark.style.setProperty('--resonance-opacity', String(opacity));
       match.range.surroundContents(mark);
+      applied.add(match);
     } catch {
       // surroundContents fails if range spans multiple elements — skip gracefully
     }
   }
+
+  return matches.filter((m) => applied.has(m));
 }
 
 function clearHighlightAPI(): void {
@@ -102,12 +107,11 @@ export function useResonanceGlow(
       return;
     }
 
-    matchesRef.current = matches;
-
     if (useHighlightAPI) {
       applyHighlightAPI(matches);
+      matchesRef.current = matches;
     } else {
-      applyMarkFallback(matches);
+      matchesRef.current = applyMarkFallback(matches);
     }
 
     return () => {
