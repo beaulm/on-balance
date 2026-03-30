@@ -1,8 +1,8 @@
-import { useEffect, type RefObject } from 'react';
+import { useEffect, useRef, type RefObject } from 'react';
 import { findTextInDOM } from './textMatcher';
 import type { ResonancePassage } from './useResonanceData';
 
-interface MatchResult {
+export interface MatchResult {
   range: Range;
   count: number;
 }
@@ -28,7 +28,9 @@ function applyHighlightAPI(matches: MatchResult[]): void {
   }
 }
 
-function applyMarkFallback(matches: MatchResult[]): void {
+function applyMarkFallback(matches: MatchResult[]): MatchResult[] {
+  const applied = new Set<MatchResult>();
+
   // Process in reverse document order to avoid offset shifts
   const sorted = [...matches].sort((a, b) => {
     const posA = a.range.compareBoundaryPoints(Range.START_TO_START, b.range);
@@ -40,12 +42,19 @@ function applyMarkFallback(matches: MatchResult[]): void {
     try {
       const mark = document.createElement('mark');
       mark.setAttribute('data-resonance', String(match.count));
+      mark.setAttribute('tabindex', '0');
+      mark.setAttribute('aria-label',
+        `${match.count} ${match.count === 1 ? 'person' : 'people'} resonated with this passage`,
+      );
       mark.style.setProperty('--resonance-opacity', String(opacity));
       match.range.surroundContents(mark);
+      applied.add(match);
     } catch {
       // surroundContents fails if range spans multiple elements — skip gracefully
     }
   }
+
+  return matches.filter((m) => applied.has(m));
 }
 
 function clearHighlightAPI(): void {
@@ -72,10 +81,15 @@ function clearMarkFallback(container: HTMLElement): void {
 export function useResonanceGlow(
   containerRef: RefObject<HTMLDivElement | null>,
   passages: ResonancePassage[],
-) {
+): RefObject<MatchResult[]> {
+  const matchesRef = useRef<MatchResult[]>([]);
+
   useEffect(() => {
     const container = containerRef.current;
-    if (!container || passages.length === 0) return;
+    if (!container || passages.length === 0) {
+      matchesRef.current = [];
+      return;
+    }
 
     const useHighlightAPI = 'highlights' in CSS;
 
@@ -88,15 +102,20 @@ export function useResonanceGlow(
       }
     }
 
-    if (matches.length === 0) return;
+    if (matches.length === 0) {
+      matchesRef.current = [];
+      return;
+    }
 
     if (useHighlightAPI) {
       applyHighlightAPI(matches);
+      matchesRef.current = matches;
     } else {
-      applyMarkFallback(matches);
+      matchesRef.current = applyMarkFallback(matches);
     }
 
     return () => {
+      matchesRef.current = [];
       if (useHighlightAPI) {
         clearHighlightAPI();
       } else if (container) {
@@ -104,4 +123,6 @@ export function useResonanceGlow(
       }
     };
   }, [containerRef, passages]);
+
+  return matchesRef;
 }
