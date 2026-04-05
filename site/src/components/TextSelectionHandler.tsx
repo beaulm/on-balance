@@ -169,9 +169,27 @@ export default function TextSelectionHandler({
 
     let selectionChangeTimeout: ReturnType<typeof setTimeout> | null = null;
 
-    // Detect mobile for longer debounce (allows native selection UI to work)
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    const debounceMs = isTouchDevice ? 400 : 200;
+    // Track active touch gestures so we don't show the popup mid-gesture.
+    // Firefox Mobile interrupts native selection extension when DOM changes
+    // occur during a touch (e.g., popup rendering). Deferring selectionchange
+    // processing to touchend fixes this without affecting other browsers.
+    let touchActive = false;
+    let pendingSelectionChange = false;
+
+    const handleTouchStart = () => {
+      touchActive = true;
+      pendingSelectionChange = false;
+    };
+
+    const handleTouchEnd = () => {
+      touchActive = false;
+      if (pendingSelectionChange) {
+        pendingSelectionChange = false;
+        requestAnimationFrame(handleSelectionChange);
+      }
+    };
+
+    const debounceMs = 200;
 
     // Use mouseup for desktop - listen on document to catch selections
     // that start inside container but end outside (common with long blocks)
@@ -191,9 +209,14 @@ export default function TextSelectionHandler({
     // Debounce to avoid rapid re-triggering during drag selection
     const handleSelectionChangeEvent = () => {
       if (selectionChangeTimeout) clearTimeout(selectionChangeTimeout);
+      if (touchActive) {
+        // Don't process during active touch — wait for touchend
+        pendingSelectionChange = true;
+        return;
+      }
       selectionChangeTimeout = setTimeout(() => {
         handleSelectionChange();
-      }, debounceMs); // Wait for selection to stabilize (longer on mobile)
+      }, debounceMs);
     };
 
     // Listen on document to catch selections that end outside the container
@@ -201,12 +224,18 @@ export default function TextSelectionHandler({
     document.addEventListener('mouseup', handleMouseUp);
     document.addEventListener('keyup', handleKeyUp);
     document.addEventListener('selectionchange', handleSelectionChangeEvent);
+    document.addEventListener('touchstart', handleTouchStart, { passive: true });
+    document.addEventListener('touchend', handleTouchEnd, { passive: true });
+    document.addEventListener('touchcancel', handleTouchEnd, { passive: true });
 
     return () => {
       if (selectionChangeTimeout) clearTimeout(selectionChangeTimeout);
       document.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('keyup', handleKeyUp);
       document.removeEventListener('selectionchange', handleSelectionChangeEvent);
+      document.removeEventListener('touchstart', handleTouchStart);
+      document.removeEventListener('touchend', handleTouchEnd);
+      document.removeEventListener('touchcancel', handleTouchEnd);
     };
   }, [handleSelectionChange]);
 
