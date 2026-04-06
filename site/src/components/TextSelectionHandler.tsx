@@ -201,10 +201,10 @@ export default function TextSelectionHandler({
       }
     };
 
-    const handleTouchCancel = () => {
-      touchActive = false;
-      selectionChangedDuringTouch = false;
-    };
+    // touchcancel can fire after a valid long-press selection (e.g., system
+    // notification, gesture conflict). Treat it like touchend so the user
+    // still gets the popup for the selection the browser already created.
+    const handleTouchCancel = handleTouchEnd;
 
     const debounceMs = 200;
 
