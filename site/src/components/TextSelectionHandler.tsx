@@ -185,6 +185,16 @@ export default function TextSelectionHandler({
       touchActive = false;
       if (pendingSelectionChange) {
         pendingSelectionChange = false;
+        // Skip single-word selections on touch — they're almost always the
+        // browser's initial long-press before the user extends with handles.
+        // Showing the popup here blocks handle-dragging. Once the user
+        // extends via handles, selectionchange fires through the normal
+        // debounced path (touchActive is false) and the popup appears.
+        const sel = window.getSelection();
+        const text = sel?.toString().trim();
+        if (text && !/\s/.test(text)) {
+          return;
+        }
         requestAnimationFrame(handleSelectionChange);
       }
     };
