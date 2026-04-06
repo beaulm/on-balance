@@ -180,10 +180,15 @@ export default function TextSelectionHandler({
 
     const handleTouchStart = () => {
       touchActive = true;
-      selectionChangedDuringTouch = false;
+      // If a settle timer is already running from a prior long-press,
+      // pause it during this touch but remember we were in handle mode
+      // so touchend reschedules even if selectionchange doesn't fire.
       if (handleModeTimeout) {
         clearTimeout(handleModeTimeout);
         handleModeTimeout = null;
+        selectionChangedDuringTouch = true;
+      } else {
+        selectionChangedDuringTouch = false;
       }
     };
 
