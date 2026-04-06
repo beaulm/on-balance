@@ -169,34 +169,41 @@ export default function TextSelectionHandler({
 
     let selectionChangeTimeout: ReturnType<typeof setTimeout> | null = null;
 
-    // Track active touch gestures so we don't show the popup mid-gesture.
-    // Firefox Mobile interrupts native selection extension when DOM changes
-    // occur during a touch (e.g., popup rendering). Deferring selectionchange
-    // processing to touchend fixes this without affecting other browsers.
+    // Long-press detection: if selectionchange fires between touchstart and
+    // touchend, the browser created the selection (long-press). After that
+    // the user enters handle mode to extend. We wait for the selection to
+    // settle before showing the popup, so handle-dragging isn't blocked.
     let touchActive = false;
-    let pendingSelectionChange = false;
+    let selectionChangedDuringTouch = false;
+    let handleModeTimeout: ReturnType<typeof setTimeout> | null = null;
+    const handleModeSettleMs = 400;
 
     const handleTouchStart = () => {
       touchActive = true;
-      pendingSelectionChange = false;
+      selectionChangedDuringTouch = false;
+      if (handleModeTimeout) {
+        clearTimeout(handleModeTimeout);
+        handleModeTimeout = null;
+      }
     };
 
     const handleTouchEnd = () => {
       touchActive = false;
-      if (pendingSelectionChange) {
-        pendingSelectionChange = false;
-        // Skip single-word selections on touch — they're almost always the
-        // browser's initial long-press before the user extends with handles.
-        // Showing the popup here blocks handle-dragging. Once the user
-        // extends via handles, selectionchange fires through the normal
-        // debounced path (touchActive is false) and the popup appears.
-        const sel = window.getSelection();
-        const text = sel?.toString().trim();
-        if (text && !/\s/.test(text)) {
-          return;
-        }
-        requestAnimationFrame(handleSelectionChange);
+      if (selectionChangedDuringTouch) {
+        // Long-press detected — enter handle mode. Wait for the selection
+        // to settle before showing the popup. Each selectionchange from
+        // handle-dragging resets this timer (see handleSelectionChangeEvent).
+        if (handleModeTimeout) clearTimeout(handleModeTimeout);
+        handleModeTimeout = setTimeout(() => {
+          handleModeTimeout = null;
+          handleSelectionChange();
+        }, handleModeSettleMs);
       }
+    };
+
+    const handleTouchCancel = () => {
+      touchActive = false;
+      selectionChangedDuringTouch = false;
     };
 
     const debounceMs = 200;
@@ -220,8 +227,17 @@ export default function TextSelectionHandler({
     const handleSelectionChangeEvent = () => {
       if (selectionChangeTimeout) clearTimeout(selectionChangeTimeout);
       if (touchActive) {
-        // Don't process during active touch — wait for touchend
-        pendingSelectionChange = true;
+        // Note that selection changed during touch — used to detect long-press
+        selectionChangedDuringTouch = true;
+        return;
+      }
+      // If in handle mode, reset the settle timer instead of debouncing
+      if (handleModeTimeout) {
+        clearTimeout(handleModeTimeout);
+        handleModeTimeout = setTimeout(() => {
+          handleModeTimeout = null;
+          handleSelectionChange();
+        }, handleModeSettleMs);
         return;
       }
       selectionChangeTimeout = setTimeout(() => {
@@ -236,16 +252,17 @@ export default function TextSelectionHandler({
     document.addEventListener('selectionchange', handleSelectionChangeEvent);
     document.addEventListener('touchstart', handleTouchStart, { passive: true });
     document.addEventListener('touchend', handleTouchEnd, { passive: true });
-    document.addEventListener('touchcancel', handleTouchEnd, { passive: true });
+    document.addEventListener('touchcancel', handleTouchCancel, { passive: true });
 
     return () => {
       if (selectionChangeTimeout) clearTimeout(selectionChangeTimeout);
+      if (handleModeTimeout) clearTimeout(handleModeTimeout);
       document.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('keyup', handleKeyUp);
       document.removeEventListener('selectionchange', handleSelectionChangeEvent);
       document.removeEventListener('touchstart', handleTouchStart);
       document.removeEventListener('touchend', handleTouchEnd);
-      document.removeEventListener('touchcancel', handleTouchEnd);
+      document.removeEventListener('touchcancel', handleTouchCancel);
     };
   }, [handleSelectionChange]);
 
