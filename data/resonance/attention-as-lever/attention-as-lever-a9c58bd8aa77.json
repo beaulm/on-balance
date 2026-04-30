@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-a9c58bd8aa77",
+  "resonates": [
+    {
+      "timestamp": "2026-04-30T23:25:26.251Z",
+      "user_fingerprint": "1d82d3fb-8367-4f22-a564-db65817f3b24",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "loops",
+        "prefix": "inking constantly. Not just productive thinking — ",
+        "suffix": ", rehearsals, grudges. My mind was consuming itsel",
+        "startOffset": 364,
+        "endOffset": 369
+      }
+    }
+  ]
+}
