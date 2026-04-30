@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-8b8e8209c5f0",
+  "resonates": [
+    {
+      "timestamp": "2026-04-30T23:24:47.306Z",
+      "user_fingerprint": "1d82d3fb-8367-4f22-a564-db65817f3b24",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "for",
+        "prefix": " on multitasking. In training our nervous systems ",
+        "suffix": " speed, we lose the ability to be present with act",
+        "startOffset": 3117,
+        "endOffset": 3120
+      }
+    }
+  ]
+}
