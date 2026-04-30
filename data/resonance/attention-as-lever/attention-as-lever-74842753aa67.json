@@ -48,6 +48,18 @@
         "startOffset": 2752,
         "endOffset": 2958
       }
+    },
+    {
+      "timestamp": "2026-04-30T23:16:22.651Z",
+      "user_fingerprint": "55f44167-d63e-4f29-af4d-e0eee4a09cad",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Every act of attending elevates one pattern by suppressing others. To focus on what matters, you must first create space by choosing what not to feed. It’s prune‑and‑grow. The cost of clarity is letting go.",
+        "prefix": "our brain’s architecture.\n\n\nAttention is zero‑sum\n",
+        "suffix": "\n\n\nThe pace paradox\nWe listen to podcasts at 2× sp",
+        "startOffset": 2752,
+        "endOffset": 2958
+      }
     }
   ]
 }
