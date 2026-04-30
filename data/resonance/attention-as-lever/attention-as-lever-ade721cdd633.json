@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-ade721cdd633",
+  "resonates": [
+    {
+      "timestamp": "2026-04-30T23:22:57.023Z",
+      "user_fingerprint": "1d82d3fb-8367-4f22-a564-db65817f3b24",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "When you attend to something repeatedly, you’re literally building it into your brain’s architecture.",
+        "prefix": "ou use most. This isn’t a visualization exercise. ",
+        "suffix": "\n\n\nAttention is zero‑sum\nEvery act of attending el",
+        "startOffset": 2626,
+        "endOffset": 2727
+      }
+    }
+  ]
+}
