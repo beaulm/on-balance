@@ -134,18 +134,61 @@ export function useResonanceTooltip(
       hideTooltip();
     };
 
-    // Touch: show on tap, no delay
+    // Touch: defer tooltip to touchend so a synchronous React re-render
+    // doesn't interrupt Chrome Mobile (Android)'s native long-press selection
+    // when the touch starts inside an existing highlight (#89).
+    let touchStartTime = 0;
+    let touchStartMatch: MatchResult | null = null;
+    let selectionChangedDuringTouch = false;
+    const tapMaxDurationMs = 400;
+
     const handleTouchStart = (e: TouchEvent) => {
       if (isPopupVisible) return;
       const touch = e.touches[0];
+      if (!touch) return;
       const matches = matchesRef.current;
-      if (matches.length === 0) return;
 
-      const found = findMatchAtPoint(matches, touch.clientX, touch.clientY);
-      if (found) {
-        showTooltipForMatch(found);
-      } else {
+      touchStartTime = Date.now();
+      selectionChangedDuringTouch = false;
+      touchStartMatch =
+        matches.length > 0
+          ? findMatchAtPoint(matches, touch.clientX, touch.clientY)
+          : null;
+
+      // Hide any visible tooltip when a touch starts outside a match.
+      // Don't touch tooltip state when starting inside a match — that
+      // re-render is what was breaking native selection on Chrome Mobile.
+      if (!touchStartMatch) {
         hideTooltip();
+      }
+    };
+
+    const handleTouchEnd = () => {
+      if (touchStartTime === 0) return;
+      const duration = Date.now() - touchStartTime;
+      const match = touchStartMatch;
+      touchStartTime = 0;
+      touchStartMatch = null;
+
+      // Skip tooltip on long-press or browser-initiated selection — the user
+      // is selecting text, not requesting a count.
+      if (!match) return;
+      if (selectionChangedDuringTouch) return;
+      if (duration > tapMaxDurationMs) return;
+      if (isPopupVisible) return;
+
+      showTooltipForMatch(match);
+    };
+
+    const handleTouchCancel = () => {
+      touchStartTime = 0;
+      touchStartMatch = null;
+      selectionChangedDuringTouch = false;
+    };
+
+    const handleSelectionChangeDuringTouch = () => {
+      if (touchStartTime > 0) {
+        selectionChangedDuringTouch = true;
       }
     };
 
@@ -159,6 +202,9 @@ export function useResonanceTooltip(
     container.addEventListener('focusin', handleFocusIn);
     container.addEventListener('focusout', handleFocusOut);
     container.addEventListener('touchstart', handleTouchStart, { passive: true });
+    document.addEventListener('touchend', handleTouchEnd, { passive: true });
+    document.addEventListener('touchcancel', handleTouchCancel, { passive: true });
+    document.addEventListener('selectionchange', handleSelectionChangeDuringTouch);
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
@@ -167,6 +213,9 @@ export function useResonanceTooltip(
       container.removeEventListener('focusin', handleFocusIn);
       container.removeEventListener('focusout', handleFocusOut);
       container.removeEventListener('touchstart', handleTouchStart);
+      document.removeEventListener('touchend', handleTouchEnd);
+      document.removeEventListener('touchcancel', handleTouchCancel);
+      document.removeEventListener('selectionchange', handleSelectionChangeDuringTouch);
       window.removeEventListener('scroll', handleScroll);
       container.style.cursor = '';
       clearHoverTimeout();
