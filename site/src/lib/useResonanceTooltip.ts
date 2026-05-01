@@ -139,8 +139,11 @@ export function useResonanceTooltip(
     // when the touch starts inside an existing highlight (#89).
     let touchStartTime = 0;
     let touchStartMatch: MatchResult | null = null;
+    let touchStartX = 0;
+    let touchStartY = 0;
     let selectionChangedDuringTouch = false;
     const tapMaxDurationMs = 400;
+    const moveThresholdPx = 10;
 
     const handleTouchStart = (e: TouchEvent) => {
       if (isPopupVisible) return;
@@ -149,6 +152,8 @@ export function useResonanceTooltip(
       const matches = matchesRef.current;
 
       touchStartTime = Date.now();
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
       selectionChangedDuringTouch = false;
       touchStartMatch =
         matches.length > 0
@@ -160,6 +165,19 @@ export function useResonanceTooltip(
       // re-render is what was breaking native selection on Chrome Mobile.
       if (!touchStartMatch) {
         hideTooltip();
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!touchStartMatch) return;
+      const touch = e.touches[0];
+      if (!touch) return;
+      const dx = touch.clientX - touchStartX;
+      const dy = touch.clientY - touchStartY;
+      // Movement past threshold means the user is scrolling/flicking, not
+      // tapping — drop the pending match so touchend doesn't show a tooltip.
+      if (dx * dx + dy * dy > moveThresholdPx * moveThresholdPx) {
+        touchStartMatch = null;
       }
     };
 
@@ -194,6 +212,9 @@ export function useResonanceTooltip(
 
     // Dismiss on scroll
     const handleScroll = () => {
+      // Cancel a pending tap-tooltip too, since scroll means the touch
+      // turned into a flick.
+      touchStartMatch = null;
       hideTooltip();
     };
 
@@ -202,6 +223,7 @@ export function useResonanceTooltip(
     container.addEventListener('focusin', handleFocusIn);
     container.addEventListener('focusout', handleFocusOut);
     container.addEventListener('touchstart', handleTouchStart, { passive: true });
+    document.addEventListener('touchmove', handleTouchMove, { passive: true });
     document.addEventListener('touchend', handleTouchEnd, { passive: true });
     document.addEventListener('touchcancel', handleTouchCancel, { passive: true });
     document.addEventListener('selectionchange', handleSelectionChangeDuringTouch);
@@ -213,6 +235,7 @@ export function useResonanceTooltip(
       container.removeEventListener('focusin', handleFocusIn);
       container.removeEventListener('focusout', handleFocusOut);
       container.removeEventListener('touchstart', handleTouchStart);
+      document.removeEventListener('touchmove', handleTouchMove);
       document.removeEventListener('touchend', handleTouchEnd);
       document.removeEventListener('touchcancel', handleTouchCancel);
       document.removeEventListener('selectionchange', handleSelectionChangeDuringTouch);

@@ -159,6 +159,19 @@ export default function ResonancePopup({
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [selection, onDismiss, submitState, handleResonance]);
 
+  // Dismiss on scroll — the popup is anchored to a snapshot of the selection
+  // rect, so it would otherwise drift away from the text as the page scrolls.
+  useEffect(() => {
+    if (!selection) return;
+
+    const handleScroll = () => {
+      onDismiss();
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [selection, onDismiss]);
+
   // Don't render if no selection or no position calculated
   if (!selection || !position) {
     return null;
