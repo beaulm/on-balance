@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-7bb00a6f82c8",
+  "resonates": [
+    {
+      "timestamp": "2026-05-04T18:26:34.806Z",
+      "user_fingerprint": "5e47a696-7556-4003-b4f8-0ec601acac6e",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "by",
+        "prefix": "ocus on what matters, you must first create space ",
+        "suffix": " choosing what not to feed. It’s prune‑and‑grow. T",
+        "startOffset": 2873,
+        "endOffset": 2875
+      }
+    }
+  ]
+}
