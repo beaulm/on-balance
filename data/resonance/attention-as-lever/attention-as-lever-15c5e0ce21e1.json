@@ -12,6 +12,18 @@
         "startOffset": 2801,
         "endOffset": 2821
       }
+    },
+    {
+      "timestamp": "2026-05-08T21:21:38.893Z",
+      "user_fingerprint": "90c9486e-d662-4cbd-996d-1a7f3b6896e9",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "It’s prune‑and‑grow.",
+        "prefix": " first create space by choosing what not to feed. ",
+        "suffix": " The cost of clarity is often letting go.\n\n\nAttent",
+        "startOffset": 2801,
+        "endOffset": 2821
+      }
     }
   ]
 }
