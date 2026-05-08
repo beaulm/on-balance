@@ -41,8 +41,16 @@ interface PassageSummary {
 }
 
 const REPO = 'beaulm/on-balance';
-const BRANCH = 'data/resonance';
 const API_BASE = `https://api.github.com/repos/${REPO}/contents`;
+
+// Route non-production traffic (deploy previews, branch deploys, local dev)
+// to a separate data branch so testing doesn't pollute production resonance
+// counts (#90). Only the production CONTEXT reads from data/resonance.
+function getDataBranch(): string {
+  return getEnv('CONTEXT') === 'production'
+    ? 'data/resonance'
+    : 'data/resonance-staging';
+}
 
 const SAFE_PATH_SEGMENT = /^[a-zA-Z0-9_-]+$/;
 
@@ -96,7 +104,7 @@ function fromBase64(b64: string): string {
 
 async function githubFetch(path: string): Promise<globalThis.Response> {
   const token = getEnv('GITHUB_TOKEN');
-  return fetch(`${API_BASE}/${path}?ref=${BRANCH}`, {
+  return fetch(`${API_BASE}/${path}?ref=${getDataBranch()}`, {
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/vnd.github+json',

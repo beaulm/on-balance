@@ -44,8 +44,16 @@ interface ExistingFile {
 }
 
 const REPO = 'beaulm/on-balance';
-const BRANCH = 'data/resonance';
 const API_BASE = `https://api.github.com/repos/${REPO}/contents`;
+
+// Route non-production traffic (deploy previews, branch deploys, local dev)
+// to a separate data branch so testing doesn't pollute production resonance
+// counts (#90). Only the production CONTEXT writes to data/resonance.
+function getDataBranch(): string {
+  return getEnv('CONTEXT') === 'production'
+    ? 'data/resonance'
+    : 'data/resonance-staging';
+}
 
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
 const RATE_LIMIT_MAX = 10;
@@ -207,7 +215,7 @@ async function githubFetch(
   options: RequestInit = {},
 ): Promise<globalThis.Response> {
   const token = getEnv('GITHUB_TOKEN');
-  return fetch(`${API_BASE}/${path}?ref=${BRANCH}`, {
+  return fetch(`${API_BASE}/${path}?ref=${getDataBranch()}`, {
     ...options,
     headers: {
       Authorization: `Bearer ${token}`,
@@ -240,7 +248,7 @@ async function writeFile(
   const payload: Record<string, string> = {
     message,
     content: toBase64(content),
-    branch: BRANCH,
+    branch: getDataBranch(),
   };
   if (sha) payload.sha = sha;
 
