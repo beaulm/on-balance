@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-e8fae278a27f",
+  "resonates": [
+    {
+      "timestamp": "2026-05-09T12:07:41.186Z",
+      "user_fingerprint": "7a503f5a-99c8-480c-bb87-970814a54df9",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Your words shape your actions.",
+        "prefix": "easier to become. Your thoughts shape your words. ",
+        "suffix": " Your actions shape your habits. Your habits shape",
+        "startOffset": 247,
+        "endOffset": 277
+      }
+    }
+  ]
+}
