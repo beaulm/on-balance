@@ -2,6 +2,10 @@ declare const Netlify: {
   env: { get(key: string): string | undefined };
 };
 
+interface NetlifyHandlerContext {
+  deploy?: { context?: string };
+}
+
 function getEnv(key: string): string | undefined {
   try {
     const value = Netlify.env.get(key);
@@ -48,9 +52,18 @@ const API_BASE = `https://api.github.com/repos/${REPO}/contents`;
 
 // Route non-production traffic (deploy previews, branch deploys, local dev)
 // to a separate data branch so testing doesn't pollute production resonance
-// counts (#90). Only the production CONTEXT writes to data/resonance.
+// counts (#90). Resolved at handler entry from the Netlify v2 context object,
+// with an env-var fallback. Defaults to staging so detection failures fail
+// safely (test data lands in staging, never production).
+let currentDataBranch = 'data/resonance-staging';
+
 function getDataBranch(): string {
-  return getEnv('CONTEXT') === 'production'
+  return currentDataBranch;
+}
+
+function resolveDataBranch(context: NetlifyHandlerContext): string {
+  const deployContext = context.deploy?.context ?? getEnv('CONTEXT');
+  return deployContext === 'production'
     ? 'data/resonance'
     : 'data/resonance-staging';
 }
@@ -311,7 +324,13 @@ async function persistResonance(body: ResonanceBody): Promise<void> {
   }
 }
 
-export default async (request: Request) => {
+export default async (request: Request, context: NetlifyHandlerContext) => {
+  currentDataBranch = resolveDataBranch(context);
+  console.log(
+    `[record-resonance] deploy.context=${context.deploy?.context ?? 'undefined'} ` +
+    `env.CONTEXT=${getEnv('CONTEXT') ?? 'undefined'} branch=${currentDataBranch}`,
+  );
+
   if (request.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: CORS_HEADERS });
   }
