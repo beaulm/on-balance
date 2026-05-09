@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-355b60e6836a",
+  "resonates": [
+    {
+      "timestamp": "2026-05-09T12:26:34.666Z",
+      "user_fingerprint": "0082f645-cfd8-4793-97f9-c03d9bbc0604",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Not perfectly.",
+        "prefix": "\nYour life follows your attention.\nNot instantly. ",
+        "suffix": " But over time, what you repeatedly attend to beco",
+        "startOffset": 86,
+        "endOffset": 100
+      }
+    }
+  ]
+}
