@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-ab804892b198",
+  "resonates": [
+    {
+      "timestamp": "2026-05-09T11:45:15.505Z",
+      "user_fingerprint": "1f9b070c-01e3-4450-b502-5df3d537aab9",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Whatever you attend to becomes more available.",
+        "prefix": " by deciding what stands out and what fades back.\n",
+        "suffix": " Not just metaphorically — neurologically. Your br",
+        "startOffset": 706,
+        "endOffset": 752
+      }
+    }
+  ]
+}
