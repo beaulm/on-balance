@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-436708f11c40",
+  "resonates": [
+    {
+      "timestamp": "2026-05-09T11:43:45.444Z",
+      "user_fingerprint": "0082f645-cfd8-4793-97f9-c03d9bbc0604",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "That’s why attention is one of the first levers of an intentional life.",
+        "prefix": "r habits shape the life you find yourself living. ",
+        "suffix": "\nAttention is pattern amplification. To attend is ",
+        "startOffset": 363,
+        "endOffset": 434
+      }
+    }
+  ]
+}
