@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-e7a55725cb50",
+  "resonates": [
+    {
+      "timestamp": "2026-05-09T11:09:17.712Z",
+      "user_fingerprint": "0082f645-cfd8-4793-97f9-c03d9bbc0604",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Love is attention metabolized into commitment.",
+        "prefix": "attend to it with quality, consistency, and care. ",
+        "suffix": "\n\n\nFriction is a feature\nTech spends billions remo",
+        "startOffset": 3365,
+        "endOffset": 3411
+      }
+    }
+  ]
+}
