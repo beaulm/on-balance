@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-c0bf1a4a39ca",
+  "resonates": [
+    {
+      "timestamp": "2026-05-09T11:40:53.879Z",
+      "user_fingerprint": "1f9b070c-01e3-4450-b502-5df3d537aab9",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Your life follows your attention.",
+        "prefix": " The Foundation: What You Feed Grows\n",
+        "suffix": "\nNot instantly. Not perfectly. But over time, what",
+        "startOffset": 37,
+        "endOffset": 70
+      }
+    }
+  ]
+}
