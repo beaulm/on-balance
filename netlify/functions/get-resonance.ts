@@ -186,7 +186,7 @@ export default async (request: Request, context: NetlifyHandlerContext) => {
         headers: {
           ...CORS_HEADERS,
           'Content-Type': 'application/json',
-          'Cache-Control': 'public, max-age=300',
+          'Cache-Control': 'no-store',
         },
       },
     );
@@ -240,7 +240,7 @@ export default async (request: Request, context: NetlifyHandlerContext) => {
       headers: {
         ...CORS_HEADERS,
         'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=300',
+        'Cache-Control': 'no-store',
       },
     },
   );
