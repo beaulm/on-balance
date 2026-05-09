@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-e046c9a591cc",
+  "resonates": [
+    {
+      "timestamp": "2026-05-09T11:47:33.564Z",
+      "user_fingerprint": "1f9b070c-01e3-4450-b502-5df3d537aab9",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "And what patterns are we unconsciously amplifying?",
+        "prefix": "hat we attend to, who or what is choosing for us? ",
+        "suffix": "\n\nA Field Note\nWhen I looked closely, my biggest a",
+        "startOffset": 1012,
+        "endOffset": 1062
+      }
+    }
+  ]
+}
