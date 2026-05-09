@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-1f90e247ca20",
+  "resonates": [
+    {
+      "timestamp": "2026-05-09T11:44:21.022Z",
+      "user_fingerprint": "0082f645-cfd8-4793-97f9-c03d9bbc0604",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "To attend is to bring certain patterns into the foreground, to emphasize their presence relative to background noise.",
+        "prefix": "ntional life.\nAttention is pattern amplification. ",
+        "suffix": " Attention isn’t just noticing — it’s sculpting th",
+        "startOffset": 471,
+        "endOffset": 588
+      }
+    }
+  ]
+}
