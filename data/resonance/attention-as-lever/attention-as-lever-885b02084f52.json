@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-885b02084f52",
+  "resonates": [
+    {
+      "timestamp": "2026-05-09T12:08:29.087Z",
+      "user_fingerprint": "0082f645-cfd8-4793-97f9-c03d9bbc0604",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Feed anxiety, grow anxiety. Feed wonder, grow wonder.",
+        "prefix": "Your brain strengthens the pathways you use most. ",
+        "suffix": ".\nWhich raises an uncomfortable question: If we’re",
+        "startOffset": 845,
+        "endOffset": 897
+      }
+    }
+  ]
+}
