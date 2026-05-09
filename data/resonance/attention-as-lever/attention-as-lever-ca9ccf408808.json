@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-ca9ccf408808",
+  "resonates": [
+    {
+      "timestamp": "2026-05-09T12:09:19.591Z",
+      "user_fingerprint": "0082f645-cfd8-4793-97f9-c03d9bbc0604",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "the problem was not knowing which mode I was in",
+        "prefix": "ed. The problem wasn’t thinking about the future; ",
+        "suffix": " — and therefore not having much choice about it.\n",
+        "startOffset": 1535,
+        "endOffset": 1582
+      }
+    }
+  ]
+}
