@@ -1,16 +1,150 @@
 ---
-
+import Base from '../layouts/Base.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Base
+  title="On Balance"
+  description="An open playbook for self-actualization practices. Start with Attention as Lever — a 10-minute-a-day practice for noticing where your attention goes."
+>
+  <main>
+    <header class="hero">
+      <h1>On Balance</h1>
+      <p class="tagline">An open playbook for self-actualization practices.</p>
+    </header>
+
+    <section class="intro">
+      <p>
+        Your life follows your attention. What you repeatedly attend to becomes
+        easier to notice, easier to return to, and easier to become.
+      </p>
+      <p>
+        On Balance is a growing collection of practices for working with attention,
+        alignment, and the levers that shape an intentional life. Each module
+        stands alone. Each is free to use, free to adapt, and open to contribution.
+      </p>
+    </section>
+
+    <section class="modules" aria-labelledby="start-here">
+      <h2 id="start-here">Start with the first module</h2>
+      <article class="module-card">
+        <h3>
+          <a href="/modules/attention-as-lever">Attention as Lever</a>
+        </h3>
+        <p class="module-summary">
+          Attention funds reality. Spend it where care can compound.
+        </p>
+        <p>
+          A practice for noticing where your attention goes — and choosing where
+          to send it. About ten minutes a day.
+        </p>
+        <p class="cta">
+          <a href="/modules/attention-as-lever">Read the module →</a>
+        </p>
+      </article>
+    </section>
+
+    <footer class="about" aria-labelledby="about">
+      <h2 id="about">About this project</h2>
+      <p>
+        On Balance is open source. The content is licensed CC BY-SA 4.0; the
+        code is Apache-2.0. Copy, adapt, republish, fork.
+      </p>
+      <ul class="links">
+        <li><a href="https://github.com/beaulm/on-balance">Source on GitHub</a></li>
+        <li><a href="https://github.com/beaulm/on-balance/blob/main/CONTRIBUTING.md">Contributing</a></li>
+        <li><a href="https://github.com/beaulm/on-balance/blob/main/CODE_OF_CONDUCT.md">Code of conduct</a></li>
+      </ul>
+    </footer>
+  </main>
+</Base>
+
+<style>
+  main {
+    max-width: 65ch;
+    margin: 0 auto;
+  }
+
+  .hero {
+    margin: 2rem 0 3rem;
+    text-align: center;
+  }
+
+  .hero h1 {
+    margin: 0 0 0.5rem;
+    font-size: 2.5rem;
+  }
+
+  .tagline {
+    margin: 0;
+    font-size: 1.15rem;
+    color: var(--color-accent);
+  }
+
+  .intro p {
+    font-size: 1.05rem;
+  }
+
+  .modules {
+    margin: 3rem 0;
+  }
+
+  .module-card {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 1.5rem;
+    background: #fafafa;
+  }
+
+  .module-card h3 {
+    margin-top: 0;
+  }
+
+  .module-card h3 a {
+    text-decoration: none;
+  }
+
+  .module-card h3 a:hover {
+    text-decoration: underline;
+  }
+
+  .module-summary {
+    font-style: italic;
+    color: var(--color-accent);
+    margin-top: 0.25rem;
+  }
+
+  .cta {
+    margin-bottom: 0;
+  }
+
+  .about {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #ddd;
+    font-size: 0.95rem;
+  }
+
+  .about h2 {
+    font-size: 1.15rem;
+  }
+
+  .links {
+    list-style: none;
+    padding: 0;
+    margin: 1em 0 0;
+  }
+
+  .links li {
+    margin: 0.4em 0;
+  }
+
+  @media (max-width: 640px) {
+    .hero h1 {
+      font-size: 2rem;
+    }
+
+    .module-card {
+      padding: 1.25rem;
+    }
+  }
+</style>
