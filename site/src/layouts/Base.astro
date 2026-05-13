@@ -1,11 +1,21 @@
 ---
 interface Props {
   title?: string;
+  description?: string;
 }
 
-const { title = 'On Balance' } = Astro.props;
+const SITE_NAME = 'On Balance';
+const DEFAULT_DESCRIPTION = 'An open playbook for self-actualization practices.';
+
+const { title = SITE_NAME, description = DEFAULT_DESCRIPTION } = Astro.props;
 const { frontmatter } = Astro.props;
+
 const pageTitle = frontmatter?.title || title;
+const pageDescription = frontmatter?.summary || description;
+const fullTitle = pageTitle === SITE_NAME ? pageTitle : `${pageTitle} — ${SITE_NAME}`;
+const canonicalUrl = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).toString()
+  : Astro.url.toString();
 ---
 
 <!doctype html>
@@ -15,7 +25,17 @@ const pageTitle = frontmatter?.title || title;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{pageTitle}</title>
+    <title>{fullTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={pageDescription} />
     <style is:global>
       :root {
         --color-text: #333;
