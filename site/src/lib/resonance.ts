@@ -97,10 +97,14 @@ export class ResonanceError extends Error {
 }
 
 // status === 0 represents fetch rejection (network failure, abort, CORS),
-// not an HTTP response. 429/5xx are server-side transient failures.
+// not an HTTP response. 429 and most 5xx are server-side transient
+// failures. 503 is treated as terminal because record-resonance returns it
+// specifically for SERVICE_UNAVAILABLE (missing GITHUB_TOKEN), a setup
+// error retries cannot fix.
 function isRetriableStatus(status: number): boolean {
   if (status === 0) return true;
   if (status === 429) return true;
+  if (status === 503) return false;
   return status >= 500 && status < 600;
 }
 
