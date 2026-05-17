@@ -20,9 +20,22 @@ site/                  # Static site (placeholder + Netlify ready)
 
 ## Getting Started
 
-1. Install deps: `npm i`.  
-2. Build printables: `make pdf` or `make epub` (requires pandoc; see [SETUP_PDF.md](./docs/SETUP_PDF.md)).  
-3. Run checks: `npm run check`.
+The repo has two npm packages: the root (linting, checks) and `site/` (the Astro
+site). Each has its own dependencies, so you need to install in both.
+
+1. Install root deps: `npm install`.
+2. Run checks: `npm run check`.
+3. Build printables: `make pdf` or `make epub` (requires pandoc; see [SETUP_PDF.md](./docs/SETUP_PDF.md)).
+
+### Site
+
+All site commands run from the `site/` directory:
+
+1. `cd site`
+2. `npm install` — install site deps (Astro, React, etc.).
+3. `npm run dev` — start local dev server at <http://localhost:4321>.
+4. `npm run build` — build production site to `site/dist/`.
+5. `npm run preview` — preview the production build locally.
 
 ## Versioning
 
