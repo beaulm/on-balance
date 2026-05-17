@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import type { SelectionData } from './TextSelectionHandler';
+import { ResonanceError } from '../lib/resonance';
 
 interface ResonancePopupProps {
   selection: SelectionData | null;
@@ -7,7 +8,12 @@ interface ResonancePopupProps {
   onDismiss: () => void;
 }
 
-type SubmitState = 'idle' | 'submitting' | 'success' | 'error';
+type SubmitState =
+  | 'idle'
+  | 'submitting'
+  | 'success'
+  | 'error-retriable'
+  | 'error-terminal';
 
 export default function ResonancePopup({
   selection,
@@ -110,12 +116,21 @@ export default function ResonancePopup({
       dismissTimeoutRef.current = setTimeout(() => {
         onDismiss();
       }, 800);
-    } catch {
-      setSubmitState('error');
-      // Reset after error (timeout cleaned up on unmount)
-      errorTimeoutRef.current = setTimeout(() => {
-        setSubmitState('idle');
-      }, 2000);
+    } catch (err) {
+      // Default to retriable for unknown errors so we don't strand the user
+      // on a non-actionable state when an unexpected exception slips through.
+      const retriable = err instanceof ResonanceError ? err.retriable : true;
+      if (retriable) {
+        setSubmitState('error-retriable');
+        errorTimeoutRef.current = setTimeout(() => {
+          setSubmitState('idle');
+        }, 2000);
+      } else {
+        // Terminal failures (400/403/404/503) won't recover via retry; leave
+        // the message visible until the user dismisses (Esc / click outside /
+        // new selection) so they actually see what went wrong.
+        setSubmitState('error-terminal');
+      }
     }
   }, [selection, submitState, onResonance, onDismiss]);
 
@@ -181,8 +196,12 @@ export default function ResonancePopup({
     idle: '👍 Resonates',
     submitting: 'Saving...',
     success: '✓ Saved',
-    error: 'Error - try again',
+    'error-retriable': 'Error — try again',
+    'error-terminal': 'Couldn\'t save',
   }[submitState];
+
+  const isError = submitState === 'error-retriable' || submitState === 'error-terminal';
+  const isInteractive = submitState === 'idle' || submitState === 'error-retriable';
 
   return (
     <div
@@ -268,7 +287,7 @@ export default function ResonancePopup({
           ref={buttonRef}
           onMouseDown={(e) => e.preventDefault()} // Prevent click from collapsing selection
           onClick={handleResonance}
-          disabled={submitState === 'submitting' || submitState === 'success'}
+          disabled={!isInteractive}
           aria-label="Mark this text as resonating with you"
           style={{
             display: 'flex',
@@ -277,23 +296,23 @@ export default function ResonancePopup({
             padding: '10px 16px',
             fontSize: '14px',
             fontFamily: 'system-ui, -apple-system, sans-serif',
-            color: submitState === 'success' ? '#16a34a' : submitState === 'error' ? '#dc2626' : '#333',
+            color: submitState === 'success' ? '#16a34a' : isError ? '#dc2626' : '#333',
             background: submitState === 'success' ? '#f0fdf4' : 'transparent',
             border: 'none',
             borderRadius: '4px',
-            cursor: submitState === 'submitting' || submitState === 'success' ? 'default' : 'pointer',
+            cursor: isInteractive ? 'pointer' : 'default',
             minWidth: '120px',
             minHeight: '44px', // Touch-friendly target size
             justifyContent: 'center',
             transition: 'background-color 0.15s, color 0.15s',
           }}
           onMouseEnter={(e) => {
-            if (submitState === 'idle') {
+            if (isInteractive) {
               e.currentTarget.style.backgroundColor = '#f5f5f5';
             }
           }}
           onMouseLeave={(e) => {
-            if (submitState === 'idle') {
+            if (isInteractive) {
               e.currentTarget.style.backgroundColor = 'transparent';
             }
           }}
