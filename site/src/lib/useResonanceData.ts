@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { logResonanceFailure } from './resonance';
 
 export interface ResonancePassage {
   passageId: string;
@@ -58,7 +59,11 @@ export function useResonanceData(moduleSlug: string) {
         );
 
         if (!res.ok) {
-          throw new Error(`Failed to fetch resonance data: ${res.status}`);
+          const body = (await res.json().catch(() => ({}))) as { code?: string };
+          logResonanceFailure('read', res.status, body.code, body);
+          const err = new Error(`Failed to fetch resonance data: ${res.status}`);
+          err.name = 'ResonanceHttpError';
+          throw err;
         }
 
         const data = (await res.json()) as ApiResponse;
@@ -74,10 +79,15 @@ export function useResonanceData(moduleSlug: string) {
         }
         setPassages(mapped);
       } catch (err) {
-        if ((err as Error).name !== 'AbortError') {
-          console.error('[Resonance] Failed to load data:', err);
-          setError(err as Error);
+        const name = (err as Error).name;
+        if (name === 'AbortError') return;
+        // HTTP errors are already logged at the !res.ok branch above; only
+        // log here for network failures, JSON parse errors, and other
+        // unexpected exceptions.
+        if (name !== 'ResonanceHttpError') {
+          logResonanceFailure('read request', 0, undefined, err);
         }
+        setError(err as Error);
       } finally {
         if (!controller.signal.aborted) {
           setLoading(false);

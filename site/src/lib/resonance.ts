@@ -74,16 +74,85 @@ export async function formatSelectionData(
   };
 }
 
-export async function sendResonance(payload: ResonancePayload): Promise<void> {
-  const response = await fetch('/.netlify/functions/record-resonance', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  });
+export class ResonanceError extends Error {
+  readonly status: number;
+  readonly code: string | undefined;
+  readonly retryAfter: number | undefined;
+  readonly retriable: boolean;
 
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    console.error('[Resonance] server error:', response.status, body);
-    throw new Error(`Resonance request failed: ${response.status}`);
+  constructor(opts: {
+    message: string;
+    status: number;
+    code?: string;
+    retryAfter?: number;
+    retriable: boolean;
+  }) {
+    super(opts.message);
+    this.name = 'ResonanceError';
+    this.status = opts.status;
+    this.code = opts.code;
+    this.retryAfter = opts.retryAfter;
+    this.retriable = opts.retriable;
   }
+}
+
+// status === 0 represents fetch rejection (network failure, abort, CORS),
+// not an HTTP response. 429/5xx are server-side transient failures.
+function isRetriableStatus(status: number): boolean {
+  if (status === 0) return true;
+  if (status === 429) return true;
+  return status >= 500 && status < 600;
+}
+
+// A 404 on /.netlify/functions/* almost always means the user is browsing the
+// Astro dev server on :4321, which doesn't serve functions. Surface this
+// inline to save the next contributor a debugging trip.
+const NETLIFY_DEV_HINT =
+  '(404 on a Netlify Function usually means the dev server isn\'t serving it — ' +
+  'run `npx netlify dev` from the repo root and browse :8888 instead of :4321.)';
+
+export function logResonanceFailure(
+  context: string,
+  status: number,
+  code: string | undefined,
+  extra?: unknown,
+): void {
+  const hint = status === 404 ? ` ${NETLIFY_DEV_HINT}` : '';
+  const codeStr = code ? ` ${code}` : '';
+  console.error(`[Resonance] ${context} failed: ${status}${codeStr}${hint}`, extra ?? '');
+}
+
+export async function sendResonance(payload: ResonancePayload): Promise<void> {
+  let response: Response;
+  try {
+    response = await fetch('/.netlify/functions/record-resonance', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+  } catch (err) {
+    logResonanceFailure('write request', 0, undefined, err);
+    throw new ResonanceError({
+      message: 'Network error while submitting resonance',
+      status: 0,
+      retriable: true,
+    });
+  }
+
+  if (response.ok) return;
+
+  const body = (await response.json().catch(() => ({}))) as { code?: string };
+  const retryAfterHeader = response.headers.get('Retry-After');
+  const retryAfterNum = retryAfterHeader ? Number(retryAfterHeader) : NaN;
+  const retryAfter = Number.isFinite(retryAfterNum) ? retryAfterNum : undefined;
+
+  logResonanceFailure('write', response.status, body.code, body);
+
+  throw new ResonanceError({
+    message: `Resonance request failed: ${response.status}`,
+    status: response.status,
+    code: body.code,
+    retryAfter,
+    retriable: isRetriableStatus(response.status),
+  });
 }
