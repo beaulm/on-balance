@@ -7,3 +7,9 @@
 
 [functions]
   directory = "netlify/functions"
+
+[dev]
+  command = "npm --prefix site run dev"
+  targetPort = 4321
+  framework = "#custom"
+  autoLaunch = false
