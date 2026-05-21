@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-7829b145f857",
+  "resonates": [
+    {
+      "timestamp": "2026-05-21T01:35:04.471Z",
+      "user_fingerprint": "45c3aecc-88fa-49c4-96e4-d0a6b24376f4",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Because attention is how life becomes life. It’s how moments become memories. How strangers become friends. How ideas become reality.\n\nYour 86,400 seconds tomorrow are going to pass either way. The question isn’t whether you’ll spend them. The question is what they’ll grow.",
+        "prefix": "s stronger when you return to it again and again.\n",
+        "suffix": " ",
+        "startOffset": 6816,
+        "endOffset": 7089
+      }
+    }
+  ]
+}
