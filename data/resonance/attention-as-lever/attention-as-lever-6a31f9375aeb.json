@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-6a31f9375aeb",
+  "resonates": [
+    {
+      "timestamp": "2026-05-21T10:07:54.368Z",
+      "user_fingerprint": "5ca70157-1545-46b0-8679-f8dd5aa66874",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "contagious",
+        "prefix": " is contagious. Meaning is contagious. Culture is ",
+        "suffix": " — whether we intend it or not.\nIt’s uncomfortable",
+        "startOffset": 5219,
+        "endOffset": 5229
+      }
+    }
+  ]
+}
