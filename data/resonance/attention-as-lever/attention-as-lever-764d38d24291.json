@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-764d38d24291",
+  "resonates": [
+    {
+      "timestamp": "2026-05-21T01:43:41.446Z",
+      "user_fingerprint": "45c3aecc-88fa-49c4-96e4-d0a6b24376f4",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Whatever you attend to becomes more available. Not just metaphorically — neurologically. Your brain strengthens the pathways you use most. Feed anxiety, grow anxiety. Feed wonder, grow wonder.",
+        "prefix": " by deciding what stands out and what fades back.\n",
+        "suffix": "\nWhich raises an uncomfortable question: If we’re ",
+        "startOffset": 706,
+        "endOffset": 898
+      }
+    }
+  ]
+}
