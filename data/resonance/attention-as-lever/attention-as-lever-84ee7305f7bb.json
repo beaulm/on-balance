@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-84ee7305f7bb",
+  "resonates": [
+    {
+      "timestamp": "2026-05-21T01:34:04.427Z",
+      "user_fingerprint": "45c3aecc-88fa-49c4-96e4-d0a6b24376f4",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "When you reclaim your attention:\n\nYour presence becomes a gift rather than an absence\nYour clarity helps others find theirs\nYour consciousness gives others permission to wake up\nYour patterns stop creating work for everyone else",
+        "prefix": "how you learn to listen before the tank runs dry.\n",
+        "suffix": "\n\nThis isn’t self‑improvement. It’s mutual aid for",
+        "startOffset": 6179,
+        "endOffset": 6407
+      }
+    }
+  ]
+}
