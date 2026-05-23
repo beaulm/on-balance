@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-a3809dcdc9fb",
+  "resonates": [
+    {
+      "timestamp": "2026-05-23T15:29:05.785Z",
+      "user_fingerprint": "45c3aecc-88fa-49c4-96e4-d0a6b24376f4",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Attention is contagious. Meaning is contagious. Culture is contagious — whether we intend it or not.",
+        "prefix": "t – you force others to work harder to ignore it. ",
+        "suffix": "\nIt’s uncomfortable to admit, but our attention pa",
+        "startOffset": 5160,
+        "endOffset": 5260
+      }
+    }
+  ]
+}
