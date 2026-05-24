@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-e933bd1d2d37",
+  "resonates": [
+    {
+      "timestamp": "2026-05-24T15:56:24.636Z",
+      "user_fingerprint": "d14ae785-aae4-4d9d-b062-ebcd9c347c13",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "patterns",
+        "prefix": "t.\nIt’s uncomfortable to admit, but our attention ",
+        "suffix": " are never purely private. When we don’t examine t",
+        "startOffset": 5308,
+        "endOffset": 5316
+      }
+    }
+  ]
+}
