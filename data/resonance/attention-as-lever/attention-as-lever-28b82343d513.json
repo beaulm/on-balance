@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-28b82343d513",
+  "resonates": [
+    {
+      "timestamp": "2026-05-24T15:56:15.899Z",
+      "user_fingerprint": "d14ae785-aae4-4d9d-b062-ebcd9c347c13",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "It’s uncomfortable to admit, but our attention patterns are never purely private. When we don’t examine them, other people often end up navigating around them",
+        "prefix": "ture is contagious — whether we intend it or not.\n",
+        "suffix": ".\n\nThe Bigger Picture\nIt’s Not Just Personal\nThe “",
+        "startOffset": 5261,
+        "endOffset": 5419
+      }
+    }
+  ]
+}
