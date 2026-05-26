@@ -1,19 +1,8 @@
-declare const Netlify: {
-  env: { get(key: string): string | undefined };
-};
+import { getEnv } from './_lib/env';
+import { checkOrigin } from './_lib/origin';
 
 interface NetlifyHandlerContext {
   deploy?: { context?: string };
-}
-
-function getEnv(key: string): string | undefined {
-  try {
-    const value = Netlify.env.get(key);
-    if (value !== undefined) return value;
-  } catch {
-    // Netlify global not available in local dev
-  }
-  return process.env[key];
 }
 
 interface ResonanceEntry {
@@ -66,32 +55,6 @@ function resolveDataBranch(context: NetlifyHandlerContext): string {
 }
 
 const SAFE_PATH_SEGMENT = /^[a-zA-Z0-9_-]+$/;
-
-const ALLOWED_ORIGINS: string[] = [
-  'http://localhost:4321',
-  'http://localhost:8888',
-];
-
-function getAllowedOrigins(): string[] {
-  const siteUrl = getEnv('URL');
-  if (siteUrl) {
-    return [...ALLOWED_ORIGINS, siteUrl];
-  }
-  return ALLOWED_ORIGINS;
-}
-
-function isAllowedOrigin(origin: string, requestUrl: string): boolean {
-  if (getAllowedOrigins().includes(origin)) return true;
-
-  // Allow same-origin requests (covers production, deploy previews, branch deploys)
-  try {
-    if (origin === new URL(requestUrl).origin) return true;
-  } catch {
-    // malformed URL — fall through
-  }
-
-  return false;
-}
 
 const CORS_HEADERS: Record<string, string> = {
   'Access-Control-Allow-Origin': '*',
@@ -157,10 +120,8 @@ export default async (request: Request, context: NetlifyHandlerContext) => {
     return errorResponse('Method not allowed', 'METHOD_NOT_ALLOWED', 405);
   }
 
-  const origin = request.headers.get('Origin');
-  if (origin && !isAllowedOrigin(origin, request.url)) {
-    return errorResponse('Forbidden', 'FORBIDDEN', 403);
-  }
+  const forbidden = checkOrigin(request, CORS_HEADERS);
+  if (forbidden) return forbidden;
 
   if (!getEnv('GITHUB_TOKEN')) {
     return errorResponse('GitHub integration not configured', 'SERVICE_UNAVAILABLE', 503);
