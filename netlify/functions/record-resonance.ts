@@ -288,10 +288,6 @@ async function persistResonance(body: ResonanceBody): Promise<void> {
 
 export default async (request: Request, context: NetlifyHandlerContext) => {
   currentDataBranch = resolveDataBranch(context);
-  console.log(
-    `[record-resonance] deploy.context=${context.deploy?.context ?? 'undefined'} ` +
-    `env.CONTEXT=${getEnv('CONTEXT') ?? 'undefined'} branch=${currentDataBranch}`,
-  );
 
   if (request.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: CORS_HEADERS });
