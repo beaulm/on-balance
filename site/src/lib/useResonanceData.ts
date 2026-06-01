@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { logResonanceFailure } from './resonance';
 
 export interface ResonancePassage {
@@ -28,14 +28,38 @@ interface ApiResponse {
 // Module-level cache to avoid refetching on re-renders
 const cache = new Map<string, ResonancePassage[]>();
 
+// Fold the current user's optimistic additions into a freshly fetched list so a
+// slow initial read that resolves *after* a fast submission can't clobber the
+// just-added glow. Also smooths over GitHub read staleness: max() never
+// under-counts the user's own contribution, and once the server reflects the
+// write its count wins.
+function mergeOptimistic(
+  fetched: ResonancePassage[],
+  optimistic: Map<string, ResonancePassage>,
+): ResonancePassage[] {
+  if (optimistic.size === 0) return fetched;
+  const byId = new Map(fetched.map((p) => [p.passageId, p]));
+  for (const [id, local] of optimistic) {
+    const server = byId.get(id);
+    byId.set(id, server ? { ...server, count: Math.max(server.count, local.count) } : local);
+  }
+  return [...byId.values()];
+}
+
 export function useResonanceData(moduleSlug: string) {
   const [passages, setPassages] = useState<ResonancePassage[]>(
     () => cache.get(moduleSlug) ?? [],
   );
   const [loading, setLoading] = useState(!cache.has(moduleSlug));
   const [error, setError] = useState<Error | null>(null);
+  // The current user's optimistic additions for this module, merged into any
+  // fetch result. Cleared on module change (entries are module-scoped, and the
+  // cache already carries them forward for revisits).
+  const optimisticRef = useRef<Map<string, ResonancePassage>>(new Map());
 
   useEffect(() => {
+    optimisticRef.current = new Map();
+
     // Sync state immediately when moduleSlug changes (cached or not)
     const cached = cache.get(moduleSlug);
     if (cached) {
@@ -72,12 +96,13 @@ export function useResonanceData(moduleSlug: string) {
           count: p.count,
           selector: p.selector,
         }));
+        const merged = mergeOptimistic(mapped, optimisticRef.current);
 
         // Only cache complete responses; partial data should be refetched
         if (!data.partial) {
-          cache.set(moduleSlug, mapped);
+          cache.set(moduleSlug, merged);
         }
-        setPassages(mapped);
+        setPassages(merged);
       } catch (err) {
         const name = (err as Error).name;
         if (name === 'AbortError') return;
@@ -121,6 +146,11 @@ export function useResonanceData(moduleSlug: string) {
         } else {
           return prev;
         }
+        // Remember this addition so an in-flight fetch resolving later merges it
+        // back in rather than overwriting it (idempotent under StrictMode's
+        // double-invoked updater).
+        const entry = next.find((p) => p.passageId === passageId);
+        if (entry) optimisticRef.current.set(passageId, entry);
         cache.set(moduleSlug, next);
         return next;
       });
