@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { logResonanceFailure } from './resonance';
 
 export interface ResonancePassage {
@@ -99,5 +99,34 @@ export function useResonanceData(moduleSlug: string) {
     return () => controller.abort();
   }, [moduleSlug]);
 
-  return { passages, loading, error };
+  // Optimistically reflect a resonance the current user just submitted, so the
+  // glow appears immediately instead of only after a page reload. `bumpCount`
+  // is false when the user had already resonated with this passage (so we don't
+  // visually double-count their repeat); a brand-new passage always starts at 1.
+  const addLocalResonance = useCallback(
+    (
+      passageId: string,
+      selector: ResonancePassage['selector'],
+      bumpCount: boolean,
+    ) => {
+      setPassages((prev) => {
+        const idx = prev.findIndex((p) => p.passageId === passageId);
+        let next: ResonancePassage[];
+        if (idx === -1) {
+          next = [...prev, { passageId, count: 1, selector }];
+        } else if (bumpCount) {
+          next = prev.map((p, i) =>
+            i === idx ? { ...p, count: p.count + 1 } : p,
+          );
+        } else {
+          return prev;
+        }
+        cache.set(moduleSlug, next);
+        return next;
+      });
+    },
+    [moduleSlug],
+  );
+
+  return { passages, loading, error, addLocalResonance };
 }

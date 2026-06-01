@@ -23,6 +23,7 @@ export interface ResonancePayload {
 }
 
 const STORAGE_KEY = 'onbalance-user-id';
+const RESONATED_KEY_PREFIX = 'onbalance-resonated:';
 
 export function getUserFingerprint(): string {
   let id = localStorage.getItem(STORAGE_KEY);
@@ -31,6 +32,61 @@ export function getUserFingerprint(): string {
     localStorage.setItem(STORAGE_KEY, id);
   }
   return id;
+}
+
+// Passage IDs this fingerprint has resonated with, persisted so "You resonated"
+// survives a page reload. Keyed by fingerprint so clearing the user ID also
+// resets the set. Server-side data is not deduped by fingerprint, so this is
+// the only reliable signal for "did *I* resonate with this passage".
+function resonatedStorageKey(): string {
+  return `${RESONATED_KEY_PREFIX}${getUserFingerprint()}`;
+}
+
+export function getResonatedPassageIds(): Set<string> {
+  try {
+    const raw = localStorage.getItem(resonatedStorageKey());
+    if (!raw) return new Set();
+    const parsed = JSON.parse(raw) as unknown;
+    if (!Array.isArray(parsed)) return new Set();
+    return new Set(parsed.filter((id): id is string => typeof id === 'string'));
+  } catch {
+    return new Set();
+  }
+}
+
+/** Record that the current user resonated with a passage. Returns true if this
+ *  was newly added (false if it was already recorded). */
+export function markPassageResonated(passageId: string): boolean {
+  const ids = getResonatedPassageIds();
+  if (ids.has(passageId)) return false;
+  ids.add(passageId);
+  try {
+    localStorage.setItem(resonatedStorageKey(), JSON.stringify([...ids]));
+  } catch {
+    // Storage full or unavailable — the in-memory optimistic update still
+    // applies for this session; persistence is best-effort.
+  }
+  return true;
+}
+
+/**
+ * Human-readable resonance count, accounting for whether the current user is
+ * one of the resonators. `suffix` only affects the others-only phrasing
+ * ("...here" for the hover tooltip vs "...with this passage" for screen
+ * readers); the "you" phrasing reads naturally in both contexts.
+ */
+export function resonancePhrase(
+  count: number,
+  youResonated: boolean,
+  suffix = 'with this passage',
+): string {
+  if (youResonated) {
+    const others = count - 1;
+    if (others <= 0) return 'You resonated with this';
+    if (others === 1) return 'You and 1 other person resonated';
+    return `You and ${others} other people resonated`;
+  }
+  return `${count} ${count === 1 ? 'person' : 'people'} resonated ${suffix}`;
 }
 
 export async function generatePassageId(

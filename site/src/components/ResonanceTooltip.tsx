@@ -1,9 +1,12 @@
+import { resonancePhrase } from '../lib/resonance';
+
 interface ResonanceTooltipProps {
   count: number;
+  youResonated: boolean;
   rect: DOMRect;
 }
 
-export default function ResonanceTooltip({ count, rect }: ResonanceTooltipProps) {
+export default function ResonanceTooltip({ count, youResonated, rect }: ResonanceTooltipProps) {
   const tooltipHeight = 32;
   const tooltipWidth = 180;
   const margin = 8;
@@ -29,7 +32,7 @@ export default function ResonanceTooltip({ count, rect }: ResonanceTooltipProps)
     Math.min(passageCenter - left, tooltipWidth - arrowSize - 4),
   );
 
-  const label = count === 1 ? '1 person resonated here' : `${count} people resonated here`;
+  const label = resonancePhrase(count, youResonated, 'here');
 
   return (
     <div

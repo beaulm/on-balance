@@ -1,8 +1,13 @@
-import { useState, useCallback, useRef, type ReactNode } from 'react';
+import { useState, useEffect, useCallback, useRef, type ReactNode } from 'react';
 import TextSelectionHandler, { type SelectionData } from './TextSelectionHandler';
 import ResonancePopup from './ResonancePopup';
 import ResonanceTooltip from './ResonanceTooltip';
-import { formatSelectionData, sendResonance } from '../lib/resonance';
+import {
+  formatSelectionData,
+  sendResonance,
+  getResonatedPassageIds,
+  markPassageResonated,
+} from '../lib/resonance';
 import { useResonanceData } from '../lib/useResonanceData';
 import { useResonanceGlow } from '../lib/useResonanceGlow';
 import { useResonanceTooltip } from '../lib/useResonanceTooltip';
@@ -15,9 +20,16 @@ interface ResonanceWrapperProps {
 export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrapperProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   const [selection, setSelection] = useState<SelectionData | null>(null);
+  // Passage IDs the current user has resonated with. Empty on first render so
+  // SSR/hydration match; loaded from localStorage on mount.
+  const [resonatedIds, setResonatedIds] = useState<Set<string>>(() => new Set());
 
-  const { passages } = useResonanceData(moduleSlug);
-  const matchesRef = useResonanceGlow(contentRef, passages);
+  useEffect(() => {
+    setResonatedIds(getResonatedPassageIds());
+  }, []);
+
+  const { passages, addLocalResonance } = useResonanceData(moduleSlug);
+  const matchesRef = useResonanceGlow(contentRef, passages, resonatedIds);
   const { tooltip, ariaLiveText } = useResonanceTooltip(contentRef, matchesRef, !!selection);
 
   const handleSelection = useCallback((newSelection: SelectionData | null) => {
@@ -27,7 +39,21 @@ export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrap
   const handleResonance = useCallback(async (selectionData: SelectionData) => {
     const payload = await formatSelectionData(moduleSlug, selectionData);
     await sendResonance(payload);
-  }, [moduleSlug]);
+
+    // Reflect the user's own resonance immediately, without waiting for a
+    // reload/refetch. markPassageResonated is idempotent, so a repeat resonance
+    // on the same passage won't double-count locally.
+    const isNew = markPassageResonated(payload.passage_id);
+    const { exact, prefix, suffix } = payload.selector;
+    addLocalResonance(payload.passage_id, { exact, prefix, suffix }, isNew);
+    if (isNew) {
+      setResonatedIds((prev) => {
+        const next = new Set(prev);
+        next.add(payload.passage_id);
+        return next;
+      });
+    }
+  }, [moduleSlug, addLocalResonance]);
 
   const handleDismiss = useCallback(() => {
     setSelection(null);
@@ -47,7 +73,11 @@ export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrap
         onDismiss={handleDismiss}
       />
       {tooltip && (
-        <ResonanceTooltip count={tooltip.count} rect={tooltip.rect} />
+        <ResonanceTooltip
+          count={tooltip.count}
+          youResonated={tooltip.youResonated}
+          rect={tooltip.rect}
+        />
       )}
       <div
         aria-live="polite"

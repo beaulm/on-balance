@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState, useCallback, type RefObject } from 'react';
+import { resonancePhrase } from './resonance';
 import type { MatchResult } from './useResonanceGlow';
 
 interface TooltipState {
   count: number;
+  youResonated: boolean;
   rect: DOMRect;
 }
 
@@ -52,9 +54,8 @@ export function useResonanceTooltip(
   const showTooltipForMatch = useCallback((match: MatchResult) => {
     activeRangeRef.current = match.range;
     const rect = match.range.getBoundingClientRect();
-    setTooltip({ count: match.count, rect });
-    const text = `${match.count} ${match.count === 1 ? 'person' : 'people'} resonated with this passage`;
-    setAriaLiveText(text);
+    setTooltip({ count: match.count, youResonated: match.youResonated, rect });
+    setAriaLiveText(resonancePhrase(match.count, match.youResonated));
   }, []);
 
   // Suppress when popup is visible
@@ -121,11 +122,11 @@ export function useResonanceTooltip(
       if (countStr) {
         const count = parseInt(countStr, 10);
         if (!isNaN(count)) {
+          const youResonated = target.getAttribute('data-you-resonated') === 'true';
           const rect = target.getBoundingClientRect();
           activeRangeRef.current = null;
-          setTooltip({ count, rect });
-          const text = `${count} ${count === 1 ? 'person' : 'people'} resonated with this passage`;
-          setAriaLiveText(text);
+          setTooltip({ count, youResonated, rect });
+          setAriaLiveText(resonancePhrase(count, youResonated));
         }
       }
     };

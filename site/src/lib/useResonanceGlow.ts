@@ -1,10 +1,13 @@
 import { useEffect, useRef, type RefObject } from 'react';
 import { findTextInDOM } from './textMatcher';
+import { resonancePhrase } from './resonance';
 import type { ResonancePassage } from './useResonanceData';
 
 export interface MatchResult {
   range: Range;
   count: number;
+  passageId: string;
+  youResonated: boolean;
 }
 
 function getGlowTier(count: number): 'low' | 'medium' | 'strong' {
@@ -42,10 +45,9 @@ function applyMarkFallback(matches: MatchResult[]): MatchResult[] {
     try {
       const mark = document.createElement('mark');
       mark.setAttribute('data-resonance', String(match.count));
+      mark.setAttribute('data-you-resonated', match.youResonated ? 'true' : 'false');
       mark.setAttribute('tabindex', '0');
-      mark.setAttribute('aria-label',
-        `${match.count} ${match.count === 1 ? 'person' : 'people'} resonated with this passage`,
-      );
+      mark.setAttribute('aria-label', resonancePhrase(match.count, match.youResonated));
       mark.style.setProperty('--resonance-opacity', String(opacity));
       match.range.surroundContents(mark);
       applied.add(match);
@@ -81,6 +83,7 @@ function clearMarkFallback(container: HTMLElement): void {
 export function useResonanceGlow(
   containerRef: RefObject<HTMLDivElement | null>,
   passages: ResonancePassage[],
+  resonatedIds: Set<string>,
 ): RefObject<MatchResult[]> {
   const matchesRef = useRef<MatchResult[]>([]);
 
@@ -98,7 +101,12 @@ export function useResonanceGlow(
     for (const passage of passages) {
       const range = findTextInDOM(container, passage.selector);
       if (range) {
-        matches.push({ range, count: passage.count });
+        matches.push({
+          range,
+          count: passage.count,
+          passageId: passage.passageId,
+          youResonated: resonatedIds.has(passage.passageId),
+        });
       }
     }
 
@@ -122,7 +130,7 @@ export function useResonanceGlow(
         clearMarkFallback(container);
       }
     };
-  }, [containerRef, passages]);
+  }, [containerRef, passages, resonatedIds]);
 
   return matchesRef;
 }
