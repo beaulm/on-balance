@@ -12,6 +12,18 @@
         "startOffset": 471,
         "endOffset": 588
       }
+    },
+    {
+      "timestamp": "2026-06-01T09:33:39.315Z",
+      "user_fingerprint": "90c9486e-d662-4cbd-996d-1a7f3b6896e9",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "To attend is to bring certain patterns into the foreground, to emphasize their presence relative to background noise.",
+        "prefix": "ntional life.\nAttention is pattern amplification. ",
+        "suffix": " Attention isn’t just noticing — it’s sculpting th",
+        "startOffset": 471,
+        "endOffset": 588
+      }
     }
   ]
 }
