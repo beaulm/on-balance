@@ -30,8 +30,8 @@ Alignment feels different. The car tracks straight. You're still driving. You st
 This guide is about learning to notice that mismatch earlier:
 
 - When to stay with the task
-- When to change your state
-- When to switch tasks instead
+- When to switch task
+- When to change your state instead
 - How to build a life where more of your effort goes into movement rather than correction
 
 ---
