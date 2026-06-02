@@ -28,35 +28,32 @@ interface ApiResponse {
 // Module-level cache to avoid refetching on re-renders
 const cache = new Map<string, ResonancePassage[]>();
 
-// A resonance the current user submitted optimistically: the count delta they
-// contributed (+1 per passage) plus the selector, in case the passage isn't in
-// the fetched list yet.
+// A passage the current user resonated with this session. We keep only the
+// selector (for the glow), never an optimistic count: get-resonance returns
+// aggregate counts with no per-fingerprint data, so the client can't tell
+// whether a given server count already includes the user's own submission.
+// Guessing a delta either over- or under-counts depending on read/write
+// ordering, so instead we reconcile counts from an authoritative post-write
+// refetch (see addLocalResonance) and use this only as a presence floor.
 interface OptimisticAddition {
-  delta: number;
   selector: ResonancePassage['selector'];
 }
 
-// Fold the current user's optimistic additions into a freshly fetched list so a
-// slow initial read that resolves *after* a fast submission can't clobber the
-// just-added glow. We add the user's delta to the server count rather than
-// taking an absolute max: the in-flight read was issued at page load, so it
-// almost always predates the user's write and returns the pre-submit count —
-// max() would silently drop the user's own +1. record-resonance appends every
-// accepted submission, so server + delta matches the post-write total.
-function mergeOptimistic(
+// Keep the user's just-resonated passages visible if a refetch resolves without
+// them yet (brief GitHub read-after-write lag): add a missing passage at the
+// glow's lowest tier. When the server already lists the passage its count is
+// authoritative — the refetch was issued after the write persisted — so we
+// leave it untouched rather than adding anything to it.
+function withPresenceFloor(
   fetched: ResonancePassage[],
   optimistic: Map<string, OptimisticAddition>,
 ): ResonancePassage[] {
   if (optimistic.size === 0) return fetched;
   const byId = new Map(fetched.map((p) => [p.passageId, p]));
   for (const [id, local] of optimistic) {
-    const server = byId.get(id);
-    byId.set(
-      id,
-      server
-        ? { ...server, count: server.count + local.delta }
-        : { passageId: id, count: local.delta, selector: local.selector },
-    );
+    if (!byId.has(id)) {
+      byId.set(id, { passageId: id, count: 1, selector: local.selector });
+    }
   }
   return [...byId.values()];
 }
@@ -67,30 +64,25 @@ export function useResonanceData(moduleSlug: string) {
   );
   const [loading, setLoading] = useState(!cache.has(moduleSlug));
   const [error, setError] = useState<Error | null>(null);
-  // The current user's optimistic additions for this module, merged into any
-  // fetch result. Cleared on module change (entries are module-scoped, and the
-  // cache already carries them forward for revisits).
+  // The current user's resonated passages for this module, used as a presence
+  // floor on fetch results. Cleared on module change (entries are module-scoped,
+  // and the cache already carries them forward for revisits).
   const optimisticRef = useRef<Map<string, OptimisticAddition>>(new Map());
+  const controllerRef = useRef<AbortController | null>(null);
+  // Monotonic id so a slow earlier request can't apply over a newer one.
+  const fetchSeqRef = useRef(0);
 
-  useEffect(() => {
-    optimisticRef.current = new Map();
+  const runFetch = useCallback(() => {
+    controllerRef.current?.abort();
+    const controller = new AbortController();
+    controllerRef.current = controller;
+    const seq = ++fetchSeqRef.current;
+    const isLatest = () => seq === fetchSeqRef.current;
 
-    // Sync state immediately when moduleSlug changes (cached or not)
-    const cached = cache.get(moduleSlug);
-    if (cached) {
-      setPassages(cached);
-      setLoading(false);
-      setError(null);
-      return;
-    }
-
-    setPassages([]);
     setLoading(true);
     setError(null);
 
-    const controller = new AbortController();
-
-    async function fetchData() {
+    (async () => {
       try {
         const res = await fetch(
           `/.netlify/functions/get-resonance?module=${encodeURIComponent(moduleSlug)}`,
@@ -111,7 +103,11 @@ export function useResonanceData(moduleSlug: string) {
           count: p.count,
           selector: p.selector,
         }));
-        const merged = mergeOptimistic(mapped, optimisticRef.current);
+        const merged = withPresenceFloor(mapped, optimisticRef.current);
+
+        // A superseded request must not apply its (older) result or poison the
+        // cache, even though its fetch wasn't aborted in time.
+        if (!isLatest()) return;
 
         // Only cache complete responses; partial data should be refetched
         if (!data.partial) {
@@ -127,28 +123,46 @@ export function useResonanceData(moduleSlug: string) {
         if (name !== 'ResonanceHttpError') {
           logResonanceFailure('read request', 0, undefined, err);
         }
-        setError(err as Error);
+        if (isLatest()) setError(err as Error);
       } finally {
-        if (!controller.signal.aborted) {
-          setLoading(false);
-        }
+        if (isLatest()) setLoading(false);
       }
-    }
-
-    fetchData();
-    return () => controller.abort();
+    })();
   }, [moduleSlug]);
 
-  // Optimistically reflect a resonance the current user just submitted, so the
-  // glow appears immediately instead of only after a page reload. `bumpCount`
-  // is false when the user had already resonated with this passage (so we don't
-  // visually double-count their repeat); a brand-new passage always starts at 1.
+  useEffect(() => {
+    optimisticRef.current = new Map();
+
+    // Sync state immediately when moduleSlug changes (cached or not)
+    const cached = cache.get(moduleSlug);
+    if (cached) {
+      setPassages(cached);
+      setLoading(false);
+      setError(null);
+      return;
+    }
+
+    setPassages([]);
+    runFetch();
+    return () => controllerRef.current?.abort();
+  }, [moduleSlug, runFetch]);
+
+  // Reflect a resonance the current user just submitted. The optimistic state
+  // update makes the glow appear immediately; the refetch then reconciles the
+  // count authoritatively. Because addLocalResonance runs only after the write
+  // has persisted (sendResonance resolved), this refetch is guaranteed to read
+  // the appended entry, so we can trust the server count outright instead of
+  // adding a delta we couldn't reconcile against read/write ordering. It also
+  // supersedes a still-pending mount fetch, whose pre-write count would
+  // otherwise clobber the glow. `bumpCount` is false for a repeat resonance on
+  // the same passage, so the interim count doesn't double up before the refetch.
   const addLocalResonance = useCallback(
     (
       passageId: string,
       selector: ResonancePassage['selector'],
       bumpCount: boolean,
     ) => {
+      optimisticRef.current.set(passageId, { selector });
       setPassages((prev) => {
         const idx = prev.findIndex((p) => p.passageId === passageId);
         let next: ResonancePassage[];
@@ -159,21 +173,14 @@ export function useResonanceData(moduleSlug: string) {
             i === idx ? { ...p, count: p.count + 1 } : p,
           );
         } else {
-          return prev;
+          next = prev;
         }
-        // Remember the +1 the user contributed so an in-flight fetch resolving
-        // later adds it back rather than overwriting it. Recording an absolute
-        // count instead would lose the delta when the stale read predates the
-        // write (see mergeOptimistic). Set rather than accumulate: repeat
-        // resonances arrive with bumpCount=false and return above, so a passage
-        // never reaches here twice — keeping it idempotent under StrictMode's
-        // double-invoked updater.
-        optimisticRef.current.set(passageId, { delta: 1, selector });
         cache.set(moduleSlug, next);
         return next;
       });
+      runFetch();
     },
-    [moduleSlug],
+    [moduleSlug, runFetch],
   );
 
   return { passages, loading, error, addLocalResonance };
