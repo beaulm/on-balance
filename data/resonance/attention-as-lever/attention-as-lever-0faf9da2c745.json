@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-0faf9da2c745",
+  "resonates": [
+    {
+      "timestamp": "2026-06-02T14:00:12.191Z",
+      "user_fingerprint": "ce901a83-1970-41d5-a2f3-05f22878651a",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "The question is what they’ll grow.",
+        "prefix": "ay. The question isn’t whether you’ll spend them. ",
+        "suffix": " ",
+        "startOffset": 7055,
+        "endOffset": 7089
+      }
+    }
+  ]
+}
