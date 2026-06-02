@@ -28,20 +28,35 @@ interface ApiResponse {
 // Module-level cache to avoid refetching on re-renders
 const cache = new Map<string, ResonancePassage[]>();
 
+// A resonance the current user submitted optimistically: the count delta they
+// contributed (+1 per passage) plus the selector, in case the passage isn't in
+// the fetched list yet.
+interface OptimisticAddition {
+  delta: number;
+  selector: ResonancePassage['selector'];
+}
+
 // Fold the current user's optimistic additions into a freshly fetched list so a
 // slow initial read that resolves *after* a fast submission can't clobber the
-// just-added glow. Also smooths over GitHub read staleness: max() never
-// under-counts the user's own contribution, and once the server reflects the
-// write its count wins.
+// just-added glow. We add the user's delta to the server count rather than
+// taking an absolute max: the in-flight read was issued at page load, so it
+// almost always predates the user's write and returns the pre-submit count —
+// max() would silently drop the user's own +1. record-resonance appends every
+// accepted submission, so server + delta matches the post-write total.
 function mergeOptimistic(
   fetched: ResonancePassage[],
-  optimistic: Map<string, ResonancePassage>,
+  optimistic: Map<string, OptimisticAddition>,
 ): ResonancePassage[] {
   if (optimistic.size === 0) return fetched;
   const byId = new Map(fetched.map((p) => [p.passageId, p]));
   for (const [id, local] of optimistic) {
     const server = byId.get(id);
-    byId.set(id, server ? { ...server, count: Math.max(server.count, local.count) } : local);
+    byId.set(
+      id,
+      server
+        ? { ...server, count: server.count + local.delta }
+        : { passageId: id, count: local.delta, selector: local.selector },
+    );
   }
   return [...byId.values()];
 }
@@ -55,7 +70,7 @@ export function useResonanceData(moduleSlug: string) {
   // The current user's optimistic additions for this module, merged into any
   // fetch result. Cleared on module change (entries are module-scoped, and the
   // cache already carries them forward for revisits).
-  const optimisticRef = useRef<Map<string, ResonancePassage>>(new Map());
+  const optimisticRef = useRef<Map<string, OptimisticAddition>>(new Map());
 
   useEffect(() => {
     optimisticRef.current = new Map();
@@ -146,11 +161,14 @@ export function useResonanceData(moduleSlug: string) {
         } else {
           return prev;
         }
-        // Remember this addition so an in-flight fetch resolving later merges it
-        // back in rather than overwriting it (idempotent under StrictMode's
-        // double-invoked updater).
-        const entry = next.find((p) => p.passageId === passageId);
-        if (entry) optimisticRef.current.set(passageId, entry);
+        // Remember the +1 the user contributed so an in-flight fetch resolving
+        // later adds it back rather than overwriting it. Recording an absolute
+        // count instead would lose the delta when the stale read predates the
+        // write (see mergeOptimistic). Set rather than accumulate: repeat
+        // resonances arrive with bumpCount=false and return above, so a passage
+        // never reaches here twice — keeping it idempotent under StrictMode's
+        // double-invoked updater.
+        optimisticRef.current.set(passageId, { delta: 1, selector });
         cache.set(moduleSlug, next);
         return next;
       });
