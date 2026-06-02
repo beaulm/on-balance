@@ -39,17 +39,40 @@ interface OptimisticAddition {
   selector: ResonancePassage['selector'];
 }
 
-// Keep the user's just-resonated passages visible if a refetch resolves without
-// them yet (brief GitHub read-after-write lag): add a missing passage at the
-// glow's lowest tier. When the server already lists the passage its count is
-// authoritative — the refetch was issued after the write persisted — so we
-// leave it untouched rather than adding anything to it.
+// Apply a complete (authoritative) fetch result, keeping the user's
+// just-resonated passages visible if the server doesn't list them yet (brief
+// GitHub read-after-write lag): add a missing one at the glow's lowest tier.
+// When the server already lists the passage its count is authoritative — the
+// refetch was issued after the write persisted — so we leave it untouched. The
+// count-1 floor is only safe here because a complete response can omit a
+// passage solely when it's too new to have replicated (passages only ever
+// grow), never because an existing count was dropped.
 function withPresenceFloor(
   fetched: ResonancePassage[],
   optimistic: Map<string, OptimisticAddition>,
 ): ResonancePassage[] {
   if (optimistic.size === 0) return fetched;
   const byId = new Map(fetched.map((p) => [p.passageId, p]));
+  for (const [id, local] of optimistic) {
+    if (!byId.has(id)) {
+      byId.set(id, { passageId: id, count: 1, selector: local.selector });
+    }
+  }
+  return [...byId.values()];
+}
+
+// Apply a partial fetch result — one where get-resonance dropped passage files
+// that failed to load and flagged the response partial. Those omissions are
+// read failures, not removals (passages only grow), so we must not let them
+// reset known counts: start from what we already had, overlay the passages this
+// read did return (fresher), and floor any optimistic passage still missing.
+function reconcilePartial(
+  previous: ResonancePassage[],
+  fetched: ResonancePassage[],
+  optimistic: Map<string, OptimisticAddition>,
+): ResonancePassage[] {
+  const byId = new Map(previous.map((p) => [p.passageId, p]));
+  for (const f of fetched) byId.set(f.passageId, f);
   for (const [id, local] of optimistic) {
     if (!byId.has(id)) {
       byId.set(id, { passageId: id, count: 1, selector: local.selector });
@@ -103,17 +126,21 @@ export function useResonanceData(moduleSlug: string) {
           count: p.count,
           selector: p.selector,
         }));
-        const merged = withPresenceFloor(mapped, optimisticRef.current);
-
         // A superseded request must not apply its (older) result or poison the
         // cache, even though its fetch wasn't aborted in time.
         if (!isLatest()) return;
 
-        // Only cache complete responses; partial data should be refetched
-        if (!data.partial) {
+        if (data.partial) {
+          // Don't cache an incomplete view, and don't let dropped files reset
+          // known counts (e.g. knock the user's passage back to the floor).
+          setPassages((prev) =>
+            reconcilePartial(prev, mapped, optimisticRef.current),
+          );
+        } else {
+          const merged = withPresenceFloor(mapped, optimisticRef.current);
           cache.set(moduleSlug, merged);
+          setPassages(merged);
         }
-        setPassages(merged);
       } catch (err) {
         const name = (err as Error).name;
         if (name === 'AbortError') return;
