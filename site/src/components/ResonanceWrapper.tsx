@@ -41,16 +41,19 @@ export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrap
     const { inserted } = await sendResonance(payload);
     const { exact, prefix, suffix } = payload.selector;
 
-    // Mark locally so the glow and "You resonated" wording persist — true even
-    // when the server deduped (the user is still a resonator).
-    const newlyMarked = markPassageResonated(payload.passage_id);
-    if (newlyMarked) {
-      setResonatedIds((prev) => {
-        const next = new Set(prev);
-        next.add(payload.passage_id);
-        return next;
-      });
-    }
+    // Persist locally and mark this passage as the user's own, so the glow is
+    // labeled "You resonated". Add it unconditionally rather than only when
+    // markPassageResonated reports a new write: another tab may have already
+    // recorded it (shared localStorage), leaving this tab's resonatedIds state
+    // stale, and gating on the storage result would then mislabel the user's
+    // own glow as someone else's. The has() check just avoids a no-op re-render.
+    markPassageResonated(payload.passage_id);
+    setResonatedIds((prev) => {
+      if (prev.has(payload.passage_id)) return prev;
+      const next = new Set(prev);
+      next.add(payload.passage_id);
+      return next;
+    });
 
     // Only bump the count when the server actually wrote a new entry. Local
     // history can be absent (pre-feature or cleared) while the fingerprint is
