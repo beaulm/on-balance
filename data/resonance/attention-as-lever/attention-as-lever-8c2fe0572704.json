@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-8c2fe0572704",
+  "resonates": [
+    {
+      "timestamp": "2026-06-04T21:06:33.073Z",
+      "user_fingerprint": "ce901a83-1970-41d5-a2f3-05f22878651a",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "The cost of clarity is often letting go.",
+        "prefix": "y choosing what not to feed. It’s prune‑and‑grow. ",
+        "suffix": "\n\n\nAttention is trainable\nWhen we listen to podcas",
+        "startOffset": 2822,
+        "endOffset": 2862
+      }
+    }
+  ]
+}
