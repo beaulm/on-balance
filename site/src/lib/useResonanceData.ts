@@ -176,34 +176,34 @@ export function useResonanceData(moduleSlug: string) {
   // (sendResonance resolved) and supersedes a still-pending mount fetch whose
   // pre-write count would otherwise clobber the glow — but it can still read a
   // briefly-stale file, so the optimistic floor (recorded below) keeps the
-  // count from dipping under what the user observed. `bumpCount` is false for a
-  // repeat resonance on the same passage, so the floor doesn't drift upward.
+  // count from dipping under what the user observed.
+  //
+  // `observedCount` is the floor: the count the caller computed from a snapshot
+  // taken before the write (others-count, plus the user's own entry iff the
+  // server actually inserted one). It must come from a pre-write snapshot — not
+  // prev[idx].count + 1 — because an interleaved post-write fetch can resolve
+  // first and leave prev already counting this insertion, which a blind +1
+  // would then double (and the floor would lock in). We never lower a live
+  // count either: max() so a concurrent fetch that already advanced it wins.
   const addLocalResonance = useCallback(
     (
       passageId: string,
       selector: ResonancePassage['selector'],
-      bumpCount: boolean,
+      observedCount: number,
     ) => {
       setPassages((prev) => {
         const idx = prev.findIndex((p) => p.passageId === passageId);
         let next: ResonancePassage[];
-        let minCount: number;
         if (idx === -1) {
-          minCount = 1;
-          next = [...prev, { passageId, count: minCount, selector }];
-        } else if (bumpCount) {
-          minCount = prev[idx].count + 1;
-          next = prev.map((p, i) => (i === idx ? { ...p, count: minCount } : p));
+          next = [...prev, { passageId, count: observedCount, selector }];
         } else {
-          // Repeat resonance: the count already includes the user, so the floor
-          // is the existing count — don't add another.
-          minCount = prev[idx].count;
-          next = prev;
+          const count = Math.max(prev[idx].count, observedCount);
+          next =
+            count === prev[idx].count
+              ? prev
+              : prev.map((p, i) => (i === idx ? { ...p, count } : p));
         }
-        // Derived from prev inside the updater so the floor matches the count
-        // the user sees; idempotent under StrictMode's double-invoked updater
-        // (same prev → same minCount).
-        optimisticRef.current.set(passageId, { selector, minCount });
+        optimisticRef.current.set(passageId, { selector, minCount: observedCount });
         cache.set(moduleSlug, next);
         return next;
       });
@@ -212,5 +212,5 @@ export function useResonanceData(moduleSlug: string) {
     [moduleSlug, runFetch],
   );
 
-  return { passages, loading, error, addLocalResonance };
+  return { passages, loading, error, addLocalResonance, refresh: runFetch };
 }

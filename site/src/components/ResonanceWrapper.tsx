@@ -25,6 +25,8 @@ export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrap
   // SSR/hydration match; loaded from localStorage on mount.
   const [resonatedIds, setResonatedIds] = useState<Set<string>>(() => new Set());
 
+  const { passages, addLocalResonance, refresh } = useResonanceData(moduleSlug);
+
   useEffect(() => {
     setResonatedIds(getResonatedPassageIds());
 
@@ -41,12 +43,16 @@ export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrap
           ? prev
           : nextIds,
       );
+      // Another tab changed who resonated — refresh the data so this tab's
+      // counts reflect the new total (and any newly-resonated passage appears),
+      // not just the ownership label. This tab didn't submit, so its optimistic
+      // floor is empty and the authoritative server counts apply directly.
+      refresh();
     };
     window.addEventListener('storage', handleStorage);
     return () => window.removeEventListener('storage', handleStorage);
-  }, []);
+  }, [refresh]);
 
-  const { passages, addLocalResonance } = useResonanceData(moduleSlug);
   const matchesRef = useResonanceGlow(contentRef, passages, resonatedIds);
   const { tooltip, ariaLiveText } = useResonanceTooltip(contentRef, matchesRef, !!selection);
 
@@ -56,6 +62,13 @@ export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrap
 
   const handleResonance = useCallback(async (selectionData: SelectionData) => {
     const payload = await formatSelectionData(moduleSlug, selectionData);
+    // Snapshot the displayed count before the write — the others-count, since
+    // no write has happened yet (a pre-existing self-resonance is handled by
+    // inserted=false below). Deriving the floor from this snapshot, rather than
+    // from a post-await prev that a concurrent fetch may have already advanced,
+    // keeps the optimistic +1 from double-counting an insertion already in view.
+    const baseCount =
+      passages.find((p) => p.passageId === payload.passage_id)?.count ?? 0;
     const { inserted } = await sendResonance(payload);
     const { exact, prefix, suffix } = payload.selector;
 
@@ -73,12 +86,13 @@ export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrap
       return next;
     });
 
-    // Only bump the count when the server actually wrote a new entry. Local
-    // history can be absent (pre-feature or cleared) while the fingerprint is
-    // already counted server-side; trusting it would optimistically count an
-    // increment that never happened, and the floor would then preserve it.
-    addLocalResonance(payload.passage_id, { exact, prefix, suffix }, inserted);
-  }, [moduleSlug, addLocalResonance]);
+    // The observed-count floor: the pre-write snapshot plus the user's own entry
+    // only if the server actually inserted one (false for a repeat or
+    // pre-feature resonance the server already had). Floored at 1 since the user
+    // is now a resonator regardless; the post-write refetch reconciles the rest.
+    const observedCount = Math.max(1, baseCount + (inserted ? 1 : 0));
+    addLocalResonance(payload.passage_id, { exact, prefix, suffix }, observedCount);
+  }, [moduleSlug, passages, addLocalResonance]);
 
   const handleDismiss = useCallback(() => {
     setSelection(null);
