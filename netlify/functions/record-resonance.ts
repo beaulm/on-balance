@@ -249,13 +249,22 @@ async function persistResonance(body: ResonanceBody): Promise<void> {
     selector: body.selector,
   };
 
-  const attempt = async (): Promise<globalThis.Response> => {
+  const attempt = async (): Promise<globalThis.Response | null> => {
     const existing = await getExistingFile(filePath);
 
     let fileContent: ResonanceFile;
     let sha: string | undefined;
 
     if (existing) {
+      // Dedupe by fingerprint: one resonance per person per passage. Without
+      // this a repeat submission inflates `count`, and the reader UI (which
+      // reads count as a unique-person tally) would miscount the same person as
+      // additional "other people". Idempotent — report success without writing.
+      const alreadyResonated = existing.resonates.some(
+        (e) => e.user_fingerprint === body.user_fingerprint,
+      );
+      if (alreadyResonated) return null;
+
       existing.resonates.push(entry);
       fileContent = { passage_id: body.passage_id, resonates: existing.resonates };
       sha = existing.sha;
@@ -273,8 +282,14 @@ async function persistResonance(body: ResonanceBody): Promise<void> {
 
   const res = await attempt();
 
+  // null = the fingerprint already resonated; nothing to write, treat as success.
+  if (res === null) return;
+
   if (res.status === 409) {
+    // A concurrent write changed the file between our read and PUT. Re-read
+    // (which re-runs the dedupe check) and retry once.
     const retry = await attempt();
+    if (retry === null) return;
     if (!retry.ok) {
       throw new Error(`GitHub PUT conflict retry ${retry.status}: ${await retry.text()}`);
     }
