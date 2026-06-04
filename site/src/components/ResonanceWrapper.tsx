@@ -26,6 +26,9 @@ export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrap
   const [resonatedIds, setResonatedIds] = useState<Set<string>>(() => new Set());
 
   const { passages, addLocalResonance, refresh } = useResonanceData(moduleSlug);
+  // Latest passages, read inside the storage handler without making it a dep.
+  const passagesRef = useRef(passages);
+  passagesRef.current = passages;
 
   useEffect(() => {
     setResonatedIds(getResonatedPassageIds());
@@ -35,6 +38,12 @@ export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrap
     // leaving an already-displayed passage labeled as someone else's. The
     // `storage` event fires only in other tabs, so this won't double-handle the
     // submitting tab. e.key is null on a full clear() — re-read in that case too.
+    const retryTimers: ReturnType<typeof setTimeout>[] = [];
+    const clearRetries = () => {
+      for (const t of retryTimers) clearTimeout(t);
+      retryTimers.length = 0;
+    };
+
     const handleStorage = (e: StorageEvent) => {
       if (e.key !== null && e.key !== resonatedStorageKey()) return;
       const nextIds = getResonatedPassageIds();
@@ -43,15 +52,40 @@ export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrap
           ? prev
           : nextIds,
       );
-      // Another tab changed who resonated — refresh the data so this tab's
-      // counts reflect the new total (and any newly-resonated passage appears),
-      // not just the ownership label. This tab didn't submit, so its optimistic
-      // floor is empty and the authoritative server counts apply directly.
-      refresh();
+
+      // For an existing passage nothing more is needed: othersCount is
+      // unaffected by the user's own resonance and youResonated flips via the
+      // OR at render. But a brand-new passage created in another tab isn't in
+      // our data and we have no selector to render it locally, so it can only
+      // appear via a fetch that observes the write. A single read can land in
+      // GitHub's read-after-write window and omit it, so refresh and retry
+      // (bounded, backing off) until every current-module resonated passage is
+      // present — and skip fetching entirely when nothing is missing.
+      const prefix = `${moduleSlug}-`;
+      const hasMissing = () =>
+        [...getResonatedPassageIds()].some(
+          (id) =>
+            id.startsWith(prefix) &&
+            !passagesRef.current.some((p) => p.passageId === id),
+        );
+      clearRetries();
+      let attempt = 0;
+      const maxAttempts = 5;
+      const tick = () => {
+        if (!hasMissing()) return;
+        refresh();
+        attempt += 1;
+        if (attempt >= maxAttempts) return;
+        retryTimers.push(setTimeout(tick, 1000 * attempt));
+      };
+      tick();
     };
     window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
-  }, [refresh]);
+    return () => {
+      window.removeEventListener('storage', handleStorage);
+      clearRetries();
+    };
+  }, [refresh, moduleSlug]);
 
   const matchesRef = useResonanceGlow(contentRef, passages, resonatedIds);
   const { tooltip, ariaLiveText } = useResonanceTooltip(contentRef, matchesRef, !!selection);
