@@ -172,9 +172,17 @@ export default async (request: Request, context: NetlifyHandlerContext) => {
     }
     if (file.resonates.length === 0) continue;
     const first = file.resonates[0];
+    // Count distinct fingerprints, not raw entries. Files written before
+    // record-resonance deduped by fingerprint can hold repeat submissions from
+    // the same person, and the reader UI treats count as a unique-person tally
+    // ("You and N other people"). Deduping on read corrects that historical
+    // data without having to rewrite stored files.
+    const uniquePeople = new Set(
+      file.resonates.map((r) => r.user_fingerprint),
+    ).size;
     passages.push({
       passage_id: file.passage_id,
-      count: file.resonates.length,
+      count: uniquePeople,
       selector: {
         exact: first.selector.exact,
         prefix: first.selector.prefix,
