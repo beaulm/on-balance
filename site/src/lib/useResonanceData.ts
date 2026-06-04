@@ -28,56 +28,51 @@ interface ApiResponse {
 // Module-level cache to avoid refetching on re-renders
 const cache = new Map<string, ResonancePassage[]>();
 
-// A passage the current user resonated with this session. We keep only the
-// selector (for the glow), never an optimistic count: get-resonance returns
-// aggregate counts with no per-fingerprint data, so the client can't tell
-// whether a given server count already includes the user's own submission.
-// Guessing a delta either over- or under-counts depending on read/write
-// ordering, so instead we reconcile counts from an authoritative post-write
-// refetch (see addLocalResonance) and use this only as a presence floor.
+// A passage the current user resonated with this session, and the count the
+// user has observed for it (the count after their own optimistic +1). We can't
+// trust server counts to reflect the user's submission immediately —
+// get-resonance returns aggregate counts with no per-fingerprint data, and the
+// post-write GitHub read can briefly still return the pre-write file — so we
+// hold this as a floor. It's only ever a lower bound on the truth (the user
+// plus the distinct others they'd already seen), and counts only grow, so
+// flooring to it can never overcount; it just prevents a transient undercount.
 interface OptimisticAddition {
   selector: ResonancePassage['selector'];
+  minCount: number;
 }
 
-// Apply a complete (authoritative) fetch result, keeping the user's
-// just-resonated passages visible if the server doesn't list them yet (brief
-// GitHub read-after-write lag): add a missing one at the glow's lowest tier.
-// When the server already lists the passage its count is authoritative — the
-// refetch was issued after the write persisted — so we leave it untouched. The
-// count-1 floor is only safe here because a complete response can omit a
-// passage solely when it's too new to have replicated (passages only ever
-// grow), never because an existing count was dropped.
-function withPresenceFloor(
-  fetched: ResonancePassage[],
+// Floor each of the user's resonated passages to the count they've observed:
+// trust the server count when it already meets the floor (it caught up, or
+// others have since pushed it higher), but never let a stale read drop a
+// passage below the user's own contribution. Passages the result omits are
+// re-added at the floor (e.g. a brand-new passage GitHub hasn't replicated).
+function applyOptimisticFloor(
+  passages: ResonancePassage[],
   optimistic: Map<string, OptimisticAddition>,
 ): ResonancePassage[] {
-  if (optimistic.size === 0) return fetched;
-  const byId = new Map(fetched.map((p) => [p.passageId, p]));
+  if (optimistic.size === 0) return passages;
+  const byId = new Map(passages.map((p) => [p.passageId, p]));
   for (const [id, local] of optimistic) {
-    if (!byId.has(id)) {
-      byId.set(id, { passageId: id, count: 1, selector: local.selector });
+    const existing = byId.get(id);
+    if (!existing) {
+      byId.set(id, { passageId: id, count: local.minCount, selector: local.selector });
+    } else if (existing.count < local.minCount) {
+      byId.set(id, { ...existing, count: local.minCount });
     }
   }
   return [...byId.values()];
 }
 
-// Apply a partial fetch result — one where get-resonance dropped passage files
-// that failed to load and flagged the response partial. Those omissions are
-// read failures, not removals (passages only grow), so we must not let them
-// reset known counts: start from what we already had, overlay the passages this
-// read did return (fresher), and floor any optimistic passage still missing.
-function reconcilePartial(
+// Overlay a partial fetch result onto what we already had. get-resonance drops
+// passage files that fail to load and flags the response partial; those
+// omissions are read failures, not removals (passages only grow), so we keep
+// previously known passages and let the ones this read returned win.
+function overlayPartial(
   previous: ResonancePassage[],
   fetched: ResonancePassage[],
-  optimistic: Map<string, OptimisticAddition>,
 ): ResonancePassage[] {
   const byId = new Map(previous.map((p) => [p.passageId, p]));
   for (const f of fetched) byId.set(f.passageId, f);
-  for (const [id, local] of optimistic) {
-    if (!byId.has(id)) {
-      byId.set(id, { passageId: id, count: 1, selector: local.selector });
-    }
-  }
   return [...byId.values()];
 }
 
@@ -87,9 +82,10 @@ export function useResonanceData(moduleSlug: string) {
   );
   const [loading, setLoading] = useState(!cache.has(moduleSlug));
   const [error, setError] = useState<Error | null>(null);
-  // The current user's resonated passages for this module, used as a presence
-  // floor on fetch results. Cleared on module change (entries are module-scoped,
-  // and the cache already carries them forward for revisits).
+  // The current user's resonated passages for this module, used to floor fetch
+  // results to the count the user has observed. Cleared on module change
+  // (entries are module-scoped, and the cache already carries them forward for
+  // revisits).
   const optimisticRef = useRef<Map<string, OptimisticAddition>>(new Map());
   const controllerRef = useRef<AbortController | null>(null);
   // Monotonic id so a slow earlier request can't apply over a newer one.
@@ -134,10 +130,10 @@ export function useResonanceData(moduleSlug: string) {
           // Don't cache an incomplete view, and don't let dropped files reset
           // known counts (e.g. knock the user's passage back to the floor).
           setPassages((prev) =>
-            reconcilePartial(prev, mapped, optimisticRef.current),
+            applyOptimisticFloor(overlayPartial(prev, mapped), optimisticRef.current),
           );
         } else {
-          const merged = withPresenceFloor(mapped, optimisticRef.current);
+          const merged = applyOptimisticFloor(mapped, optimisticRef.current);
           cache.set(moduleSlug, merged);
           setPassages(merged);
         }
@@ -176,32 +172,38 @@ export function useResonanceData(moduleSlug: string) {
 
   // Reflect a resonance the current user just submitted. The optimistic state
   // update makes the glow appear immediately; the refetch then reconciles the
-  // count authoritatively. Because addLocalResonance runs only after the write
-  // has persisted (sendResonance resolved), this refetch is guaranteed to read
-  // the appended entry, so we can trust the server count outright instead of
-  // adding a delta we couldn't reconcile against read/write ordering. It also
-  // supersedes a still-pending mount fetch, whose pre-write count would
-  // otherwise clobber the glow. `bumpCount` is false for a repeat resonance on
-  // the same passage, so the interim count doesn't double up before the refetch.
+  // count against the server. The refetch runs after the write persisted
+  // (sendResonance resolved) and supersedes a still-pending mount fetch whose
+  // pre-write count would otherwise clobber the glow — but it can still read a
+  // briefly-stale file, so the optimistic floor (recorded below) keeps the
+  // count from dipping under what the user observed. `bumpCount` is false for a
+  // repeat resonance on the same passage, so the floor doesn't drift upward.
   const addLocalResonance = useCallback(
     (
       passageId: string,
       selector: ResonancePassage['selector'],
       bumpCount: boolean,
     ) => {
-      optimisticRef.current.set(passageId, { selector });
       setPassages((prev) => {
         const idx = prev.findIndex((p) => p.passageId === passageId);
         let next: ResonancePassage[];
+        let minCount: number;
         if (idx === -1) {
-          next = [...prev, { passageId, count: 1, selector }];
+          minCount = 1;
+          next = [...prev, { passageId, count: minCount, selector }];
         } else if (bumpCount) {
-          next = prev.map((p, i) =>
-            i === idx ? { ...p, count: p.count + 1 } : p,
-          );
+          minCount = prev[idx].count + 1;
+          next = prev.map((p, i) => (i === idx ? { ...p, count: minCount } : p));
         } else {
+          // Repeat resonance: the count already includes the user, so the floor
+          // is the existing count — don't add another.
+          minCount = prev[idx].count;
           next = prev;
         }
+        // Derived from prev inside the updater so the floor matches the count
+        // the user sees; idempotent under StrictMode's double-invoked updater
+        // (same prev → same minCount).
+        optimisticRef.current.set(passageId, { selector, minCount });
         cache.set(moduleSlug, next);
         return next;
       });
