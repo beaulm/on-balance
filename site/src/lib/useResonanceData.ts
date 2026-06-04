@@ -1,9 +1,14 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { logResonanceFailure } from './resonance';
+import { logResonanceFailure, getUserFingerprint } from './resonance';
 
 export interface ResonancePassage {
   passageId: string;
-  count: number;
+  // Distinct resonators excluding the current user (server-authoritative).
+  // Invariant under the user's own resonance, so the client never infers it.
+  othersCount: number;
+  // Whether the server's data shows the current user resonated. The reader ORs
+  // this with the local floor (see useResonanceGlow) to bridge write lag.
+  youResonated: boolean;
   selector: {
     exact: string;
     prefix: string;
@@ -16,7 +21,8 @@ interface ApiResponse {
   partial?: boolean;
   passages: Array<{
     passage_id: string;
-    count: number;
+    othersCount: number;
+    youResonated: boolean;
     selector: {
       exact: string;
       prefix: string;
@@ -28,36 +34,28 @@ interface ApiResponse {
 // Module-level cache to avoid refetching on re-renders
 const cache = new Map<string, ResonancePassage[]>();
 
-// A passage the current user resonated with this session, and the count the
-// user has observed for it (the count after their own optimistic +1). We can't
-// trust server counts to reflect the user's submission immediately —
-// get-resonance returns aggregate counts with no per-fingerprint data, and the
-// post-write GitHub read can briefly still return the pre-write file — so we
-// hold this as a floor. It's only ever a lower bound on the truth (the user
-// plus the distinct others they'd already seen), and counts only grow, so
-// flooring to it can never overcount; it just prevents a transient undercount.
+// A passage the current user resonated with this session. We keep only the
+// selector — never an optimistic count. othersCount is server-authoritative and
+// unaffected by the user's own resonance, and youResonated is OR'd with the
+// local floor at render, so the only thing the optimistic state must guarantee
+// is that a brand-new passage stays visible until the server returns it.
 interface OptimisticAddition {
   selector: ResonancePassage['selector'];
-  minCount: number;
 }
 
-// Floor each of the user's resonated passages to the count they've observed:
-// trust the server count when it already meets the floor (it caught up, or
-// others have since pushed it higher), but never let a stale read drop a
-// passage below the user's own contribution. Passages the result omits are
-// re-added at the floor (e.g. a brand-new passage GitHub hasn't replicated).
-function applyOptimisticFloor(
+// Keep the user's just-resonated passages visible if the server doesn't list
+// them yet (brief read-after-write lag for a brand-new passage): add a missing
+// one at othersCount 0 / youResonated true ("You resonated with this"). A
+// passage the server *does* return keeps its authoritative othersCount.
+function applyPresenceFloor(
   passages: ResonancePassage[],
   optimistic: Map<string, OptimisticAddition>,
 ): ResonancePassage[] {
   if (optimistic.size === 0) return passages;
   const byId = new Map(passages.map((p) => [p.passageId, p]));
   for (const [id, local] of optimistic) {
-    const existing = byId.get(id);
-    if (!existing) {
-      byId.set(id, { passageId: id, count: local.minCount, selector: local.selector });
-    } else if (existing.count < local.minCount) {
-      byId.set(id, { ...existing, count: local.minCount });
+    if (!byId.has(id)) {
+      byId.set(id, { passageId: id, othersCount: 0, youResonated: true, selector: local.selector });
     }
   }
   return [...byId.values()];
@@ -82,10 +80,9 @@ export function useResonanceData(moduleSlug: string) {
   );
   const [loading, setLoading] = useState(!cache.has(moduleSlug));
   const [error, setError] = useState<Error | null>(null);
-  // The current user's resonated passages for this module, used to floor fetch
-  // results to the count the user has observed. Cleared on module change
-  // (entries are module-scoped, and the cache already carries them forward for
-  // revisits).
+  // The current user's resonated passages for this module, used only as a
+  // presence floor on fetch results. Cleared on module change (entries are
+  // module-scoped, and the cache already carries them forward for revisits).
   const optimisticRef = useRef<Map<string, OptimisticAddition>>(new Map());
   const controllerRef = useRef<AbortController | null>(null);
   // Monotonic id so a slow earlier request can't apply over a newer one.
@@ -103,8 +100,11 @@ export function useResonanceData(moduleSlug: string) {
 
     (async () => {
       try {
+        // Send the fingerprint so the server can report othersCount/youResonated
+        // for this caller rather than a raw total the client would have to split.
+        const fp = getUserFingerprint();
         const res = await fetch(
-          `/.netlify/functions/get-resonance?module=${encodeURIComponent(moduleSlug)}`,
+          `/.netlify/functions/get-resonance?module=${encodeURIComponent(moduleSlug)}&fp=${encodeURIComponent(fp)}`,
           { signal: controller.signal },
         );
 
@@ -119,7 +119,8 @@ export function useResonanceData(moduleSlug: string) {
         const data = (await res.json()) as ApiResponse;
         const mapped: ResonancePassage[] = data.passages.map((p) => ({
           passageId: p.passage_id,
-          count: p.count,
+          othersCount: p.othersCount,
+          youResonated: p.youResonated,
           selector: p.selector,
         }));
         // A superseded request must not apply its (older) result or poison the
@@ -127,13 +128,13 @@ export function useResonanceData(moduleSlug: string) {
         if (!isLatest()) return;
 
         if (data.partial) {
-          // Don't cache an incomplete view, and don't let dropped files reset
-          // known counts (e.g. knock the user's passage back to the floor).
+          // Don't cache an incomplete view, and don't let dropped files drop a
+          // known passage; keep previously known ones and overlay what we read.
           setPassages((prev) =>
-            applyOptimisticFloor(overlayPartial(prev, mapped), optimisticRef.current),
+            applyPresenceFloor(overlayPartial(prev, mapped), optimisticRef.current),
           );
         } else {
-          const merged = applyOptimisticFloor(mapped, optimisticRef.current);
+          const merged = applyPresenceFloor(mapped, optimisticRef.current);
           cache.set(moduleSlug, merged);
           setPassages(merged);
         }
@@ -170,40 +171,24 @@ export function useResonanceData(moduleSlug: string) {
     return () => controllerRef.current?.abort();
   }, [moduleSlug, runFetch]);
 
-  // Reflect a resonance the current user just submitted. The optimistic state
-  // update makes the glow appear immediately; the refetch then reconciles the
-  // count against the server. The refetch runs after the write persisted
-  // (sendResonance resolved) and supersedes a still-pending mount fetch whose
-  // pre-write count would otherwise clobber the glow — but it can still read a
-  // briefly-stale file, so the optimistic floor (recorded below) keeps the
-  // count from dipping under what the user observed.
-  //
-  // `observedCount` is the floor: the count the caller computed from a snapshot
-  // taken before the write (others-count, plus the user's own entry iff the
-  // server actually inserted one). It must come from a pre-write snapshot — not
-  // prev[idx].count + 1 — because an interleaved post-write fetch can resolve
-  // first and leave prev already counting this insertion, which a blind +1
-  // would then double (and the floor would lock in). We never lower a live
-  // count either: max() so a concurrent fetch that already advanced it wins.
+  // Reflect a resonance the current user just submitted. othersCount is
+  // unaffected by the user's own resonance and youResonated is OR'd with the
+  // local floor at render, so there's no count to bump here: we only ensure a
+  // brand-new passage is present so it can glow immediately, then refetch to
+  // pick up the authoritative selector/othersCount (and confirm youResonated).
   const addLocalResonance = useCallback(
-    (
-      passageId: string,
-      selector: ResonancePassage['selector'],
-      observedCount: number,
-    ) => {
+    (passageId: string, selector: ResonancePassage['selector']) => {
       setPassages((prev) => {
-        const idx = prev.findIndex((p) => p.passageId === passageId);
-        let next: ResonancePassage[];
-        if (idx === -1) {
-          next = [...prev, { passageId, count: observedCount, selector }];
-        } else {
-          const count = Math.max(prev[idx].count, observedCount);
-          next =
-            count === prev[idx].count
-              ? prev
-              : prev.map((p, i) => (i === idx ? { ...p, count } : p));
+        optimisticRef.current.set(passageId, { selector });
+        if (prev.some((p) => p.passageId === passageId)) {
+          // Already displayed — nothing to change (its othersCount stays, and
+          // youResonated flips via the local floor at render).
+          return prev;
         }
-        optimisticRef.current.set(passageId, { selector, minCount: observedCount });
+        const next: ResonancePassage[] = [
+          ...prev,
+          { passageId, othersCount: 0, youResonated: true, selector },
+        ];
         cache.set(moduleSlug, next);
         return next;
       });

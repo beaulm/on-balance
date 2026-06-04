@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { resonancePhrase } from '../lib/resonance';
 
 interface ResonanceTooltipProps {
-  count: number;
+  othersCount: number;
   youResonated: boolean;
   rect: DOMRect;
 }
@@ -21,11 +21,11 @@ interface Placement {
   showAbove: boolean;
 }
 
-export default function ResonanceTooltip({ count, youResonated, rect }: ResonanceTooltipProps) {
+export default function ResonanceTooltip({ othersCount, youResonated, rect }: ResonanceTooltipProps) {
   const boxRef = useRef<HTMLDivElement>(null);
   const [placement, setPlacement] = useState<Placement | null>(null);
 
-  const label = resonancePhrase(count, youResonated, 'here');
+  const label = resonancePhrase(othersCount, youResonated, 'here');
 
   // Position from the *rendered* size (which depends on label length, wrapping,
   // and the viewport-relative max-width) rather than hardcoded dimensions, so

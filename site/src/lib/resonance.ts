@@ -72,23 +72,23 @@ export function markPassageResonated(passageId: string): boolean {
 }
 
 /**
- * Human-readable resonance count, accounting for whether the current user is
- * one of the resonators. `suffix` only affects the others-only phrasing
- * ("...here" for the hover tooltip vs "...with this passage" for screen
- * readers); the "you" phrasing reads naturally in both contexts.
+ * Human-readable resonance phrase from the server-provided othersCount (distinct
+ * resonators excluding the caller) and whether the caller resonated. Taking
+ * othersCount directly avoids any count − 1 inference. `suffix` only affects the
+ * others-only phrasing ("...here" for the hover tooltip vs "...with this
+ * passage" for screen readers); the "you" phrasing reads naturally in both.
  */
 export function resonancePhrase(
-  count: number,
+  othersCount: number,
   youResonated: boolean,
   suffix = 'with this passage',
 ): string {
   if (youResonated) {
-    const others = count - 1;
-    if (others <= 0) return 'You resonated with this';
-    if (others === 1) return 'You and 1 other person resonated';
-    return `You and ${others} other people resonated`;
+    if (othersCount <= 0) return 'You resonated with this';
+    if (othersCount === 1) return 'You and 1 other person resonated';
+    return `You and ${othersCount} other people resonated`;
   }
-  return `${count} ${count === 1 ? 'person' : 'people'} resonated ${suffix}`;
+  return `${othersCount} ${othersCount === 1 ? 'person' : 'people'} resonated ${suffix}`;
 }
 
 export async function generatePassageId(
@@ -184,9 +184,7 @@ export function logResonanceFailure(
   console.error(`[Resonance] ${context} failed: ${status}${codeStr}${hint}`, extra ?? '');
 }
 
-export async function sendResonance(
-  payload: ResonancePayload,
-): Promise<{ inserted: boolean }> {
+export async function sendResonance(payload: ResonancePayload): Promise<void> {
   let response: Response;
   try {
     response = await fetch('/.netlify/functions/record-resonance', {
@@ -203,13 +201,10 @@ export async function sendResonance(
     });
   }
 
-  if (response.ok) {
-    const body = (await response.json().catch(() => ({}))) as { inserted?: boolean };
-    // Whether the server wrote a new entry vs. deduped an existing one. Default
-    // to false when absent so a missing/old response can't drive a phantom
-    // optimistic increment; the post-write refetch still reconciles the count.
-    return { inserted: body.inserted === true };
-  }
+  // The caller doesn't need the server's inserted/deduped result: the user's own
+  // resonance never changes othersCount, and youResonated is tracked locally
+  // (and confirmed by the next get-resonance), so success is all we need here.
+  if (response.ok) return;
 
   const body = (await response.json().catch(() => ({}))) as { code?: string };
   const retryAfterHeader = response.headers.get('Retry-After');

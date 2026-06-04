@@ -3,7 +3,7 @@ import { resonancePhrase } from './resonance';
 import type { MatchResult } from './useResonanceGlow';
 
 interface TooltipState {
-  count: number;
+  othersCount: number;
   youResonated: boolean;
   rect: DOMRect;
 }
@@ -54,8 +54,8 @@ export function useResonanceTooltip(
   const showTooltipForMatch = useCallback((match: MatchResult) => {
     activeRangeRef.current = match.range;
     const rect = match.range.getBoundingClientRect();
-    setTooltip({ count: match.count, youResonated: match.youResonated, rect });
-    setAriaLiveText(resonancePhrase(match.count, match.youResonated));
+    setTooltip({ othersCount: match.othersCount, youResonated: match.youResonated, rect });
+    setAriaLiveText(resonancePhrase(match.othersCount, match.youResonated));
   }, []);
 
   // Suppress when popup is visible
@@ -118,15 +118,15 @@ export function useResonanceTooltip(
     const handleFocusIn = (e: FocusEvent) => {
       if (isPopupVisible) return;
       const target = e.target as HTMLElement;
-      const countStr = target.getAttribute('data-resonance');
-      if (countStr) {
-        const count = parseInt(countStr, 10);
-        if (!isNaN(count)) {
+      const othersStr = target.getAttribute('data-others-count');
+      if (othersStr) {
+        const othersCount = parseInt(othersStr, 10);
+        if (!isNaN(othersCount)) {
           const youResonated = target.getAttribute('data-you-resonated') === 'true';
           const rect = target.getBoundingClientRect();
           activeRangeRef.current = null;
-          setTooltip({ count, youResonated, rect });
-          setAriaLiveText(resonancePhrase(count, youResonated));
+          setTooltip({ othersCount, youResonated, rect });
+          setAriaLiveText(resonancePhrase(othersCount, youResonated));
         }
       }
     };

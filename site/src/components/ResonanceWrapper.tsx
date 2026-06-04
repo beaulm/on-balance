@@ -62,22 +62,14 @@ export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrap
 
   const handleResonance = useCallback(async (selectionData: SelectionData) => {
     const payload = await formatSelectionData(moduleSlug, selectionData);
-    // Snapshot the displayed count before the write — the others-count, since
-    // no write has happened yet (a pre-existing self-resonance is handled by
-    // inserted=false below). Deriving the floor from this snapshot, rather than
-    // from a post-await prev that a concurrent fetch may have already advanced,
-    // keeps the optimistic +1 from double-counting an insertion already in view.
-    const baseCount =
-      passages.find((p) => p.passageId === payload.passage_id)?.count ?? 0;
-    const { inserted } = await sendResonance(payload);
+    await sendResonance(payload);
     const { exact, prefix, suffix } = payload.selector;
 
-    // Persist locally and mark this passage as the user's own, so the glow is
-    // labeled "You resonated". Add it unconditionally rather than only when
-    // markPassageResonated reports a new write: another tab may have already
-    // recorded it (shared localStorage), leaving this tab's resonatedIds state
-    // stale, and gating on the storage result would then mislabel the user's
-    // own glow as someone else's. The has() check just avoids a no-op re-render.
+    // Mark this passage as the user's own so the glow reads "You resonated" —
+    // true even when the server deduped or another tab recorded it first. There
+    // is no count to adjust: othersCount is unaffected by the user's own
+    // resonance, and the glow ORs youResonated with this local floor at render.
+    // The has() check just avoids a no-op re-render.
     markPassageResonated(payload.passage_id);
     setResonatedIds((prev) => {
       if (prev.has(payload.passage_id)) return prev;
@@ -86,13 +78,10 @@ export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrap
       return next;
     });
 
-    // The observed-count floor: the pre-write snapshot plus the user's own entry
-    // only if the server actually inserted one (false for a repeat or
-    // pre-feature resonance the server already had). Floored at 1 since the user
-    // is now a resonator regardless; the post-write refetch reconciles the rest.
-    const observedCount = Math.max(1, baseCount + (inserted ? 1 : 0));
-    addLocalResonance(payload.passage_id, { exact, prefix, suffix }, observedCount);
-  }, [moduleSlug, passages, addLocalResonance]);
+    // Ensure a brand-new passage is present so it glows immediately; the refetch
+    // inside reconciles the authoritative selector/othersCount.
+    addLocalResonance(payload.passage_id, { exact, prefix, suffix });
+  }, [moduleSlug, addLocalResonance]);
 
   const handleDismiss = useCallback(() => {
     setSelection(null);
@@ -113,7 +102,7 @@ export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrap
       />
       {tooltip && (
         <ResonanceTooltip
-          count={tooltip.count}
+          othersCount={tooltip.othersCount}
           youResonated={tooltip.youResonated}
           rect={tooltip.rect}
         />
