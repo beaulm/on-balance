@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-1f4de691c403",
+  "resonates": [
+    {
+      "timestamp": "2026-06-04T12:12:37.269Z",
+      "user_fingerprint": "90c9486e-d662-4cbd-996d-1a7f3b6896e9",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Friction is a feature",
+        "prefix": " Love is attention metabolized into commitment.\n\n\n",
+        "suffix": "\nTech spends billions removing friction. One‑click",
+        "startOffset": 3414,
+        "endOffset": 3435
+      }
+    }
+  ]
+}
