@@ -88,12 +88,22 @@ export function useResonanceData(moduleSlug: string) {
   // Monotonic id so a slow earlier request can't apply over a newer one.
   const fetchSeqRef = useRef(0);
 
-  const runFetch = useCallback(() => {
+  // `reset` is for an identity change (the fingerprint changed in another tab):
+  // the data we hold was computed for the old fingerprint, so drop it instead of
+  // preserving it. Without this, a partial response would overlay onto — and
+  // keep — old-identity othersCount/youResonated for any file it omitted.
+  const runFetch = useCallback((reset = false) => {
     controllerRef.current?.abort();
     const controller = new AbortController();
     controllerRef.current = controller;
     const seq = ++fetchSeqRef.current;
     const isLatest = () => seq === fetchSeqRef.current;
+
+    if (reset) {
+      // Old-identity local state must not survive into the new identity's view.
+      optimisticRef.current = new Map();
+      cache.delete(moduleSlug);
+    }
 
     setLoading(true);
     setError(null);
@@ -138,7 +148,15 @@ export function useResonanceData(moduleSlug: string) {
         // cache, even though its fetch wasn't aborted in time.
         if (!isLatest()) return;
 
-        if (data.partial) {
+        if (reset) {
+          // Replace wholesale — never preserve previous (old-identity) passages,
+          // even on a partial response. A file the partial omits simply
+          // reappears on the next complete fetch instead of lingering with stale
+          // othersCount/youResonated for the old fingerprint.
+          const merged = applyPresenceFloor(mapped, optimisticRef.current);
+          if (!data.partial) cache.set(moduleSlug, merged);
+          setPassages(merged);
+        } else if (data.partial) {
           // Don't cache an incomplete view, and don't let dropped files drop a
           // known passage; keep previously known ones and overlay what we read.
           setPassages((prev) =>

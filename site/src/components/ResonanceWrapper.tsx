@@ -67,10 +67,11 @@ export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrap
 
       // Identity changed in another tab (cleared/replaced): the passages we hold
       // were computed for the old fingerprint, so recompute othersCount /
-      // youResonated. No GitHub write happened, so one refresh suffices — no
-      // read-after-write lag to retry through.
+      // youResonated. Reset so old-identity data is dropped, not preserved (a
+      // partial overlay would otherwise keep it). No GitHub write happened, so
+      // one refresh suffices — no read-after-write lag to retry through.
       if (fingerprintChanged) {
-        refresh();
+        refresh(true);
         return;
       }
 
