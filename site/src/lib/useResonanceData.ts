@@ -101,10 +101,21 @@ export function useResonanceData(moduleSlug: string) {
     (async () => {
       try {
         // Send the fingerprint so the server can report othersCount/youResonated
-        // for this caller rather than a raw total the client would have to split.
-        const fp = getUserFingerprint();
+        // for this caller. If localStorage is blocked (privacy settings),
+        // getUserFingerprint throws — fall back to an anonymous fetch so the
+        // public community highlights still load; only the personal "You
+        // resonated" label is unavailable.
+        let fp: string | null = null;
+        try {
+          fp = getUserFingerprint();
+        } catch {
+          // anonymous view (no fp)
+        }
+        const query = fp
+          ? `module=${encodeURIComponent(moduleSlug)}&fp=${encodeURIComponent(fp)}`
+          : `module=${encodeURIComponent(moduleSlug)}`;
         const res = await fetch(
-          `/.netlify/functions/get-resonance?module=${encodeURIComponent(moduleSlug)}&fp=${encodeURIComponent(fp)}`,
+          `/.netlify/functions/get-resonance?${query}`,
           { signal: controller.signal },
         );
 
@@ -156,6 +167,15 @@ export function useResonanceData(moduleSlug: string) {
 
   useEffect(() => {
     optimisticRef.current = new Map();
+
+    // A module change must invalidate any request still in flight for the
+    // previous module so it can't resolve and overwrite this module's data.
+    // runFetch does this for the fetched branch below, but the cached branch
+    // returns early without it. The seq bump matters as much as the abort: a
+    // request that already resolved past its abort check would still pass
+    // isLatest() and apply its (now wrong-module) result.
+    controllerRef.current?.abort();
+    fetchSeqRef.current++;
 
     // Sync state immediately when moduleSlug changes (cached or not)
     const cached = cache.get(moduleSlug);
