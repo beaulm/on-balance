@@ -8,6 +8,7 @@ import {
   getResonatedPassageIds,
   markPassageResonated,
   resonatedStorageKey,
+  userFingerprintStorageKey,
 } from '../lib/resonance';
 import { useResonanceData } from '../lib/useResonanceData';
 import { useResonanceGlow } from '../lib/useResonanceGlow';
@@ -45,7 +46,16 @@ export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrap
     };
 
     const handleStorage = (e: StorageEvent) => {
-      if (e.key !== null && e.key !== resonatedStorageKey()) return;
+      const key = e.key;
+      // key === null means a full localStorage clear(); otherwise match either
+      // of our two keys. The fingerprint key matters because othersCount /
+      // youResonated are now computed relative to it.
+      const fingerprintChanged = key === null || key === userFingerprintStorageKey();
+      const resonatedChanged = key === null || key === resonatedStorageKey();
+      if (!fingerprintChanged && !resonatedChanged) return;
+
+      // Re-read ownership against the current fingerprint (which may itself have
+      // just changed in another tab).
       const nextIds = getResonatedPassageIds();
       setResonatedIds((prev) =>
         nextIds.size === prev.size && [...nextIds].every((id) => prev.has(id))
@@ -53,14 +63,22 @@ export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrap
           : nextIds,
       );
 
-      // For an existing passage nothing more is needed: othersCount is
-      // unaffected by the user's own resonance and youResonated flips via the
-      // OR at render. But a brand-new passage created in another tab isn't in
-      // our data and we have no selector to render it locally, so it can only
-      // appear via a fetch that observes the write. A single read can land in
-      // GitHub's read-after-write window and omit it, so refresh and retry
-      // (bounded, backing off) until every current-module resonated passage is
-      // present — and skip fetching entirely when nothing is missing.
+      clearRetries();
+
+      // Identity changed in another tab (cleared/replaced): the passages we hold
+      // were computed for the old fingerprint, so recompute othersCount /
+      // youResonated. No GitHub write happened, so one refresh suffices — no
+      // read-after-write lag to retry through.
+      if (fingerprintChanged) {
+        refresh();
+        return;
+      }
+
+      // A resonated-id change only needs a fetch for a brand-new passage this
+      // tab can't render locally (no selector); existing passages are already
+      // correct (othersCount invariant, youResonated via the render-time OR).
+      // Retry until the new passage is observed, backing off; skip if none are
+      // missing, and ignore other modules' passages via the id prefix.
       const prefix = `${moduleSlug}-`;
       const hasMissing = () =>
         [...getResonatedPassageIds()].some(
@@ -68,7 +86,6 @@ export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrap
             id.startsWith(prefix) &&
             !passagesRef.current.some((p) => p.passageId === id),
         );
-      clearRetries();
       let attempt = 0;
       const maxAttempts = 5;
       const tick = () => {

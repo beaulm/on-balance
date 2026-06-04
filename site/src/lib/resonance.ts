@@ -34,6 +34,13 @@ export function getUserFingerprint(): string {
   return id;
 }
 
+// localStorage key holding the anonymous fingerprint. Exported so a `storage`
+// listener can detect a cross-tab identity change (clear/replace), which
+// changes the server-computed othersCount/youResonated for every passage.
+export function userFingerprintStorageKey(): string {
+  return STORAGE_KEY;
+}
+
 // localStorage key for the passage IDs this fingerprint has resonated with,
 // persisted so "You resonated" survives a page reload. Keyed by fingerprint so
 // clearing the user ID also resets the set. Server-side data is not deduped by
