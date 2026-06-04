@@ -238,11 +238,9 @@ async function writeFile(
   });
 }
 
-// Returns whether a new entry was actually written: false when the fingerprint
-// already resonated this passage (deduped). The client needs this to decide
-// whether to increment its count — local history alone can't, since a
-// pre-feature or cleared client may lack a record the server still has.
-async function persistResonance(body: ResonanceBody): Promise<boolean> {
+// Persists the resonance, deduped by fingerprint: a repeat submission from the
+// same fingerprint is an idempotent no-op rather than a second entry.
+async function persistResonance(body: ResonanceBody): Promise<void> {
   if (!isSafePathSegment(body.module) || !isSafePathSegment(body.passage_id)) {
     throw new Error('Invalid module or passage_id');
   }
@@ -286,25 +284,23 @@ async function persistResonance(body: ResonanceBody): Promise<boolean> {
 
   const res = await attempt();
 
-  // null = the fingerprint already resonated; nothing written.
-  if (res === null) return false;
+  // null = the fingerprint already resonated; nothing written, idempotent success.
+  if (res === null) return;
 
   if (res.status === 409) {
     // A concurrent write changed the file between our read and PUT. Re-read
     // (which re-runs the dedupe check) and retry once.
     const retry = await attempt();
-    if (retry === null) return false;
+    if (retry === null) return;
     if (!retry.ok) {
       throw new Error(`GitHub PUT conflict retry ${retry.status}: ${await retry.text()}`);
     }
-    return true;
+    return;
   }
 
   if (!res.ok) {
     throw new Error(`GitHub PUT ${res.status}: ${await res.text()}`);
   }
-
-  return true;
 }
 
 export default async (request: Request, context: NetlifyHandlerContext) => {
@@ -359,9 +355,8 @@ export default async (request: Request, context: NetlifyHandlerContext) => {
     );
   }
 
-  let inserted: boolean;
   try {
-    inserted = await persistResonance(body);
+    await persistResonance(body);
   } catch (err) {
     console.error('[Resonance] GitHub API error:', err);
     return errorResponse('Failed to persist resonance', 'STORAGE_ERROR', 500);
@@ -370,7 +365,5 @@ export default async (request: Request, context: NetlifyHandlerContext) => {
   // Record quota only after successful persistence
   recordRequest(body.user_fingerprint);
 
-  // `inserted` is false when the submission was deduped (fingerprint already
-  // present); the client uses it to avoid counting a non-existent increment.
-  return successResponse({ status: 'success', message: 'Resonance recorded', inserted });
+  return successResponse({ status: 'success', message: 'Resonance recorded' });
 };
