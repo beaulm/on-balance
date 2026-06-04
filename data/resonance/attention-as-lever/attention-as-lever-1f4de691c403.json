@@ -12,6 +12,18 @@
         "startOffset": 3414,
         "endOffset": 3435
       }
+    },
+    {
+      "timestamp": "2026-06-04T12:13:49.197Z",
+      "user_fingerprint": "89b2a374-8a48-44d9-b038-7edb609a1a02",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Friction is a feature",
+        "prefix": " Love is attention metabolized into commitment.\n\n\n",
+        "suffix": "\nTech spends billions removing friction. One‑click",
+        "startOffset": 3414,
+        "endOffset": 3435
+      }
     }
   ]
 }
