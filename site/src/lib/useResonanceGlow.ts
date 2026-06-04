@@ -1,10 +1,20 @@
 import { useEffect, useRef, type RefObject } from 'react';
 import { findTextInDOM } from './textMatcher';
+import { resonancePhrase } from './resonance';
 import type { ResonancePassage } from './useResonanceData';
 
 export interface MatchResult {
   range: Range;
-  count: number;
+  passageId: string;
+  othersCount: number;
+  youResonated: boolean;
+}
+
+// Total distinct resonators, for glow intensity: others plus the user if they
+// resonated. othersCount and youResonated are kept separate (rather than a
+// single total) so the tooltip can phrase "You and N other people" exactly.
+function totalCount(m: { othersCount: number; youResonated: boolean }): number {
+  return m.othersCount + (m.youResonated ? 1 : 0);
 }
 
 function getGlowTier(count: number): 'low' | 'medium' | 'strong' {
@@ -17,7 +27,7 @@ function applyHighlightAPI(matches: MatchResult[]): void {
   const tiers: Record<string, Range[]> = { low: [], medium: [], strong: [] };
 
   for (const match of matches) {
-    tiers[getGlowTier(match.count)].push(match.range);
+    tiers[getGlowTier(totalCount(match))].push(match.range);
   }
 
   for (const [tier, ranges] of Object.entries(tiers)) {
@@ -38,14 +48,14 @@ function applyMarkFallback(matches: MatchResult[]): MatchResult[] {
   });
 
   for (const match of sorted) {
-    const opacity = match.count >= 10 ? 0.3 : match.count >= 3 ? 0.2 : 0.1;
+    const total = totalCount(match);
+    const opacity = total >= 10 ? 0.3 : total >= 3 ? 0.2 : 0.1;
     try {
       const mark = document.createElement('mark');
-      mark.setAttribute('data-resonance', String(match.count));
+      mark.setAttribute('data-others-count', String(match.othersCount));
+      mark.setAttribute('data-you-resonated', match.youResonated ? 'true' : 'false');
       mark.setAttribute('tabindex', '0');
-      mark.setAttribute('aria-label',
-        `${match.count} ${match.count === 1 ? 'person' : 'people'} resonated with this passage`,
-      );
+      mark.setAttribute('aria-label', resonancePhrase(match.othersCount, match.youResonated));
       mark.style.setProperty('--resonance-opacity', String(opacity));
       match.range.surroundContents(mark);
       applied.add(match);
@@ -66,7 +76,7 @@ function clearHighlightAPI(): void {
 }
 
 function clearMarkFallback(container: HTMLElement): void {
-  const marks = container.querySelectorAll('mark[data-resonance]');
+  const marks = container.querySelectorAll('mark[data-others-count]');
   for (const mark of marks) {
     const parent = mark.parentNode;
     if (!parent) continue;
@@ -81,6 +91,7 @@ function clearMarkFallback(container: HTMLElement): void {
 export function useResonanceGlow(
   containerRef: RefObject<HTMLDivElement | null>,
   passages: ResonancePassage[],
+  resonatedIds: Set<string>,
 ): RefObject<MatchResult[]> {
   const matchesRef = useRef<MatchResult[]>([]);
 
@@ -98,7 +109,15 @@ export function useResonanceGlow(
     for (const passage of passages) {
       const range = findTextInDOM(container, passage.selector);
       if (range) {
-        matches.push({ range, count: passage.count });
+        matches.push({
+          range,
+          passageId: passage.passageId,
+          othersCount: passage.othersCount,
+          // OR the server flag with the local floor: localStorage knows the user
+          // resonated even when a stale read or another tab's write hasn't been
+          // reflected in this fetch yet.
+          youResonated: passage.youResonated || resonatedIds.has(passage.passageId),
+        });
       }
     }
 
@@ -122,7 +141,7 @@ export function useResonanceGlow(
         clearMarkFallback(container);
       }
     };
-  }, [containerRef, passages]);
+  }, [containerRef, passages, resonatedIds]);
 
   return matchesRef;
 }

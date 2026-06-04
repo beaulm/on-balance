@@ -25,7 +25,11 @@ interface ResonanceFile {
 
 interface PassageSummary {
   passage_id: string;
-  count: number;
+  // Distinct resonators excluding the caller, so the client never has to infer
+  // whether a total already includes the caller's own submission. Invariant
+  // under the caller's own resonance, which only flips youResonated.
+  othersCount: number;
+  youResonated: boolean;
   selector: {
     exact: string;
     prefix: string;
@@ -130,6 +134,11 @@ export default async (request: Request, context: NetlifyHandlerContext) => {
     return errorResponse('Invalid or missing module parameter', 'INVALID_REQUEST', 400);
   }
 
+  // The caller's anonymous fingerprint, used only to compute youResonated /
+  // othersCount per passage (never written or used in a path). Optional: absent
+  // means an anonymous view (youResonated false, othersCount = all resonators).
+  const fingerprint = url.searchParams.get('fp');
+
   // List directory contents for this module
   const dirPath = `data/resonance/${moduleSlug}`;
   const listRes = await githubFetch(dirPath);
@@ -172,9 +181,17 @@ export default async (request: Request, context: NetlifyHandlerContext) => {
     }
     if (file.resonates.length === 0) continue;
     const first = file.resonates[0];
+    // Distinct fingerprints, split into the caller vs. everyone else. Using a
+    // Set also collapses any legacy duplicate entries written before
+    // record-resonance deduped by fingerprint, so the count is unique-by-person
+    // regardless of stored data.
+    const fingerprints = new Set(file.resonates.map((r) => r.user_fingerprint));
+    const youResonated = fingerprint !== null && fingerprints.has(fingerprint);
+    const othersCount = fingerprints.size - (youResonated ? 1 : 0);
     passages.push({
       passage_id: file.passage_id,
-      count: file.resonates.length,
+      othersCount,
+      youResonated,
       selector: {
         exact: first.selector.exact,
         prefix: first.selector.prefix,
