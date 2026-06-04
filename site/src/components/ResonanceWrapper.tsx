@@ -38,21 +38,25 @@ export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrap
 
   const handleResonance = useCallback(async (selectionData: SelectionData) => {
     const payload = await formatSelectionData(moduleSlug, selectionData);
-    await sendResonance(payload);
-
-    // Reflect the user's own resonance immediately, without waiting for a
-    // reload/refetch. markPassageResonated is idempotent, so a repeat resonance
-    // on the same passage won't double-count locally.
-    const isNew = markPassageResonated(payload.passage_id);
+    const { inserted } = await sendResonance(payload);
     const { exact, prefix, suffix } = payload.selector;
-    addLocalResonance(payload.passage_id, { exact, prefix, suffix }, isNew);
-    if (isNew) {
+
+    // Mark locally so the glow and "You resonated" wording persist — true even
+    // when the server deduped (the user is still a resonator).
+    const newlyMarked = markPassageResonated(payload.passage_id);
+    if (newlyMarked) {
       setResonatedIds((prev) => {
         const next = new Set(prev);
         next.add(payload.passage_id);
         return next;
       });
     }
+
+    // Only bump the count when the server actually wrote a new entry. Local
+    // history can be absent (pre-feature or cleared) while the fingerprint is
+    // already counted server-side; trusting it would optimistically count an
+    // increment that never happened, and the floor would then preserve it.
+    addLocalResonance(payload.passage_id, { exact, prefix, suffix }, inserted);
   }, [moduleSlug, addLocalResonance]);
 
   const handleDismiss = useCallback(() => {

@@ -182,7 +182,9 @@ export function logResonanceFailure(
   console.error(`[Resonance] ${context} failed: ${status}${codeStr}${hint}`, extra ?? '');
 }
 
-export async function sendResonance(payload: ResonancePayload): Promise<void> {
+export async function sendResonance(
+  payload: ResonancePayload,
+): Promise<{ inserted: boolean }> {
   let response: Response;
   try {
     response = await fetch('/.netlify/functions/record-resonance', {
@@ -199,7 +201,13 @@ export async function sendResonance(payload: ResonancePayload): Promise<void> {
     });
   }
 
-  if (response.ok) return;
+  if (response.ok) {
+    const body = (await response.json().catch(() => ({}))) as { inserted?: boolean };
+    // Whether the server wrote a new entry vs. deduped an existing one. Default
+    // to false when absent so a missing/old response can't drive a phantom
+    // optimistic increment; the post-write refetch still reconciles the count.
+    return { inserted: body.inserted === true };
+  }
 
   const body = (await response.json().catch(() => ({}))) as { code?: string };
   const retryAfterHeader = response.headers.get('Retry-After');
