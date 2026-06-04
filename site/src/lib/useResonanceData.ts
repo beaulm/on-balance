@@ -101,8 +101,13 @@ export function useResonanceData(moduleSlug: string) {
 
     if (reset) {
       // Old-identity local state must not survive into the new identity's view.
+      // Clear the whole cache (every cached module was computed for the old
+      // fingerprint, not just this one — a revisit would otherwise early-return
+      // stale data), and drop current passages now so a failed refresh can't
+      // leave old-identity labels on screen.
       optimisticRef.current = new Map();
-      cache.delete(moduleSlug);
+      cache.clear();
+      setPassages([]);
     }
 
     setLoading(true);
