@@ -7,6 +7,7 @@ import {
   sendResonance,
   getResonatedPassageIds,
   markPassageResonated,
+  resonatedStorageKey,
 } from '../lib/resonance';
 import { useResonanceData } from '../lib/useResonanceData';
 import { useResonanceGlow } from '../lib/useResonanceGlow';
@@ -26,6 +27,23 @@ export default function ResonanceWrapper({ children, moduleSlug }: ResonanceWrap
 
   useEffect(() => {
     setResonatedIds(getResonatedPassageIds());
+
+    // Sync when another tab records a resonance: localStorage is shared, but
+    // this tab's resonatedIds state would otherwise stay stale until reload,
+    // leaving an already-displayed passage labeled as someone else's. The
+    // `storage` event fires only in other tabs, so this won't double-handle the
+    // submitting tab. e.key is null on a full clear() — re-read in that case too.
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key !== null && e.key !== resonatedStorageKey()) return;
+      const nextIds = getResonatedPassageIds();
+      setResonatedIds((prev) =>
+        nextIds.size === prev.size && [...nextIds].every((id) => prev.has(id))
+          ? prev
+          : nextIds,
+      );
+    };
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
   }, []);
 
   const { passages, addLocalResonance } = useResonanceData(moduleSlug);

@@ -34,11 +34,13 @@ export function getUserFingerprint(): string {
   return id;
 }
 
-// Passage IDs this fingerprint has resonated with, persisted so "You resonated"
-// survives a page reload. Keyed by fingerprint so clearing the user ID also
-// resets the set. Server-side data is not deduped by fingerprint, so this is
-// the only reliable signal for "did *I* resonate with this passage".
-function resonatedStorageKey(): string {
+// localStorage key for the passage IDs this fingerprint has resonated with,
+// persisted so "You resonated" survives a page reload. Keyed by fingerprint so
+// clearing the user ID also resets the set. Server-side data is not deduped by
+// fingerprint, so this is the only reliable signal for "did *I* resonate with
+// this passage". Exported so a `storage` listener can recognize cross-tab
+// updates to this exact key.
+export function resonatedStorageKey(): string {
   return `${RESONATED_KEY_PREFIX}${getUserFingerprint()}`;
 }
 
