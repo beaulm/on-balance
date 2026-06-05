@@ -1,7 +1,44 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="On Balance">
-  <title>On Balance</title>
-  <ellipse cx="32" cy="46" rx="23" ry="11" fill="#32424C"/>
-  <ellipse cx="32" cy="27" rx="13" ry="6" fill="#C7A979"/>
-  <circle cx="32" cy="12" r="7" fill="#809B8C"/>
-  <path d="M 18 60 Q 32 62 46 60" stroke="#809B8C" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.7"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000" role="img" aria-labelledby="title desc">
+  <title id="title">On Balance logo</title>
+  <desc id="desc">Production-ready geometric logo for On Balance.</desc>
+  <defs>
+    <clipPath id="outerClip"><circle cx="500" cy="500" r="480"/></clipPath>
+    <clipPath id="leftHalf"><rect x="0" y="0" width="500" height="1000"/></clipPath>
+    <clipPath id="rightHalf"><rect x="500" y="0" width="500" height="1000"/></clipPath>
+    <mask id="leftMainMask">
+      <rect width="1000" height="1000" fill="black"/>
+      <rect x="0" y="0" width="500" height="1000" fill="white"/>
+      <circle cx="500" cy="740" r="240" fill="black"/>
+      <circle cx="500" cy="260" r="80" fill="black"/>
+    </mask>
+    <mask id="bottomRightMask">
+      <rect width="1000" height="1000" fill="black"/>
+      <rect x="500" y="0" width="500" height="1000" fill="white"/>
+      <circle cx="500" cy="740" r="80" fill="black"/>
+    </mask>
+    <style>
+      .ink { fill: #111111; }
+      .paper { fill: #ffffff; }
+      .line { fill: none; stroke: #111111; stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <!-- Base white disc -->
+  <circle class="paper" cx="500" cy="500" r="480"/>
+
+  <!-- Filled regions -->
+  <g clip-path="url(#outerClip)">
+    <circle class="ink" cx="500" cy="500" r="480" mask="url(#leftMainMask)"/>
+    <circle class="ink" cx="500" cy="740" r="240" mask="url(#bottomRightMask)"/>
+    <g clip-path="url(#leftHalf)"><circle class="ink" cx="500" cy="740" r="80"/></g>
+    <g clip-path="url(#rightHalf)"><circle class="ink" cx="500" cy="260" r="80"/></g>
+  </g>
+
+  <!-- Final linework -->
+  <circle class="line" cx="500" cy="500" r="480"/>
+  <line class="line" x1="500" y1="20" x2="500" y2="980"/>
+  <circle class="line" cx="500" cy="740" r="240"/>
+  <path class="line" d="M500 20 A240 240 0 0 1 500 500"/>
+  <circle class="line" cx="500" cy="260" r="80"/>
+  <circle class="line" cx="500" cy="740" r="80"/>
 </svg>
