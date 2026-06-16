@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-6c1dbfd112fd",
+  "resonates": [
+    {
+      "timestamp": "2026-06-16T15:41:21.807Z",
+      "user_fingerprint": "0082f645-cfd8-4793-97f9-c03d9bbc0604",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Attention is pattern amplification",
+        "prefix": "s one of the first levers of an intentional life.\n",
+        "suffix": ". To attend is to bring certain patterns into the ",
+        "startOffset": 435,
+        "endOffset": 469
+      }
+    }
+  ]
+}
