@@ -1,0 +1,17 @@
+{
+  "passage_id": "attention-as-lever-2af88194e200",
+  "resonates": [
+    {
+      "timestamp": "2026-06-30T21:42:26.312Z",
+      "user_fingerprint": "45c3aecc-88fa-49c4-96e4-d0a6b24376f4",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "Tech spends billions removing friction.",
+        "prefix": "abolized into commitment.\n\n\nFriction is a feature\n",
+        "suffix": " One‑click buying. Infinite scroll. Auto‑play. But",
+        "startOffset": 3436,
+        "endOffset": 3475
+      }
+    }
+  ]
+}
