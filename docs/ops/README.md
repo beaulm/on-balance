@@ -15,7 +15,7 @@ This directory contains templates and documentation for On Balance project opera
 
 - **Purpose:** Analyze themes, adjust policies, plan next bets
 - **Template:** [synthesis-template.md](synthesis-template.md)
-- **Schedule:** First Monday of each month
+- **Schedule:** 1st of each month, reviewing the prior calendar month
 - **Output:** Create `synthesis/YYYY-MM.md` with month's analysis
 
 ## File Organization
