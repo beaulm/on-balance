@@ -8,7 +8,7 @@ This directory contains templates and documentation for On Balance project opera
 
 - **Purpose:** Track board movement, identify blockers, maintain flow
 - **Template:** [heartbeat-template.md](heartbeat-template.md)
-- **Schedule:** Every Sunday midday (feeds the Sunday-evening weekly retro — GB-924)
+- **Schedule:** Every Sunday morning (feeds the Sunday-evening weekly retro)
 - **Output:** Create `heartbeat/YYYY-MM-DD.md` with current week's status
 
 ### Monthly Synthesis (30-45 minutes)  
