@@ -48,8 +48,8 @@ docs/ops/
 ## Creating a Synthesis
 
 1. Copy the [synthesis-template.md](synthesis-template.md)
-2. Create `synthesis/YYYY-MM.md` (current month)
-3. Review the month's heartbeats and metrics to fill in:
+2. Create `synthesis/YYYY-MM.md` (the prior month — the one being analyzed, not the month you're writing in)
+3. Review that month's heartbeats and metrics to fill in:
    - Flow summary and DORA-style metrics
    - What compounded vs. what didn't work
    - Theme analysis and process adjustments
