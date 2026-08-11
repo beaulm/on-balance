@@ -8,14 +8,14 @@ This directory contains templates and documentation for On Balance project opera
 
 - **Purpose:** Track board movement, identify blockers, maintain flow
 - **Template:** [heartbeat-template.md](heartbeat-template.md)
-- **Schedule:** Every Monday morning
+- **Schedule:** Every Sunday morning (feeds the Sunday-evening weekly retro)
 - **Output:** Create `heartbeat/YYYY-MM-DD.md` with current week's status
 
 ### Monthly Synthesis (30-45 minutes)  
 
 - **Purpose:** Analyze themes, adjust policies, plan next bets
 - **Template:** [synthesis-template.md](synthesis-template.md)
-- **Schedule:** First Monday of each month
+- **Schedule:** 1st of each month, reviewing the prior calendar month
 - **Output:** Create `synthesis/YYYY-MM.md` with month's analysis
 
 ## File Organization
@@ -38,7 +38,7 @@ docs/ops/
 ## Creating a Heartbeat
 
 1. Copy the [heartbeat-template.md](heartbeat-template.md)
-2. Create `heartbeat/YYYY-MM-DD.md` (Monday date)
+2. Create `heartbeat/YYYY-MM-DD.md` (Sunday date)
 3. Fill in the template with current week's data:
    - Board movement (completed, in progress, promoted items)
    - Metrics snapshot (PRs, issues, WIP, build status)
@@ -48,8 +48,8 @@ docs/ops/
 ## Creating a Synthesis
 
 1. Copy the [synthesis-template.md](synthesis-template.md)
-2. Create `synthesis/YYYY-MM.md` (current month)
-3. Review the month's heartbeats and metrics to fill in:
+2. Create `synthesis/YYYY-MM.md` (the prior month — the one being analyzed, not the month you're writing in)
+3. Review that month's heartbeats and metrics to fill in:
    - Flow summary and DORA-style metrics
    - What compounded vs. what didn't work
    - Theme analysis and process adjustments
