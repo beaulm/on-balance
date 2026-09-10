@@ -37,48 +37,49 @@ docs/ops/
 
 ## Creating a Heartbeat
 
-1. Copy the [heartbeat-template.md](heartbeat-template.md)
+1. Copy the [heartbeat-template.md](heartbeat-template.md). If starting from the prior heartbeat, restore any missing template sections and replace the prior week's entries.
 2. Create `heartbeat/YYYY-MM-DD.md` (Sunday date)
 3. Fill in the template with current week's data:
-   - Board movement (completed, in progress, promoted items)
+   - Board movement (completed, in progress, promoted, and other moves)
    - Metrics snapshot (PRs, issues, WIP, build status)
    - Notable outcomes and blockers
    - Next week focus areas
 
 ### Consistency rules
 
-Heartbeats are written by opening the prior week's file, so wording carries forward
-unless it is deliberately re-checked. Two rules keep the record internally consistent.
+**Separate the snapshot from movements and trends.** Under Board Movement,
+"In Progress (Now)" lists only the items in Now at the reporting cutoff. The other
+subsections record transitions during the reporting window:
 
-**Board Movement holds state, not trends.** A claim like "Nth consecutive week" is a
-trend, and trend prose parked in a state field survives copy-forward unnoticed — the
-numbers around it get refreshed, the sentence does not. Put streaks in Notable Outcomes,
-which is rewritten each week.
+- **Completed (Now → Done):** Items that moved from Now to Done.
+- **Promoted (Next → Now):** Items that moved from Next to Now.
+- **Other Moves:** Any other column changes, including parking, blocking, or resuming
+  an item. Include the item, source → destination, and reason. For example,
+  `#52 — Now → Later; parked pending re-evaluation` belongs here, not under Completed.
 
-**`Current WIP` is the number of items in Now at the snapshot — which is the number of
-items listed under "In Progress (Now)".** [ADR 0001](../adr/0001-flow-based-cadence.md)
-caps Now at 2 items and makes that cap the gate on promotion ("move from Next to Now
-only when under WIP limit"), so a count that drifts from column occupancy stops working
-as a gate: two promoted-but-unstarted items reported as `0/2` would advertise capacity
-that does not exist.
+Record each transition in its matching subsection, even if an item moves more than
+once during the window. Use `None` when a subsection has no entries. Put streaks and
+trends (such as "Nth consecutive week") in Notable Outcomes; rewrite that section
+and verify its claims against the relevant heartbeats each week.
 
-Read the number off the section rather than reasoning case by case. Two consequences are
-worth stating, because both have been got wrong here:
+**Count Now occupancy at the same reporting cutoff.** `Current WIP` is the number of
+distinct items in Now, reported as `N/2`, consistent with the limit in
+[ADR 0001](../adr/0001-flow-based-cadence.md). List each of those items once under
+"In Progress (Now)", including items carried over from prior weeks. Count a promoted
+item if it remains in Now, even when work has not started; annotate that status
+without reducing the count. An item outside Now at the cutoff does not belong in
+that list or count. Describe parked work elsewhere, such as Next Week Focus, if relevant.
 
-- A promoted item is in Now from the moment it is promoted, whether or not anyone has
-  started it. It belongs under "In Progress" as well as "Promoted", and it counts. To
-  record that it has not been picked up, annotate rather than discount:
-  `1/2 (promoted, not yet started)`.
-- An item that left Now during the window does not count, whatever column it left for —
-  Done, Blocked, Next or Later. The movement sections record the move; "In Progress"
-  records what is still there. This is not hypothetical: #52 was parked from Now out to
-  "Later" in `heartbeat/2026-08-09.md`.
+Check the final list against current board state and the recorded movements before
+counting it. `0/2` is correct only when Now is empty. A Next → Now → Done item appears
+under both Promoted and Completed; a Next → Now → Later item appears under Promoted
+and Other Moves. Neither remains under In Progress unless it returns to Now before
+the cutoff, and any other items still in Now continue to count.
 
-`heartbeat/2026-01-20.md` and `heartbeat/2026-02-02.md` are not precedent for a looser
-count: each reports `0/2` while promoting an item the same file does not record as
-leaving Now, and each says "In Progress (Now): None currently" alongside it. The section
-and the number are wrong together, in the same direction. `heartbeat/2026-03-30.md` is
-the shape to follow — the promoted item appears under "In Progress" and WIP reads `1/2`.
+Older heartbeats can contain inconsistent lists or counts; copying them does not
+establish a counting convention. In particular, `heartbeat/2026-01-20.md` and
+`heartbeat/2026-02-02.md` report `0/2` alongside promotions without recording an exit
+from Now. Rebuild the snapshot rather than carrying those inconsistencies forward.
 
 ## Creating a Synthesis
 
@@ -105,7 +106,7 @@ These metrics are captured in both heartbeats (snapshot) and synthesis (trends/a
 
 The GitHub Project board follows these principles:
 
-- **Columns:** Now → Next → Later → Done
+- **Columns:** Now, Next, Later, Blocked, Done
 - **WIP Limits:** Now ≤ 2 items (solo maintainer)
 - **Pull System:** Only move Next → Now when under WIP limit
 - **Issue-driven:** Every change starts with an Issue, PRs link via `Closes #NN`
