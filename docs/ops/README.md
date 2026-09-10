@@ -48,37 +48,37 @@ docs/ops/
 ### Consistency rules
 
 Heartbeats are written by opening the prior week's file, so wording carries forward
-unless it is deliberately re-checked. Three rules keep the record internally consistent:
+unless it is deliberately re-checked. Two rules keep the record internally consistent.
 
-- **Board Movement holds state, not trends.** A claim like "Nth consecutive week" is a
-  trend, and trend prose parked in a state field survives copy-forward unnoticed — the
-  numbers around it get refreshed, the sentence does not. Put streaks in Notable
-  Outcomes, which is rewritten each week.
-- **"In Progress (Now)" and "Promoted (Next → Now)" must agree** about whether the Now
-  slot is occupied. Anything promoted is in Now from that moment, so list it under
-  "In Progress" as well — "Promoted" records the movement, "In Progress" records the
-  resulting state. The exception is an item that also finished inside the window: it
-  belongs under "Completed", not "In Progress", and leaves the slot empty again. Short
-  of that, if something is promoted, "In Progress" cannot report the slot empty.
-- **WIP is the number of items in Now, not the number being actively worked.**
-  [ADR 0001](../adr/0001-flow-based-cadence.md) caps *Now* at 2 items and makes that cap
-  the gate on promotion — "move from Next to Now only when under WIP limit" — so the
-  reported `N/2` has to equal column occupancy or it stops working as a gate. Two
-  promoted-but-unstarted items reported as `0/2` would advertise capacity that does not
-  exist and admit a third promotion over the limit. A promoted item counts from the
-  moment it is promoted; to record that nobody has picked it up yet, annotate rather
-  than discount: `1/2 (promoted, not yet started)`. It stops counting only when it
-  leaves Now, which can happen inside the same week: an item that goes Next → Now →
-  Done appears under both **Promoted** and **Completed**, and correctly leaves
-  occupancy at zero. So `0/2` alongside a promotion is right exactly when the promoted
-  item also appears under **Completed** — otherwise the item is still in Now and the
-  count is wrong.
+**Board Movement holds state, not trends.** A claim like "Nth consecutive week" is a
+trend, and trend prose parked in a state field survives copy-forward unnoticed — the
+numbers around it get refreshed, the sentence does not. Put streaks in Notable Outcomes,
+which is rewritten each week.
+
+**`Current WIP` is the number of items in Now at the snapshot — which is the number of
+items listed under "In Progress (Now)".** [ADR 0001](../adr/0001-flow-based-cadence.md)
+caps Now at 2 items and makes that cap the gate on promotion ("move from Next to Now
+only when under WIP limit"), so a count that drifts from column occupancy stops working
+as a gate: two promoted-but-unstarted items reported as `0/2` would advertise capacity
+that does not exist.
+
+Read the number off the section rather than reasoning case by case. Two consequences are
+worth stating, because both have been got wrong here:
+
+- A promoted item is in Now from the moment it is promoted, whether or not anyone has
+  started it. It belongs under "In Progress" as well as "Promoted", and it counts. To
+  record that it has not been picked up, annotate rather than discount:
+  `1/2 (promoted, not yet started)`.
+- An item that left Now during the window does not count, whatever column it left for —
+  Done, Blocked, Next or Later. The movement sections record the move; "In Progress"
+  records what is still there. This is not hypothetical: #52 was parked from Now out to
+  "Later" in `heartbeat/2026-08-09.md`.
 
 `heartbeat/2026-01-20.md` and `heartbeat/2026-02-02.md` are not precedent for a looser
-count: each reports `0/2` while promoting an item that did not complete, and each also
-breaks the rule above by saying "In Progress (Now): None currently" in the same file.
-`heartbeat/2026-03-30.md` is the correct shape — the promoted item appears under both
-headings and WIP reads `1/2`.
+count: each reports `0/2` while promoting an item the same file does not record as
+leaving Now, and each says "In Progress (Now): None currently" alongside it. The section
+and the number are wrong together, in the same direction. `heartbeat/2026-03-30.md` is
+the shape to follow — the promoted item appears under "In Progress" and WIP reads `1/2`.
 
 ## Creating a Synthesis
 
