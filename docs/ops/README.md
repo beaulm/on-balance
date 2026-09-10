@@ -66,8 +66,12 @@ unless it is deliberately re-checked. Three rules keep the record internally con
   promoted-but-unstarted items reported as `0/2` would advertise capacity that does not
   exist and admit a third promotion over the limit. A promoted item counts from the
   moment it is promoted; to record that nobody has picked it up yet, annotate rather
-  than discount: `1/2 (promoted, not yet started)`. Never report `0/2` alongside a
-  promotion.
+  than discount: `1/2 (promoted, not yet started)`. It stops counting only when it
+  leaves Now, which can happen inside the same week: an item that goes Next → Now →
+  Done appears under both **Promoted** and **Completed**, and correctly leaves
+  occupancy at zero. So `0/2` alongside a promotion is right exactly when the promoted
+  item also appears under **Completed** — otherwise the item is still in Now and the
+  count is wrong.
 
 `heartbeat/2026-01-20.md` and `heartbeat/2026-02-02.md` are not precedent for a looser
 count: each reports `0/2` while promoting an item, and each also breaks the rule above
