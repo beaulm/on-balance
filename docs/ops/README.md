@@ -45,6 +45,23 @@ docs/ops/
    - Notable outcomes and blockers
    - Next week focus areas
 
+### Consistency rules
+
+Heartbeats are written by opening the prior week's file, so wording carries forward
+unless it is deliberately re-checked. Three rules keep the record internally consistent:
+
+- **Board Movement holds state, not trends.** A claim like "Nth consecutive week" is a
+  trend, and trend prose parked in a state field survives copy-forward unnoticed — the
+  numbers around it get refreshed, the sentence does not. Put streaks in Notable
+  Outcomes, which is rewritten each week.
+- **"In Progress (Now)" and "Promoted (Next → Now)" must agree** about whether the Now
+  slot is occupied. If something is promoted, "In Progress" cannot also report the slot
+  empty.
+- **WIP counts started work.** A promoted-but-not-yet-started item counts `0/2` (see
+  `heartbeat/2026-01-20.md`, `heartbeat/2026-02-02.md`); it counts toward WIP once work
+  begins (`heartbeat/2026-03-30.md`). The limit itself is under
+  [Board Management](#board-management).
+
 ## Creating a Synthesis
 
 1. Copy the [synthesis-template.md](synthesis-template.md)
