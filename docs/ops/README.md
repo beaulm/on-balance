@@ -55,12 +55,24 @@ unless it is deliberately re-checked. Three rules keep the record internally con
   numbers around it get refreshed, the sentence does not. Put streaks in Notable
   Outcomes, which is rewritten each week.
 - **"In Progress (Now)" and "Promoted (Next → Now)" must agree** about whether the Now
-  slot is occupied. If something is promoted, "In Progress" cannot also report the slot
+  slot is occupied. Anything promoted is in Now from that moment, so list it under
+  "In Progress" as well — "Promoted" records the movement, "In Progress" records the
+  resulting state. If something is promoted, "In Progress" cannot also report the slot
   empty.
-- **WIP counts started work.** A promoted-but-not-yet-started item counts `0/2` (see
-  `heartbeat/2026-01-20.md`, `heartbeat/2026-02-02.md`); it counts toward WIP once work
-  begins (`heartbeat/2026-03-30.md`). The limit itself is under
-  [Board Management](#board-management).
+- **WIP is the number of items in Now, not the number being actively worked.**
+  [ADR 0001](../adr/0001-flow-based-cadence.md) caps *Now* at 2 items and makes that cap
+  the gate on promotion — "move from Next to Now only when under WIP limit" — so the
+  reported `N/2` has to equal column occupancy or it stops working as a gate. Two
+  promoted-but-unstarted items reported as `0/2` would advertise capacity that does not
+  exist and admit a third promotion over the limit. A promoted item counts from the
+  moment it is promoted; to record that nobody has picked it up yet, annotate rather
+  than discount: `1/2 (promoted, not yet started)`. Never report `0/2` alongside a
+  promotion.
+
+`heartbeat/2026-01-20.md` and `heartbeat/2026-02-02.md` are not precedent for a looser
+count: each reports `0/2` while promoting an item, and each also breaks the rule above
+by saying "In Progress (Now): None currently" in the same file. `heartbeat/2026-03-30.md`
+is the correct shape — the promoted item appears under both headings and WIP reads `1/2`.
 
 ## Creating a Synthesis
 
