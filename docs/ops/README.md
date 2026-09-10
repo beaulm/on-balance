@@ -57,8 +57,9 @@ unless it is deliberately re-checked. Three rules keep the record internally con
 - **"In Progress (Now)" and "Promoted (Next → Now)" must agree** about whether the Now
   slot is occupied. Anything promoted is in Now from that moment, so list it under
   "In Progress" as well — "Promoted" records the movement, "In Progress" records the
-  resulting state. If something is promoted, "In Progress" cannot also report the slot
-  empty.
+  resulting state. The exception is an item that also finished inside the window: it
+  belongs under "Completed", not "In Progress", and leaves the slot empty again. Short
+  of that, if something is promoted, "In Progress" cannot report the slot empty.
 - **WIP is the number of items in Now, not the number being actively worked.**
   [ADR 0001](../adr/0001-flow-based-cadence.md) caps *Now* at 2 items and makes that cap
   the gate on promotion — "move from Next to Now only when under WIP limit" — so the
@@ -74,9 +75,10 @@ unless it is deliberately re-checked. Three rules keep the record internally con
   count is wrong.
 
 `heartbeat/2026-01-20.md` and `heartbeat/2026-02-02.md` are not precedent for a looser
-count: each reports `0/2` while promoting an item, and each also breaks the rule above
-by saying "In Progress (Now): None currently" in the same file. `heartbeat/2026-03-30.md`
-is the correct shape — the promoted item appears under both headings and WIP reads `1/2`.
+count: each reports `0/2` while promoting an item that did not complete, and each also
+breaks the rule above by saying "In Progress (Now): None currently" in the same file.
+`heartbeat/2026-03-30.md` is the correct shape — the promoted item appears under both
+headings and WIP reads `1/2`.
 
 ## Creating a Synthesis
 

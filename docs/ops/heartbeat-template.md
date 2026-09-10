@@ -4,7 +4,8 @@
 
 <!-- State only. Streak and trend claims ("Nth consecutive week") belong in Notable
      Outcomes, not here — parked in a state field they go stale on copy-forward.
-     "In Progress" and "Promoted" must agree about whether the Now slot is occupied. -->
+     "In Progress" and "Promoted" must agree about whether the Now slot is occupied,
+     unless the promoted item also finished this week — then it goes under "Completed". -->
 
 - **Completed (Now → Done):**
   - [Item 1] - Brief description
