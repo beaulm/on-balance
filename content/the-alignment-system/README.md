@@ -1,7 +1,7 @@
 ---
 title: "The Alignment System"
 version: "1.1.0"
-last_updated: "2026-06-03"
+last_updated: "2026-09-14"
 maintainers: ["Beau"]
 summary: "Finding flow between Being, Doing, Feeling, and Thinking — so effort turns into ease, and practice turns into growth."
 mvp_time_per_day: "≤10 min"
@@ -30,7 +30,7 @@ Alignment feels different. The car tracks straight. You're still driving. You st
 This guide is about learning to notice that mismatch earlier:
 
 - When to stay with the task
-- When to switch task
+- When to switch tasks
 - When to change your state instead
 - How to build a life where more of your effort goes into movement rather than correction
 
@@ -198,7 +198,10 @@ These are simply the names that resonated with us. If others fit your inner land
 
 #### The Library (Thinking + Being)
 
-This is where you reflect, strategize, see patterns, integrate understanding. Your body is still but your mind is active, making connections.
+This is where you reflect, strategize, see patterns, and integrate understanding. Your body is still but your mind is active, making connections.
+
+<details>
+<summary>Explore the Library (signals, shadow side & uses)</summary>
 
 **What it's for:** Morning pages, strategic planning, integrating lessons, seeing patterns, philosophical thinking, big-picture reflection.
 
@@ -210,9 +213,14 @@ This is where you reflect, strategize, see patterns, integrate understanding. Yo
 
 **Shadow side:** Rumination. Analysis paralysis. Thinking about thinking about thinking. The Library's shadow looks productive — it wears the costume of depth — but nothing moves. You can spend weeks "processing" something that needed ten minutes of honesty and a single action. If you've been in the Library for days and nothing has crystallized, you're probably avoiding one of the other territories.
 
+</details>
+
 #### The Workshop (Thinking + Doing)
 
-This is where you solve problems, plan projects, analyze data, write code. Your mind is sharp, your body engaged with purpose.
+This is where you solve problems, plan projects, analyze data, and build. Your mind is sharp, your body engaged with purpose.
+
+<details>
+<summary>Explore the Workshop (signals, shadow side & uses)</summary>
 
 **What it's for:** Planning a trip, analyzing your budget, writing documentation, strategic problem-solving, debugging, building systems.
 
@@ -224,9 +232,14 @@ This is where you solve problems, plan projects, analyze data, write code. Your 
 
 **Shadow side:** Mechanical production — efficient but hollow. The Workshop's shadow is one of the most socially acceptable places to hide, because it looks like productivity. You can build elaborate systems around a feeling you don't want to sit with, or fill every waking hour with tasks to avoid the quiet where grief or loneliness might find you. If you're producing but nothing you make feels meaningful, the Workshop has become a hiding place.
 
+</details>
+
 #### The Meadow (Feeling + Being)
 
-This is where you rest, grieve, appreciate, simply exist. You're receptive to sensation and emotion without needing to act on them.
+This is where you rest, grieve, appreciate, and simply exist. You're receptive to sensation and emotion without needing to act on them.
+
+<details>
+<summary>Explore the Meadow (signals, shadow side & uses)</summary>
 
 **What it's for:** Sitting with grief or joy, savoring stillness, gentle stretching, processing emotions, deep rest, simple appreciation. Being present with whatever's here without agenda.
 
@@ -238,9 +251,14 @@ This is where you rest, grieve, appreciate, simply exist. You're receptive to se
 
 **Shadow side:** Stagnation — rest that becomes hiding. Being is a skill and a gift, but it can also become the place you retreat to when action feels scary. If "I need to rest" has become your answer to everything, including things that genuinely need tending, the Meadow has shifted from restoration to avoidance. The honest test is whether you feel more resourced after time here, or just more distant from what's waiting.
 
+</details>
+
 #### The Garden (Feeling + Doing)
 
-This is where you create from the heart, connect through action, tend to living things and living relationships. You're active, but led by feeling rather than analysis.
+This is where you create from the heart, connect through action, and tend to living things and living relationships. You're active, but led by feeling rather than analysis.
+
+<details>
+<summary>Explore the Garden (signals, shadow side & uses)</summary>
 
 **What it's for:** Playing music, having a heartfelt conversation, cooking intuitively, dancing, playing, tending plants, connecting with others, passionate creation, responding to what the moment needs.
 
@@ -252,17 +270,58 @@ This is where you create from the heart, connect through action, tend to living 
 
 **Shadow side:** Porous boundaries — giving until you're empty without noticing until you're depleted. The Garden's shadow isn't chaos; it's the warmth that makes connection possible becoming the warmth that makes it impossible to stop pouring. You tend everyone else's garden and neglect your own. If you consistently leave conversations, gatherings, or creative sessions feeling drained rather than nourished, you're in the Garden's shadow. The remedy isn't to leave the Garden — it's to tend the boundary as carefully as you tend everything else.
 
+</details>
+
 ---
 
 ## Part II: Navigation
 
-You have the map. Now you need a compass — and the honesty to read it. Locating yourself takes two things: the ability to look, and the willingness to accept what you find. The rest of this part is about both: the instrument that moves you (attention), the routes between territories (bridges), and the judgment to know when to travel and when to stay.
+You have the map. Now you need a compass — and the honesty to read it. Locating yourself takes two things: the ability to look, and the willingness to accept what you find. The rest of this part is about both: reading where you are, knowing when to travel versus stay, the instruments that move you (attention and bridges), and diagnosing common misalignments.
+
+### Reading your position
+
+Useful check-ins:
+
+- **Morning:** Where am I starting?
+- **Before a task:** What territory does this need?
+- **When stuck:** Am I forcing the wrong state?
+- **Evening:** What territory needs tending now?
+
+Your body often knows before your story does. Notice your physical posture and sensation:
+
+- **Workshop:** Focused gaze, forward lean, tight shoulders. Energy concentrated in head and hands.
+- **Library:** Stillness, relaxed posture, a settling quality. Mind active, body quiet.
+- **Meadow:** Awareness of breath, heartbeat, the weight of your body. Softness in jaw and belly.
+- **Garden:** Animated movement, open posture, warmth. Energy flows outward toward the world.
+
+When none of these descriptions match — when you feel foggy, flat, or scattered — you may be in a transition zone or a shadow state. That's information, not failure.
+
+### When to navigate and when to switch tasks
+
+Sometimes the wise move is changing your **state** to meet the **task**.
+
+Sometimes the wiser move is changing the **task** to fit your **state**.
+
+**Change *state* when:**
+
+- The task truly can't wait
+- You have energy to spend on the transition
+- The distance isn't too far (adjacent territories)
+
+**Change *task* when:**
+
+- You have options
+- You're already depleted
+- The state gap is too wide (diagonal territories)
+- Forcing state would cause harm
+
+This is where most productivity advice fails. It assumes you can always navigate to the "right" state. But some days you're in the Meadow and everything on your list needs the Workshop. Those days, tend your meadow. The Workshop is not helped by contempt.
 
 ### Attention: The Lever That Moves You
 
 In the companion essay "[Attention as Lever](/modules/attention-as-lever)," we explored how attention amplifies whatever it rests on. But attention alone isn't enough — you also need to sense where you are before you can choose where to direct it.
 
-**Attention is your compass and your engine.** Where you place it determines which territory you move toward and which patterns you amplify.
+**Attention is your compass and your engine.** Where you place it determines which territory you move toward and which patterns you amplify:
 
 - Attention on breath → moves toward Being
 - Attention on sensation or emotion → moves toward Feeling
@@ -348,27 +407,6 @@ You can't leap directly from Library to Garden or from Meadow to Workshop. You n
 - **Library → Garden:** Detour through the Workshop (think → act → feel) or through the Meadow (think → feel → act).
 - **Meadow → Workshop:** Articulate what you're feeling first (feel → think) or engage light movement (be → do), then move to focused action.
 
-### When to navigate and when to switch tasks
-
-Sometimes the wise move is changing your **state** to meet the **task**.
-
-Sometimes the wiser move is changing the **task** to fit your **state**.
-
-**Change *state* when:**
-
-- The task truly can't wait
-- You have energy to spend on the transition
-- The distance isn't too far (adjacent territories)
-
-**Change *task* when:**
-
-- You have options
-- You're already depleted
-- The state gap is too wide (diagonal territories)
-- Forcing state would cause harm
-
-This is where most productivity advice fails. It assumes you can always navigate to the "right" state. But some days you're in the Meadow and everything on your list needs the Workshop. Those days, tend your meadow. The Workshop is not helped by contempt.
-
 ### Common Misalignments
 
 Learn to recognize these patterns:
@@ -379,24 +417,6 @@ Learn to recognize these patterns:
 - **Being Bypass:** Using "presence" to avoid difficult tasks. Honest assessment, not more stillness.
 - **Forced Leaps:** Trying to jump from Library to Garden without a bridge. Slow down. Find the layover.
 - **Wrong Territory Work:** Doing a task from a territory next door to the one it actually needs — building in the Workshop when the work wants the Garden, analyzing a grief that needs the Meadow, planning while exhausted when the honest move is rest. The task isn't the problem; the territory is.
-
-### Reading your position
-
-Useful check-ins:
-
-- **Morning:** Where am I starting?
-- **Before a task:** What territory does this need?
-- **When stuck:** Am I forcing the wrong state?
-- **Evening:** What territory needs tending now?
-
-Your body often knows before your story does.
-
-- **Workshop:** Focused gaze, forward lean, tight shoulders. Energy concentrated in head and hands.
-- **Library:** Stillness, relaxed posture, a settling quality. Mind active, body quiet.
-- **Meadow:** Awareness of breath, heartbeat, the weight of your body. Softness in jaw and belly.
-- **Garden:** Animated movement, open posture, warmth. Energy flows outward toward the world.
-
-When none of these descriptions match — when you feel foggy, flat, or scattered — you may be in a transition zone or a shadow state. That's information, not failure.
 
 ### Resistance vs. Resilience
 
@@ -424,7 +444,7 @@ Sometimes you have to move through discomfort to do what's aligned. The art is k
 
 ## Part III: The levers of navigation
 
-These are the tools that make navigation possible. None of them work in isolation — they compound.
+These are the internal tools that make navigation possible. None of them work in isolation — they compound.
 
 ### Awareness
 
@@ -432,17 +452,15 @@ Without awareness, you drift. With it, you can navigate intentionally. Awareness
 
 ### Attention
 
-Attention amplifies whatever it rests on — resentment, gratitude, worry, wonder. Where you place it is where you go. Awareness tells you where you are; attention moves you somewhere else.
+Awareness tells you where you are; attention directs where you go next. As explored in [Attention as Lever](/modules/attention-as-lever), what you pay attention to is amplified. Where you place it is where you go.
 
 ### Intention
 
-Intention is the bridge from Being to Doing. A breath, a note written down, a tiny step. It doesn't need to be dramatic. The smallest deliberate action can shift your entire trajectory.
+Intention is what crystallizes Being into purposeful Doing. A breath, a note written down, a tiny initial step. It doesn't need to be dramatic. The smallest deliberate choice shifts your entire trajectory.
 
 ### Feedback and Reflection
 
-Rapid, accurate feedback is one of the most valuable things you can cultivate. Reflection is a form of feedback — it closes the loop between action and understanding.
-
-Estimation and prediction can provide valuable feedback too: **Predict → Do → Review → Calibrate → Integrate.** This loop, practiced deliberately, trains your intuition to be a better instrument over time.
+Rapid, accurate feedback is one of the most valuable things you can cultivate. Reflection closes the loop between action and understanding, turning raw experience into intuition and calibration over time.
 
 ### Motivation
 
@@ -467,50 +485,14 @@ You can have plenty of one type while being depleted in another. This is why you
 
 ---
 
-## Part IV: The Practices
+## Practical Application
 
-### Small Pieces (MVP Thinking)
+Ready to put this map into daily practice? Explore the companion **[Practice Worksheet](worksheet.md)** for:
 
-Break projects into laughably small pieces — 30 minutes or less each. This isn't busywork. It's the difference between paralysis and progress.
-
-"Write a book" becomes "write one sentence." The sentence teaches you something that "write a book" never could, because it forces contact with reality. The gap between your plan and what actually happens is where all the real learning lives.
-
-**The MVP principle:** Do the smallest possible thing that moves you forward. Not because you're lazy, but because you're smart. Validate every assumption through action, not analysis.
-
-Inch by inch, it's a cinch. Yard by yard, it's hard.
-
-### Working in Rhythm
-
-Whether you use sprints, pomodoros, or your own natural cadence doesn't matter. What matters is rhythm — work and rest, expansion and contraction, doing and being.
-
-Whatever rhythm you choose, it should have these qualities: a clear boundary for focus, a built-in transition to rest, and a length that matches your actual attention span — not your aspirational one.
-
-Find your rhythm. Honor it.
-
-### The Learn and Grow Loop
-
-**Predict → Do → Review → Calibrate → Integrate → Predict...**
-
-- **Estimate** size and effort up front — even roughly. T-shirt sizing works: Small (under 30 minutes), Medium (1–3 hours), Large (break it down more).
-- **Review** outcomes quickly. What surprised you?
-- **Calibrate** the next estimate based on what you learned.
-- **Integrate** the lesson so it sticks. Reflection *is* feedback. Without it, experience doesn't become learning.
-
-One universal finding: everyone underestimates effort by about 20%. Plan accordingly.
-
-### Prune and Grow
-
-The most efficient way to increase capacity is letting go. Dropping inherited goals, borrowed dreams, or stale tasks creates space for what actually matters.
-
-**What to prune:** If a task has been in your backlog for three months untouched, either do it this week or let it go. Its presence is costing you more than its absence would.
-
-**What grows in cleared space:** Tasks that match your natural territories. Goals that actually energize you. Alignment between who you are and what you do.
-
-### Consciousness-Forcing Work
-
-Writing things down — tasks, plans, reflections, even rough notes — forces clarity in ways that thinking alone never does. A list is a consciousness-forcing tool: the act of writing it makes you confront what matters and what doesn't, even if you never look at the list again.
-
-Labeling your tasks by territory (Workshop, Library, Meadow, Garden) and energy type (mental, emotional, physical, presence) adds another layer of forcing: it makes you think about alignment *before* you start, rather than discovering misalignment twenty frustrating minutes in.
+- Sizing tasks for flow (MVP thinking) and working in rhythm
+- The full Predict → Do → Review calibration loop
+- Backlog pruning and consciousness-forcing task labeling
+- The 7-day territory tracking experiment and daily check-in templates
 
 ---
 
@@ -528,23 +510,3 @@ This isn't about productivity. It's about balance — dynamic, living, always in
 The car doesn't stay aligned forever. Roads have potholes. Life has disruptions. But when you know what alignment feels like in your body, you notice faster when you've drifted — and the correction is smaller, gentler, and more precise each time.
 
 Being, Doing, Feeling, and Thinking aren't rivals. They're coordinates. The art is navigation.
-
----
-
-## Quick Start: Your First Week
-
-Don't try to implement everything at once. Start here:
-
-**Today (5 minutes):**
-
-1. Notice where you are on the landscape right now. (30 seconds)
-2. Label your next 3 tasks by territory. (2 minutes)
-3. If task and state don't match → switch tasks, or take 2 minutes to bridge gently.
-
-**This Week:**
-
-1. **Morning:** Quick check-in — where am I starting today? (30 seconds)
-2. **Throughout the day:** Notice misalignments without judgment. (Ongoing)
-3. **Evening:** Notice one moment of alignment — what enabled it? (1 minute)
-
-**Track your territories for one day.** Morning, noon, evening, night — just notice where you are on the landscape. When do you naturally shift? What triggers a collapse into your default? Where do you resist going? That resistance is information.

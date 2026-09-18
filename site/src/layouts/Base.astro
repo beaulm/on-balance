@@ -157,6 +157,55 @@ const ogImage = new URL('/og-image.png', Astro.site ?? Astro.url).toString();
         padding: 0;
       }
 
+      details {
+        margin: 1.25em 0;
+        padding: 0.75em 1.2em;
+        border: 1px solid #e2e0d8;
+        border-radius: 8px;
+        background: #faf9f6;
+        transition: background-color 0.15s ease;
+      }
+
+      details[open] {
+        background: #fdfdfc;
+      }
+
+      details summary {
+        font-weight: 600;
+        cursor: pointer;
+        color: var(--color-text);
+        padding: 0.25em 0;
+      }
+
+      details summary:hover {
+        color: var(--color-link);
+      }
+
+      details[open] summary {
+        margin-bottom: 0.75em;
+        border-bottom: 1px solid #e8e6df;
+        padding-bottom: 0.5em;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5em 0;
+        empty-cells: show;
+      }
+
+      th, td {
+        border: 1px solid #d3d1c7;
+        padding: 0.6em 0.8em;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: #f5f4ef;
+        font-weight: 600;
+      }
+
       /* Resonance glow — CSS Highlight API */
       ::highlight(resonance-low) {
         background-color: rgba(255, 200, 100, 0.1);
