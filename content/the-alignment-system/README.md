@@ -23,11 +23,7 @@ The deepest shift is simpler than most systems make it sound: **match the task t
 
 Recall a time you tried to write but the words wouldn't come — sitting at a computer or notebook trying to force it. Now recall a time when the words flowed freely and hours passed like seconds. The difference wasn't that you were better or worse at writing. The task was the same. What differed was the alignment between the task and your state. How often do we do micro versions of that — trying to force productivity when we're tired, or force rest when we should be moving?
 
-Think of a car with misaligned wheels. To keep it moving straight, you have to keep correcting. The moment you relax, it drifts. That's what misalignment feels like in life: constant effort just to stay on course.
-
-Alignment feels different. The car tracks straight. You're still driving. You still need attention. But you're no longer spending energy compensating for an underlying mismatch.
-
-This guide is about learning to notice that mismatch earlier:
+This guide is about learning to notice alignment — and misalignment — earlier:
 
 - When to stay with the task
 - When to switch tasks
@@ -40,11 +36,12 @@ This guide is about learning to notice that mismatch earlier:
 
 **When you know what to do → flow**  
 **When you don't know what to do → pause**  
-**Check periodically if you're still in the right state**  
+**Align your current task with your current state**  
+**Periodically check to make sure you're still aligned**  
 
 That's the core of it.
 
-Most productivity systems overvalue doing. Contemplative systems can overvalue being. Life asks for both, along with feeling and thinking. The art isn't choosing one forever. The art is learning what's needed now.
+Most productivity systems overvalue doing. Contemplative systems can overvalue being. Life asks for both, along with feeling and thinking. The art isn't choosing one forever. The art is learning what's needed now and honoring it.
 
 This isn't about doing more. It's about doing what's aligned when action is called for, and having the wisdom to wait when it's not.
 
@@ -53,8 +50,6 @@ This isn't about doing more. It's about doing what's aligned when action is call
 When task and state align, you enter what Taoists call *wu wei* — effortless action. It doesn't mean doing nothing. It means moving with the current instead of against it. It means recognizing that sometimes rest is the most productive thing you can do.
 
 Think of it like surfing. You can't control the waves, but you can learn to read them — to wait for the right moment, to paddle at the right speed, to stand with balance. You need the right waves (you can't surf when it's flat). You need to read them (attention and prediction). You need strength to paddle (to match your speed to theirs). And you need balance to stand and ride. That's alignment.
-
-The car metaphor and the surfing metaphor aren't in tension — they're two sides of the same thing. The car shows you what misalignment costs: constant correction, wasted energy, drift the moment you stop gripping. Surfing shows you what alignment gives: responsiveness, momentum, the feeling of being carried by something larger than your effort alone.
 
 When task and state align:
 
@@ -194,7 +189,7 @@ These axes create four natural territories.
 
 A note on the names: *a meadow grows on its own; a garden requires tending.* Both are living spaces, but one invites you to rest in it while the other invites you to work with it. That distinction — being with feeling versus acting from feeling — is the heart of the lower half of the landscape.
 
-These are simply the names that resonated with us. If others fit your inner landscape better — a Studio instead of a Garden, a Sanctuary instead of a Meadow — use those. The map matters more than its labels, and naming a territory in your own words is part of making it navigable.
+These are simply the names that resonated with me. If others fit your inner landscape better — a Studio instead of a Garden, a Sanctuary instead of a Meadow — use those. The map matters more than its labels, and naming a territory in your own words is part of making it navigable.
 
 #### The Library (Thinking + Being)
 
@@ -280,13 +275,6 @@ You have the map. Now you need a compass — and the honesty to read it. Locatin
 
 ### Reading your position
 
-Useful check-ins:
-
-- **Morning:** Where am I starting?
-- **Before a task:** What territory does this need?
-- **When stuck:** Am I forcing the wrong state?
-- **Evening:** What territory needs tending now?
-
 Your body often knows before your story does. Notice your physical posture and sensation:
 
 - **Workshop:** Focused gaze, forward lean, tight shoulders. Energy concentrated in head and hands.
@@ -296,26 +284,33 @@ Your body often knows before your story does. Notice your physical posture and s
 
 When none of these descriptions match — when you feel foggy, flat, or scattered — you may be in a transition zone or a shadow state. That's information, not failure.
 
+Useful check-ins:
+
+- **Morning:** Where am I starting?
+- **Before a task:** What territory does this task need — and where am I?
+- **When stuck:** Am I forcing the wrong state?
+- **Evening:** What territory needs tending now?
+
 ### When to navigate and when to switch tasks
 
-Sometimes the wise move is changing your **state** to meet the **task**.
+Whenever possible, the wisest move is to select a task that matches your current state.
 
-Sometimes the wiser move is changing the **task** to fit your **state**.
+This is where most productivity advice fails. It assumes you can always navigate to the "right" state. But some days you're in the Meadow and everything on your list needs the Workshop. Those days, tend your meadow. The Workshop is not helped by contempt.
+
+**Change *task* to align with your current state when:**
+
+- You have flexibility in what you tackle next
+- You're already depleted
+- The gap between where you are and where the task needs you to be is too wide
+- Forcing state would cause harm
+
+However, sometimes the right move is to change your state to meet a necessary task.
 
 **Change *state* when:**
 
 - The task truly can't wait
 - You have energy to spend on the transition
 - The distance isn't too far (adjacent territories)
-
-**Change *task* when:**
-
-- You have options
-- You're already depleted
-- The state gap is too wide (diagonal territories)
-- Forcing state would cause harm
-
-This is where most productivity advice fails. It assumes you can always navigate to the "right" state. But some days you're in the Meadow and everything on your list needs the Workshop. Those days, tend your meadow. The Workshop is not helped by contempt.
 
 ### Attention: The Lever That Moves You
 
@@ -387,7 +382,10 @@ You rarely teleport between territories. You usually cross by way of a bridge.
 <text class="nv-legend" x="192" y="502">Diagonal — needs a layover</text>
 </svg>
 
-The map says it at a glance: neighbors share an axis, so a single bridge gets you across. Territories on a diagonal differ on *both* axes — there's no direct route, only a layover.
+The map shows it at a glance: neighbors share an axis, so a single bridge gets you across. Territories on a diagonal differ on *both* axes — there's no direct route, only a layover.
+
+<details>
+<summary>Explore the routes (adjacent bridges & diagonal layovers)</summary>
 
 **Adjacent bridges** (these cross one axis):
 
@@ -406,6 +404,8 @@ You can't leap directly from Library to Garden or from Meadow to Workshop. You n
 
 - **Library → Garden:** Detour through the Workshop (think → act → feel) or through the Meadow (think → feel → act).
 - **Meadow → Workshop:** Articulate what you're feeling first (feel → think) or engage light movement (be → do), then move to focused action.
+
+</details>
 
 ### Common Misalignments
 
@@ -470,7 +470,7 @@ A mind with a *why* can handle any *how*. Meaning, purpose, and clear goals fuel
 
 Check your goals regularly. That goal you've been carrying for two years — is it still yours? Did it ever really belong to you? So many desires at every level — including big life goals — actually come from outside ourselves. They're implanted by marketing, social pressure, or that insidious voice that says you "should." Borrowed desires are worse than useless — they're actively draining. They take up space where your real desires could grow.
 
-### Energy Over Time
+### Energy > Time
 
 Time is fixed. Energy varies. Prioritization helps, but energy management determines what's actually possible on any given day. Rest isn't wasted time — it's recovered capacity.
 
@@ -507,6 +507,6 @@ The goal isn't to master the system. It's to know your landscape well enough tha
 
 This isn't about productivity. It's about balance — dynamic, living, always in motion. About knowing when to Do, when to Think, when to Feel, and when to simply Be.
 
-The car doesn't stay aligned forever. Roads have potholes. Life has disruptions. But when you know what alignment feels like in your body, you notice faster when you've drifted — and the correction is smaller, gentler, and more precise each time.
+The waves aren't always up for surfing, but when they rise, the goal is to be ready to ride them.
 
 Being, Doing, Feeling, and Thinking aren't rivals. They're coordinates. The art is navigation.
