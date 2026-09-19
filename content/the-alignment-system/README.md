@@ -1,7 +1,7 @@
 ---
 title: "The Alignment System"
 version: "1.0.0"
-last_updated: "2026-09-18"
+last_updated: "2026-09-19"
 maintainers: ["Beau"]
 summary: "Finding flow between Being, Doing, Feeling, and Thinking — so effort turns into ease, and practice turns into growth."
 mvp_time_per_day: "≤10 min"
@@ -68,61 +68,9 @@ But to navigate consciously, you need to understand the landscape you're navigat
 
 This framework holds two familiar distinctions together as one navigable field. Each is a continuum you're always somewhere along:
 
-<!-- Axis diagram: Being ←→ Doing -->
+![The Being–Doing axis: a continuum from Being (receptive, still, aware, settled) to Doing (active, generating, creating, moving)](./axis-being-doing.svg)
 
-<svg width="100%" viewBox="0 0 680 104" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The Being–Doing axis, a continuum from Being (receptive, still, aware, settled) to Doing (active, generating, creating, moving).">
-<defs>
-<linearGradient id="axis-bd" x1="0" y1="0" x2="1" y2="0">
-<stop offset="0" stop-color="#2E8B6E"/>
-<stop offset="1" stop-color="#C56A2C"/>
-</linearGradient>
-</defs>
-<style>
-  .axc-cap  { font-family: system-ui, sans-serif; font-size: 13px; fill: #807E77; }
-  .axc-pole { font-family: system-ui, sans-serif; font-size: 21px; font-weight: 600; }
-  .axc-desc { font-family: system-ui, sans-serif; font-size: 12px; fill: #6B6A64; }
-  @media (prefers-color-scheme: dark) {
-    .axc-cap { fill: #B4B2A9; } .axc-desc { fill: #B4B2A9; }
-  }
-</style>
-<text class="axc-cap" x="340" y="28" text-anchor="middle">presence ↔ action</text>
-<text class="axc-pole" x="64" y="57" text-anchor="start" fill="#2E8B6E">Being</text>
-<text class="axc-pole" x="616" y="57" text-anchor="end" fill="#C56A2C">Doing</text>
-<rect x="168" y="44" width="344" height="12" rx="6" fill="url(#axis-bd)"/>
-<polygon points="150,50 168,41 168,59" fill="#2E8B6E"/>
-<polygon points="530,50 512,41 512,59" fill="#C56A2C"/>
-<circle cx="340" cy="50" r="7" fill="#FBFAF7" stroke="#807E77" stroke-width="2"/>
-<text class="axc-desc" x="64" y="84" text-anchor="start">receptive · still · aware · settled</text>
-<text class="axc-desc" x="616" y="84" text-anchor="end">active · generating · creating · moving</text>
-</svg>
-
-<!-- Axis diagram: Feeling ←→ Thinking -->
-
-<svg width="100%" viewBox="0 0 680 104" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The Feeling–Thinking axis, a continuum from Feeling (sensing, experiencing, intuiting, connecting) to Thinking (processing, planning, solving, analyzing).">
-<defs>
-<linearGradient id="axis-ft" x1="0" y1="0" x2="1" y2="0">
-<stop offset="0" stop-color="#C24E68"/>
-<stop offset="1" stop-color="#4E57C0"/>
-</linearGradient>
-</defs>
-<style>
-  .axc-cap  { font-family: system-ui, sans-serif; font-size: 13px; fill: #807E77; }
-  .axc-pole { font-family: system-ui, sans-serif; font-size: 21px; font-weight: 600; }
-  .axc-desc { font-family: system-ui, sans-serif; font-size: 12px; fill: #6B6A64; }
-  @media (prefers-color-scheme: dark) {
-    .axc-cap { fill: #B4B2A9; } .axc-desc { fill: #B4B2A9; }
-  }
-</style>
-<text class="axc-cap" x="340" y="28" text-anchor="middle">sensing ↔ analyzing</text>
-<text class="axc-pole" x="64" y="57" text-anchor="start" fill="#C24E68">Feeling</text>
-<text class="axc-pole" x="616" y="57" text-anchor="end" fill="#4E57C0">Thinking</text>
-<rect x="168" y="44" width="344" height="12" rx="6" fill="url(#axis-ft)"/>
-<polygon points="150,50 168,41 168,59" fill="#C24E68"/>
-<polygon points="530,50 512,41 512,59" fill="#4E57C0"/>
-<circle cx="340" cy="50" r="7" fill="#FBFAF7" stroke="#807E77" stroke-width="2"/>
-<text class="axc-desc" x="64" y="84" text-anchor="start">sensing · experiencing · intuiting · connecting</text>
-<text class="axc-desc" x="616" y="84" text-anchor="end">processing · planning · solving · analyzing</text>
-</svg>
+![The Feeling–Thinking axis: a continuum from Feeling (sensing, experiencing, intuiting, connecting) to Thinking (processing, planning, solving, analyzing)](./axis-feeling-thinking.svg)
 
 You stand somewhere on both at once. Right now, for example, you might be Thinking (processing these words), Doing (actively reading), Feeling (perhaps curious or skeptical), and Being (sitting, resting as awareness) — all at the same time.
 
@@ -132,60 +80,7 @@ That last point matters more than it looks. These axes aren't walls, and they ar
 
 These axes create four natural territories.
 
-<!-- Landscape diagram: The Four Territories -->
-
-<svg width="100%" viewBox="0 0 680 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The four territories of the Alignment System: Library (Thinking plus Being), Workshop (Thinking plus Doing), Meadow (Feeling plus Being), and Garden (Feeling plus Doing), arranged on two axes.">
-<style>
-  .ax-label { font-family: system-ui, sans-serif; font-size: 12px; fill: #888780; }
-  .t-title { font-family: system-ui, sans-serif; font-size: 20px; font-weight: 600; }
-  .t-sub { font-family: system-ui, sans-serif; font-size: 12px; }
-  .t-body { font-family: system-ui, sans-serif; font-size: 12px; opacity: 0.7; }
-  @media (prefers-color-scheme: dark) {
-    .ax-line { stroke: #B4B2A9; }
-    .ax-label { fill: #B4B2A9; }
-    .q-library { fill: #3C3489; stroke: #AFA9EC; } .q-library .t-title { fill: #CECBF6; } .q-library .t-sub { fill: #AFA9EC; } .q-library .t-body { fill: #AFA9EC; }
-    .q-workshop { fill: #0C447C; stroke: #85B7EB; } .q-workshop .t-title { fill: #B5D4F4; } .q-workshop .t-sub { fill: #85B7EB; } .q-workshop .t-body { fill: #85B7EB; }
-    .q-meadow { fill: #5A4510; stroke: #E9C766; } .q-meadow .t-title { fill: #F3DFA0; } .q-meadow .t-sub { fill: #E9C766; } .q-meadow .t-body { fill: #E9C766; }
-    .q-garden { fill: #085041; stroke: #5DCAA5; } .q-garden .t-title { fill: #9FE1CB; } .q-garden .t-sub { fill: #5DCAA5; } .q-garden .t-body { fill: #5DCAA5; }
-  }
-</style>
-<!-- Axes -->
-<line x1="55" y1="244" x2="625" y2="244" class="ax-line" stroke="#D3D1C7" stroke-width="0.5"/>
-<line x1="340" y1="38" x2="340" y2="456" class="ax-line" stroke="#D3D1C7" stroke-width="0.5"/>
-<!-- Axis labels -->
-<text class="ax-label" x="42" y="248" text-anchor="end">being</text>
-<text class="ax-label" x="638" y="248" text-anchor="start">doing</text>
-<text class="ax-label" x="340" y="28" text-anchor="middle">thinking</text>
-<text class="ax-label" x="340" y="472" text-anchor="middle">feeling</text>
-<!-- Library — Thinking + Being -->
-<g class="q-library">
-<rect x="80" y="55" width="245" height="175" rx="14" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
-<text class="t-title" x="202" y="116" text-anchor="middle" dominant-baseline="central" fill="#3C3489">The library</text>
-<text class="t-sub" x="202" y="146" text-anchor="middle" dominant-baseline="central" fill="#534AB7">Reflection, strategy, insight</text>
-<text class="t-body" x="202" y="170" text-anchor="middle" dominant-baseline="central" fill="#534AB7">Stillness, soft gaze, quiet body</text>
-</g>
-<!-- Workshop — Thinking + Doing -->
-<g class="q-workshop">
-<rect x="355" y="55" width="245" height="175" rx="14" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
-<text class="t-title" x="477" y="116" text-anchor="middle" dominant-baseline="central" fill="#0C447C">The workshop</text>
-<text class="t-sub" x="477" y="146" text-anchor="middle" dominant-baseline="central" fill="#185FA5">Planning, solving, building</text>
-<text class="t-body" x="477" y="170" text-anchor="middle" dominant-baseline="central" fill="#185FA5">Forward lean, focused eyes</text>
-</g>
-<!-- Meadow — Feeling + Being -->
-<g class="q-meadow">
-<rect x="80" y="258" width="245" height="175" rx="14" fill="#FBF1D5" stroke="#A07814" stroke-width="0.5"/>
-<text class="t-title" x="202" y="319" text-anchor="middle" dominant-baseline="central" fill="#6B520F">The meadow</text>
-<text class="t-sub" x="202" y="349" text-anchor="middle" dominant-baseline="central" fill="#876813">Rest, presence, restoration</text>
-<text class="t-body" x="202" y="373" text-anchor="middle" dominant-baseline="central" fill="#876813">Breath, heartbeat, softness</text>
-</g>
-<!-- Garden — Feeling + Doing -->
-<g class="q-garden">
-<rect x="355" y="258" width="245" height="175" rx="14" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
-<text class="t-title" x="477" y="319" text-anchor="middle" dominant-baseline="central" fill="#085041">The garden</text>
-<text class="t-sub" x="477" y="349" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Tending, connecting, creating</text>
-<text class="t-body" x="477" y="373" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Animated, responsive, warm</text>
-</g>
-</svg>
+![The four territories of the Alignment System: Library (Thinking + Being), Workshop (Thinking + Doing), Meadow (Feeling + Being), and Garden (Feeling + Doing)](./territories-map.svg)
 
 A note on the names: *a meadow grows on its own; a garden requires tending.* Both are living spaces, but one invites you to rest in it while the other invites you to work with it. That distinction — being with feeling versus acting from feeling — is the heart of the lower half of the landscape.
 
@@ -316,6 +211,21 @@ However, sometimes the right move is to change your state to meet a necessary ta
 - You have energy to spend on the transition
 - The distance isn't too far (adjacent territories)
 
+### Enabling Task Selection: Expanding the Menu
+
+There is a practical hitch with "switching tasks to match your state": **almost every traditional to-do list item is exclusively Workshop territory.**
+
+When most of us look at our task managers, calendars, or scraps of paper, we see chores, tickets, and "work". Every item demands Thinking + Doing. If you wake up or land in the Meadow (tired, settled, receptive) or the Garden (craving warmth and human connection), looking at a list made entirely of Workshop tasks traps you. You feel compelled to force yourself into the Workshop because nothing else is "on the list." Switching from one Workshop task to another does nothing to resolve the misalignment.
+
+To make task selection actually work, you have to intentionally broaden what counts as a valid, worthwhile "task":
+
+- **Workshop:** Building, fixing, analyzing, organizing, budgeting, handling logistics.
+- **Library:** Reading a book, studying a concept, journaling, synthesizing notes, big-picture reflection.
+- **Garden:** Texting someone you care about, cooking a meal, practicing yoga, playing music, tending a relationship, actual gardening.
+- **The Meadow paradox:** The Meadow is vital, yet it actively resists "tasks". People don't usually put "rest" or "grieving" on a standard to-do list. Trying to schedule the Meadow turns it into a chore. Its practice is simply presence, breath, and restorative stillness without an agenda.
+
+When you broaden your menu beyond the Workshop, task selection becomes an actual choice rather than a theoretical luxury. When you notice you're in the Library, you read. When you find yourself in the Garden, you reach out to someone. And when you find yourself in the Meadow, you don't force any activity at all — you allow yourself to truly rest, replenishing the fuel that every other territory will need later.
+
 ### Attention: The Lever That Moves You
 
 In the companion essay "[Attention as Lever](/modules/attention-as-lever)," we explored how attention amplifies whatever it rests on. But attention alone isn't enough — you also need to sense where you are before you can choose where to direct it.
@@ -333,58 +243,7 @@ Left unchecked, we drift into default territories — usually the most familiar 
 
 You rarely teleport between territories. You usually cross by way of a bridge.
 
-<!-- Navigation diagram: bridges and layovers between territories -->
-
-<svg width="100%" viewBox="0 0 680 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A navigation map of the four territories. Territories that are adjacent — sharing one axis — connect by a single bridge (solid lines along the sides). Territories on a diagonal, which differ on both axes, are joined by dashed lines marked as needing a layover: you cannot cross them directly.">
-<style>
-  .nv-title { font-family: system-ui, sans-serif; font-size: 15px; font-weight: 600; }
-  .nv-legend { font-family: system-ui, sans-serif; font-size: 12px; fill: #6B6A64; }
-  .nav-edge { stroke: #9C9A90; }
-  @media (prefers-color-scheme: dark) {
-    .ax-line { stroke: #B4B2A9; } .ax-label { fill: #B4B2A9; }
-    .nav-edge { stroke: #B4B2A9; } .nv-legend { fill: #B4B2A9; }
-    .q-library .nv-title { fill: #CECBF6; } .q-workshop .nv-title { fill: #B5D4F4; }
-    .q-meadow .nv-title { fill: #F3DFA0; } .q-garden .nv-title { fill: #9FE1CB; }
-  }
-</style>
-<!-- Orientation axes -->
-<line x1="55" y1="243" x2="625" y2="243" class="ax-line" stroke="#D3D1C7" stroke-width="0.5"/>
-<line x1="340" y1="70" x2="340" y2="416" class="ax-line" stroke="#D3D1C7" stroke-width="0.5"/>
-<text class="ax-label" x="42" y="247" text-anchor="end">being</text>
-<text class="ax-label" x="638" y="247" text-anchor="start">doing</text>
-<text class="ax-label" x="340" y="60" text-anchor="middle">thinking</text>
-<text class="ax-label" x="340" y="432" text-anchor="middle">feeling</text>
-<!-- Diagonal crossings (need a layover) -->
-<line x1="272" y1="180" x2="407" y2="306" class="nav-edge" stroke-width="2" stroke-dasharray="6 6"/>
-<line x1="407" y1="180" x2="272" y2="306" class="nav-edge" stroke-width="2" stroke-dasharray="6 6"/>
-<!-- Adjacent bridges (single axis) -->
-<line x1="272" y1="150" x2="407" y2="150" class="nav-edge" stroke-width="2.5"/>
-<line x1="272" y1="336" x2="407" y2="336" class="nav-edge" stroke-width="2.5"/>
-<line x1="202" y1="180" x2="202" y2="306" class="nav-edge" stroke-width="2.5"/>
-<line x1="477" y1="180" x2="477" y2="306" class="nav-edge" stroke-width="2.5"/>
-<!-- Territory nodes -->
-<g class="q-library">
-<rect x="132" y="120" width="140" height="60" rx="12" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
-<text class="nv-title" x="202" y="150" text-anchor="middle" dominant-baseline="central" fill="#3C3489">The library</text>
-</g>
-<g class="q-workshop">
-<rect x="407" y="120" width="140" height="60" rx="12" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
-<text class="nv-title" x="477" y="150" text-anchor="middle" dominant-baseline="central" fill="#0C447C">The workshop</text>
-</g>
-<g class="q-meadow">
-<rect x="132" y="306" width="140" height="60" rx="12" fill="#FBF1D5" stroke="#A07814" stroke-width="0.5"/>
-<text class="nv-title" x="202" y="336" text-anchor="middle" dominant-baseline="central" fill="#6B520F">The meadow</text>
-</g>
-<g class="q-garden">
-<rect x="407" y="306" width="140" height="60" rx="12" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
-<text class="nv-title" x="477" y="336" text-anchor="middle" dominant-baseline="central" fill="#085041">The garden</text>
-</g>
-<!-- Legend -->
-<line x1="150" y1="474" x2="184" y2="474" class="nav-edge" stroke-width="2.5"/>
-<text class="nv-legend" x="192" y="478">Adjacent — cross with one bridge</text>
-<line x1="150" y1="498" x2="184" y2="498" class="nav-edge" stroke-width="2" stroke-dasharray="6 6"/>
-<text class="nv-legend" x="192" y="502">Diagonal — needs a layover</text>
-</svg>
+![Navigation map of the four territories: direct bridges between adjacent territories and layovers for diagonal transitions](./bridges-map.svg)
 
 The map shows it at a glance: neighbors share an axis, so a single bridge gets you across. Territories on a diagonal differ on *both* axes — there's no direct route, only a layover.
 

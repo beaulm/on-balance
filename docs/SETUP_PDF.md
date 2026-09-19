@@ -6,7 +6,7 @@ Pandoc needs a LaTeX engine to make PDFs. Any of these work: `xelatex`, `lualate
 
 ```bash
 sudo apt update
-sudo apt install -y pandoc texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texlive-xetex lmodern
+sudo apt install -y pandoc texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texlive-xetex lmodern librsvg2-bin
 ```
 
 Then run:

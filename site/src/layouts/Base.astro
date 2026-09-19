@@ -94,6 +94,13 @@ const ogImage = new URL('/og-image.png', Astro.site ?? Astro.url).toString();
         font-weight: 600;
       }
 
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 1.5em auto;
+      }
+
       hr {
         border: none;
         border-top: 1px solid #ddd;

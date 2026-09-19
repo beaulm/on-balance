@@ -1,0 +1,52 @@
+<svg width="680" height="480" viewBox="0 0 680 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The four territories of the Alignment System: Library (Thinking plus Being), Workshop (Thinking plus Doing), Meadow (Feeling plus Being), and Garden (Feeling plus Doing), arranged on two axes.">
+<style>
+  .ax-label { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #888780; }
+  .t-title { font-family: system-ui, -apple-system, sans-serif; font-size: 20px; font-weight: 600; }
+  .t-sub { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; }
+  .t-body { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; opacity: 0.7; }
+  @media (prefers-color-scheme: dark) {
+    .ax-line { stroke: #B4B2A9; }
+    .ax-label { fill: #B4B2A9; }
+    .q-library { fill: #3C3489; stroke: #AFA9EC; } .q-library .t-title { fill: #CECBF6; } .q-library .t-sub { fill: #AFA9EC; } .q-library .t-body { fill: #AFA9EC; }
+    .q-workshop { fill: #0C447C; stroke: #85B7EB; } .q-workshop .t-title { fill: #B5D4F4; } .q-workshop .t-sub { fill: #85B7EB; } .q-workshop .t-body { fill: #85B7EB; }
+    .q-meadow { fill: #5A4510; stroke: #E9C766; } .q-meadow .t-title { fill: #F3DFA0; } .q-meadow .t-sub { fill: #E9C766; } .q-meadow .t-body { fill: #E9C766; }
+    .q-garden { fill: #085041; stroke: #5DCAA5; } .q-garden .t-title { fill: #9FE1CB; } .q-garden .t-sub { fill: #5DCAA5; } .q-garden .t-body { fill: #5DCAA5; }
+  }
+</style>
+<!-- Axes -->
+<line x1="55" y1="244" x2="625" y2="244" class="ax-line" stroke="#D3D1C7" stroke-width="0.5"/>
+<line x1="340" y1="38" x2="340" y2="456" class="ax-line" stroke="#D3D1C7" stroke-width="0.5"/>
+<!-- Axis labels -->
+<text class="ax-label" x="42" y="248" text-anchor="end">being</text>
+<text class="ax-label" x="638" y="248" text-anchor="start">doing</text>
+<text class="ax-label" x="340" y="28" text-anchor="middle">thinking</text>
+<text class="ax-label" x="340" y="472" text-anchor="middle">feeling</text>
+<!-- Library — Thinking + Being -->
+<g class="q-library">
+<rect x="80" y="55" width="245" height="175" rx="14" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="t-title" x="202" y="116" text-anchor="middle" dominant-baseline="central" fill="#3C3489">The library</text>
+<text class="t-sub" x="202" y="146" text-anchor="middle" dominant-baseline="central" fill="#534AB7">Reflection, strategy, insight</text>
+<text class="t-body" x="202" y="170" text-anchor="middle" dominant-baseline="central" fill="#534AB7">Stillness, soft gaze, quiet body</text>
+</g>
+<!-- Workshop — Thinking + Doing -->
+<g class="q-workshop">
+<rect x="355" y="55" width="245" height="175" rx="14" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text class="t-title" x="477" y="116" text-anchor="middle" dominant-baseline="central" fill="#0C447C">The workshop</text>
+<text class="t-sub" x="477" y="146" text-anchor="middle" dominant-baseline="central" fill="#185FA5">Planning, solving, building</text>
+<text class="t-body" x="477" y="170" text-anchor="middle" dominant-baseline="central" fill="#185FA5">Forward lean, focused eyes</text>
+</g>
+<!-- Meadow — Feeling + Being -->
+<g class="q-meadow">
+<rect x="80" y="258" width="245" height="175" rx="14" fill="#FBF1D5" stroke="#A07814" stroke-width="0.5"/>
+<text class="t-title" x="202" y="319" text-anchor="middle" dominant-baseline="central" fill="#6B520F">The meadow</text>
+<text class="t-sub" x="202" y="349" text-anchor="middle" dominant-baseline="central" fill="#876813">Rest, presence, restoration</text>
+<text class="t-body" x="202" y="373" text-anchor="middle" dominant-baseline="central" fill="#876813">Breath, heartbeat, softness</text>
+</g>
+<!-- Garden — Feeling + Doing -->
+<g class="q-garden">
+<rect x="355" y="258" width="245" height="175" rx="14" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="t-title" x="477" y="319" text-anchor="middle" dominant-baseline="central" fill="#085041">The garden</text>
+<text class="t-sub" x="477" y="349" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Tending, connecting, creating</text>
+<text class="t-body" x="477" y="373" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Animated, responsive, warm</text>
+</g>
+</svg>

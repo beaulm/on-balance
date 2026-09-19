@@ -25,9 +25,9 @@ fi
 find "$SRC" -name 'README.md' | while read -r f; do
   moddir=$(dirname "$f")
   name=$(basename "$moddir")
-  pandoc $DEFAULTS "$f" -o "$OUT/${name}.epub" || echo "EPUB export failed for $name"
+  pandoc $DEFAULTS --resource-path="$moddir:." "$f" -o "$OUT/${name}.epub" || echo "EPUB export failed for $name"
   if [ -n "$ENGINE" ]; then
-    pandoc $DEFAULTS "$f" --pdf-engine="$ENGINE" -o "$OUT/${name}.pdf" || echo "PDF export failed for $name (engine: $ENGINE)"
+    pandoc $DEFAULTS --resource-path="$moddir:." "$f" --pdf-engine="$ENGINE" -o "$OUT/${name}.pdf" || echo "PDF export failed for $name (engine: $ENGINE)"
   else
     echo "No LaTeX engine found. Skipping PDF for $name. See docs/SETUP_PDF.md"
   fi
