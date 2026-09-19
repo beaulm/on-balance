@@ -271,7 +271,7 @@ This is where you create from the heart, connect through action, and tend to liv
 
 ## Part II: Navigation
 
-You have the map. Now you need a compass — and the honesty to read it. Locating yourself takes two things: the ability to look, and the willingness to accept what you find. The rest of this part is about both: reading where you are, knowing when to travel versus stay, the instruments that move you (attention and bridges), and diagnosing common misalignments.
+You have the map. Now you need a compass — and the honesty to read it. Locating yourself takes two things: the ability to look, and the willingness to accept what you find. Navigation begins with a simple premise: work from where you already are. The rest of this part is about reading your position, matching the work to your current ground, the instruments that move you (attention and bridges), and the gentle art of shifting state when a transition is truly necessary.
 
 ### Reading your position
 
@@ -295,7 +295,11 @@ Useful check-ins:
 
 Whenever possible, the wisest move is to select a task that matches your current state.
 
-This is where most productivity advice fails. It assumes you can always navigate to the "right" state. But some days you're in the Meadow and everything on your list needs the Workshop. Those days, tend your meadow. The Workshop is not helped by contempt.
+This is where most productivity advice fails. It assumes you can always navigate to the "right" state. Traditional productivity tells you to rank tasks by urgency, pick the top one, and force yourself into whatever state it demands. But forcing a misaligned state is wildly expensive. Trying to do analytical Workshop tasks from the Meadow costs three times the energy and produces half the quality.
+
+Priorities matter, but alignment often matters more: **it is almost always better to choose a secondary task that matches your current state than to force a state shift for the "top priority."** An aligned task gets done in an hour of flow; a forced task burns half a day in friction, creates errors, and leaves you depleted for everything else.
+
+Some days you're in the Meadow and everything on your list needs the Workshop. Those days, tend your meadow. The Workshop is not helped by contempt.
 
 **Change *task* to align with your current state when:**
 
