@@ -222,7 +222,7 @@ When you broaden your menu beyond the Workshop, task selection becomes an actual
 
 ### Attention: The Lever That Moves You
 
-In the companion essay "[Attention as Lever](https://onbalanceproject.com/modules/attention-as-lever)," we explored how attention amplifies whatever it rests on. But attention alone isn't enough — you also need to sense where you are before you can choose where to direct it.
+In the companion essay "[Attention as Lever](/modules/attention-as-lever)," we explored how attention amplifies whatever it rests on. But attention alone isn't enough — you also need to sense where you are before you can choose where to direct it.
 
 **Attention is your compass and your engine.** Where you place it determines which territory you move toward and which patterns you amplify:
 
@@ -309,7 +309,7 @@ Without awareness, you drift. With it, you can navigate intentionally. Awareness
 
 ### Attention
 
-Awareness tells you where you are; attention directs where you go next. As explored in [Attention as Lever](https://onbalanceproject.com/modules/attention-as-lever), what you pay attention to is amplified. Where you place it is where you go.
+Awareness tells you where you are; attention directs where you go next. As explored in [Attention as Lever](/modules/attention-as-lever), what you pay attention to is amplified. Where you place it is where you go.
 
 ### Intention
 
@@ -344,7 +344,7 @@ You can have plenty of one type while being depleted in another. This is why you
 
 ## Practical Application
 
-Ready to put this map into daily practice? Explore the companion **[Practice Worksheet](https://onbalanceproject.com/modules/the-alignment-system/worksheet.md)** for:
+Ready to put this map into daily practice? Explore the companion **[Practice Worksheet](worksheet.md)** for:
 
 - Sizing tasks for flow (MVP thinking) and working in rhythm
 - The full Predict → Do → Review calibration loop
