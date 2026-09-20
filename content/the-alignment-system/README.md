@@ -293,7 +293,7 @@ Sometimes resistance means you're in the wrong territory. Sometimes it means you
 - Elaborate justifications for why now isn't the time
 - A pattern of always skipping the same kind of thing
 
-**The test:** If you skip a task for another *in the same territory*, you're probably avoiding. If you skip it for something in a *different territory*, you're probably honoring your location.
+**The test:** Compare the replacement task with your current state, not just with the task you're leaving behind. If the replacement genuinely matches your current territory while the original was a mismatch, you're honoring your location. But if the original task already matches where you are—or you swap it for an easier substitute to escape the friction—you're probably avoiding.
 
 Sometimes you have to move through discomfort to do what's aligned. The art is knowing which is which. When in doubt, go gently. But go.
 
