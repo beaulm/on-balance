@@ -1,7 +1,7 @@
 ---
 title: "The Alignment System"
 version: "1.0.0"
-last_updated: "2026-09-19"
+last_updated: "2026-09-20"
 maintainers: ["Beau"]
 summary: "Finding flow between Being, Doing, Feeling, and Thinking — so effort turns into ease, and practice turns into growth."
 mvp_time_per_day: "≤10 min"
@@ -192,7 +192,7 @@ Whenever possible, the wisest move is to select a task that matches your current
 
 This is where most productivity advice fails. It assumes you can always navigate to the "right" state. Traditional productivity tells you to rank tasks by urgency, pick the top one, and force yourself into whatever state it demands. But forcing a misaligned state is wildly expensive. Trying to do analytical Workshop tasks from the Meadow costs three times the energy and produces half the quality.
 
-Priorities matter, but alignment often matters more: **it is almost always better to choose a secondary task that matches your current state than to force a state shift for the "top priority."** An aligned task gets done in an hour of flow; a forced task burns half a day in friction, creates errors, and leaves you depleted for everything else.
+Priorities matter, but alignment often matters more: **it's almost always better to choose a secondary task that matches your current state than to force a state shift for the "top priority."** An aligned task gets done in an hour of flow; a forced task burns half a day in friction, creates errors, and leaves you depleted for everything else.
 
 Some days you're in the Meadow and everything on your list needs the Workshop. Those days, tend your meadow. The Workshop is not helped by contempt.
 
@@ -213,7 +213,7 @@ However, sometimes the right move is to change your state to meet a necessary ta
 
 ### Enabling Task Selection: Expanding the Menu
 
-There is a practical hitch with "switching tasks to match your state": **almost every traditional to-do list item is exclusively Workshop territory.**
+There's a practical hitch with "switching tasks to match your state": **almost every traditional to-do list item is exclusively Workshop territory.**
 
 When most of us look at our task managers, calendars, or scraps of paper, we see chores, tickets, and "work". Every item demands Thinking + Doing. If you wake up or land in the Meadow (tired, settled, receptive) or the Garden (craving warmth and human connection), looking at a list made entirely of Workshop tasks traps you. You feel compelled to force yourself into the Workshop because nothing else is "on the list." Switching from one Workshop task to another does nothing to resolve the misalignment.
 
@@ -221,14 +221,14 @@ To make task selection actually work, you have to intentionally broaden what cou
 
 - **Workshop:** Building, fixing, analyzing, organizing, budgeting, handling logistics.
 - **Library:** Reading a book, studying a concept, journaling, synthesizing notes, big-picture reflection.
-- **Garden:** Texting someone you care about, cooking a meal, practicing yoga, playing music, tending a relationship, actual gardening.
-- **The Meadow paradox:** The Meadow is vital, yet it actively resists "tasks". People don't usually put "rest" or "grieving" on a standard to-do list. Trying to schedule the Meadow turns it into a chore. Its practice is simply presence, breath, and restorative stillness without an agenda.
+- **Garden:** Texting someone, cooking, cleaning, practicing yoga, playing music, tending a relationship, actual gardening.
+- **The Meadow paradox:** The Meadow is vital, yet it actively resists "tasks". People don't usually put "rest" or "grieving" on a standard to-do list. Trying to schedule the Meadow turns it into a chore.
 
 When you broaden your menu beyond the Workshop, task selection becomes an actual choice rather than a theoretical luxury. When you notice you're in the Library, you read. When you find yourself in the Garden, you reach out to someone. And when you find yourself in the Meadow, you don't force any activity at all — you allow yourself to truly rest, replenishing the fuel that every other territory will need later.
 
 ### Attention: The Lever That Moves You
 
-In the companion essay "[Attention as Lever](/modules/attention-as-lever)," we explored how attention amplifies whatever it rests on. But attention alone isn't enough — you also need to sense where you are before you can choose where to direct it.
+In the companion essay "[Attention as Lever](https://onbalanceproject.com/modules/attention-as-lever)," we explored how attention amplifies whatever it rests on. But attention alone isn't enough — you also need to sense where you are before you can choose where to direct it.
 
 **Attention is your compass and your engine.** Where you place it determines which territory you move toward and which patterns you amplify:
 
@@ -315,7 +315,7 @@ Without awareness, you drift. With it, you can navigate intentionally. Awareness
 
 ### Attention
 
-Awareness tells you where you are; attention directs where you go next. As explored in [Attention as Lever](/modules/attention-as-lever), what you pay attention to is amplified. Where you place it is where you go.
+Awareness tells you where you are; attention directs where you go next. As explored in [Attention as Lever](https://onbalanceproject.com/modules/attention-as-lever), what you pay attention to is amplified. Where you place it is where you go.
 
 ### Intention
 
@@ -350,7 +350,7 @@ You can have plenty of one type while being depleted in another. This is why you
 
 ## Practical Application
 
-Ready to put this map into daily practice? Explore the companion **[Practice Worksheet](worksheet.md)** for:
+Ready to put this map into daily practice? Explore the companion **[Practice Worksheet](https://onbalanceproject.com/modules/the-alignment-system/worksheet.md)** for:
 
 - Sizing tasks for flow (MVP thinking) and working in rhythm
 - The full Predict → Do → Review calibration loop
