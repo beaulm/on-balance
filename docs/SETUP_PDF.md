@@ -17,6 +17,12 @@ make pdf
 
 ## macOS
 
+- Install Pandoc and `librsvg` (provides `rsvg-convert` for SVG diagram conversion):
+
+```bash
+brew install pandoc librsvg
+```
+
 - Install MacTeX (full) or BasicTeX, then:
 
 ```bash
@@ -29,5 +35,5 @@ sudo tlmgr update --self && sudo tlmgr install collection-latexrecommended colle
 - You can also export DOCX by running:
 
 ```bash
-find content -name 'README.md' -exec sh -c 'out=printables/"$(basename $(dirname {})).docx"; pandoc "{}" -o "$out"' \;
+find content -name 'README.md' -exec sh -c 'd=$(dirname "{}"); out=printables/"$(basename "$d").docx"; pandoc --resource-path="$d:." "{}" -o "$out"' \;
 ```
