@@ -9,12 +9,6 @@ tags: ["alignment", "flow", "self-awareness", "navigation", "mindfulness", "bala
 license: "CC BY-SA 4.0"
 ---
 
-# The Alignment System
-
-**Finding Flow Between Being, Doing, Feeling, and Thinking**
-
-*A gentle guide to aligning your inner state with the task at hand — so effort turns into ease, and practice turns into growth.*
-
 ## At a glance
 
 This began as a productivity guide. It still is, in a sense, but not productivity through force.
