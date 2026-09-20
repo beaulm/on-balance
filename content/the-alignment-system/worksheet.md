@@ -53,7 +53,7 @@ Predict → Do → Review → Calibrate → Integrate → Predict...
 1. **Predict (Estimate):** Estimate size and effort up front — even roughly. T-shirt sizing works: Small (under 30 minutes), Medium (1–3 hours), Large (break it down more).
 2. **Do:** Carry out the task within your chosen focus boundary.
 3. **Review:** Review outcomes quickly. What surprised you?
-4. **Calibrate:** Calibrate your next estimate based on what you learned. (Everyone underestimates effort by about 20% — plan accordingly).
+4. **Calibrate:** Calibrate your next estimate based on what you learned. (People generally underestimate effort by about 20% — plan accordingly, then calibrate against your own observed results).
 5. **Integrate:** Integrate the lesson so it sticks. Reflection *is* feedback. Without it, experience doesn't become learning.
 
 ### Prune and Grow

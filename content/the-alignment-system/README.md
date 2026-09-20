@@ -74,7 +74,7 @@ That last point matters more than it looks. These axes aren't walls, and they ar
 
 These axes create four natural territories.
 
-![The four territories of the Alignment System: Library (Thinking + Being), Workshop (Thinking + Doing), Meadow (Feeling + Being), and Garden (Feeling + Doing)](./territories-map.svg)
+![The four territories of the Alignment System on two axes: Library (Thinking plus Being: reflection, strategy, insight; stillness, soft gaze, quiet body), Workshop (Thinking plus Doing: planning, solving, building; forward lean, focused eyes), Meadow (Feeling plus Being: rest, presence, restoration; breath, heartbeat, softness), and Garden (Feeling plus Doing: tending, connecting, creating; animated, responsive, warm)](./territories-map.svg)
 
 A note on the names: *a meadow grows on its own; a garden requires tending.* Both are living spaces, but one invites you to rest in it while the other invites you to work with it. That distinction — being with feeling versus acting from feeling — is the heart of the lower half of the landscape.
 
