@@ -18,10 +18,11 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 
-// Extract title from first H1 if no frontmatter title
-const title = entry.data.title || entry.id.split('/').pop();
+// Extract title from frontmatter or first H1
+const firstH1 = headings?.find((h) => h.depth === 1)?.text;
+const title = entry.data.title || firstH1 || entry.id.split('/').pop();
 ---
 
 <Base title={title}>
