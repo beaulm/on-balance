@@ -1,0 +1,25 @@
+<svg width="680" height="104" viewBox="0 0 680 104" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The Feeling–Thinking axis, a continuum from Feeling (sensing, experiencing, intuiting, connecting) to Thinking (processing, planning, solving, analyzing).">
+<defs>
+<linearGradient id="axis-ft" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#C24E68"/>
+<stop offset="1" stop-color="#4E57C0"/>
+</linearGradient>
+</defs>
+<style>
+  .axc-cap  { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; fill: #807E77; }
+  .axc-pole { font-family: system-ui, -apple-system, sans-serif; font-size: 21px; font-weight: 600; }
+  .axc-desc { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6B6A64; }
+  @media (prefers-color-scheme: dark) {
+    .axc-cap { fill: #B4B2A9; } .axc-desc { fill: #B4B2A9; }
+  }
+</style>
+<text class="axc-cap" x="340" y="28" text-anchor="middle">sensing ↔ analyzing</text>
+<text class="axc-pole" x="64" y="57" text-anchor="start" fill="#C24E68">Feeling</text>
+<text class="axc-pole" x="616" y="57" text-anchor="end" fill="#4E57C0">Thinking</text>
+<rect x="168" y="44" width="344" height="12" rx="6" fill="url(#axis-ft)"/>
+<polygon points="150,50 168,41 168,59" fill="#C24E68"/>
+<polygon points="530,50 512,41 512,59" fill="#4E57C0"/>
+<circle cx="340" cy="50" r="7" fill="#FBFAF7" stroke="#807E77" stroke-width="2"/>
+<text class="axc-desc" x="64" y="84" text-anchor="start">sensing · experiencing · intuiting · connecting</text>
+<text class="axc-desc" x="616" y="84" text-anchor="end">processing · planning · solving · analyzing</text>
+</svg>
