@@ -4,9 +4,9 @@ SRC=${1:-content}
 OUT=${2:-printables}
 mkdir -p "$OUT"
 
-DEFAULTS=""
+DEFAULTS=()
 if [ -f docs/policies/pandoc.yaml ]; then
-  DEFAULTS="--defaults docs/policies/pandoc.yaml"
+  DEFAULTS=(--defaults docs/policies/pandoc.yaml)
 fi
 
 pick_engine() {
@@ -23,17 +23,17 @@ if ! command -v pandoc >/dev/null 2>&1; then
 fi
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
-FILTER=""
+FILTER=()
 if [ -f "$SCRIPT_DIR/export-links.lua" ]; then
-  FILTER="--lua-filter=$SCRIPT_DIR/export-links.lua"
+  FILTER=(--lua-filter="$SCRIPT_DIR/export-links.lua")
 fi
 
 find "$SRC" -name 'README.md' | while read -r f; do
   moddir=$(dirname "$f")
   name=$(basename "$moddir")
-  pandoc $DEFAULTS $FILTER -M module_slug="$name" --resource-path="$moddir:." "$f" -o "$OUT/${name}.epub" || echo "EPUB export failed for $name"
+  pandoc "${DEFAULTS[@]}" "${FILTER[@]}" -M module_slug="$name" --resource-path="$moddir:." "$f" -o "$OUT/${name}.epub" || echo "EPUB export failed for $name"
   if [ -n "$ENGINE" ]; then
-    pandoc $DEFAULTS $FILTER -M module_slug="$name" --resource-path="$moddir:." "$f" --pdf-engine="$ENGINE" -o "$OUT/${name}.pdf" || echo "PDF export failed for $name (engine: $ENGINE)"
+    pandoc "${DEFAULTS[@]}" "${FILTER[@]}" -M module_slug="$name" --resource-path="$moddir:." "$f" --pdf-engine="$ENGINE" -o "$OUT/${name}.pdf" || echo "PDF export failed for $name (engine: $ENGINE)"
   else
     echo "No LaTeX engine found. Skipping PDF for $name. See docs/SETUP_PDF.md"
   fi
