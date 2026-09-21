@@ -42,15 +42,7 @@
 <rect x="407" y="306" width="140" height="60" rx="12" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
 <text class="nv-title" x="477" y="336" text-anchor="middle" dominant-baseline="central" fill="#085041">The garden</text>
 </g>
-<!-- Crossing labels -->
-<rect x="306" y="137" width="68" height="26" rx="6" fill="#FBFAF7" stroke="#D3D1C7" stroke-width="0.5"/>
-<text class="nv-legend" x="340" y="150" text-anchor="middle" dominant-baseline="central">Action</text>
-<rect x="306" y="323" width="68" height="26" rx="6" fill="#FBFAF7" stroke="#D3D1C7" stroke-width="0.5"/>
-<text class="nv-legend" x="340" y="336" text-anchor="middle" dominant-baseline="central">Action</text>
-<rect x="160" y="230" width="84" height="26" rx="6" fill="#FBFAF7" stroke="#D3D1C7" stroke-width="0.5"/>
-<text class="nv-legend" x="202" y="243" text-anchor="middle" dominant-baseline="central">Acceptance</text>
-<rect x="435" y="230" width="84" height="26" rx="6" fill="#FBFAF7" stroke="#D3D1C7" stroke-width="0.5"/>
-<text class="nv-legend" x="477" y="243" text-anchor="middle" dominant-baseline="central">Acceptance</text>
+
 <!-- Diagonal labels -->
 <rect x="312" y="212" width="56" height="22" rx="4" fill="#FBFAF7" stroke="#D3D1C7" stroke-width="0.5"/>
 <text class="nv-legend" x="340" y="223" text-anchor="middle" dominant-baseline="central" font-size="11">layover</text>

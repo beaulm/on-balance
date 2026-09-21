@@ -184,9 +184,9 @@ Useful check-ins:
 
 Whenever possible, the wisest move is to select a task that matches your current state.
 
-This is where most productivity advice fails. It assumes you can always navigate to the "right" state. Traditional productivity tells you to rank tasks by urgency, pick the top one, and force yourself into whatever state it demands. But forcing a misaligned state is wildly expensive. Trying to do analytical Workshop tasks from the Meadow costs three times the energy and produces half the quality.
+This is where most productivity advice fails. It assumes you can always navigate to the "right" state. Traditional productivity tells you to rank tasks by urgency, pick the top one, and force yourself into whatever state it demands. But forcing a misaligned state is wildly expensive. Trying to do a Workshop task from the Meadow costs more energy and produces worse quality.
 
-Priorities matter, but alignment often matters more: **it's almost always better to choose a secondary task that matches your current state than to force a state shift for the "top priority."** An aligned task gets done in an hour of flow; a forced task burns half a day in friction, creates errors, and leaves you depleted for everything else.
+Priorities matter, but alignment often matters more: **it's almost always better to choose a secondary task that matches your current state than to force a state shift for the "top priority."** An aligned task gets done in a short burst of flow; a forced task drags in friction, creates errors, and leaves you depleted for everything else.
 
 Some days you're in the Meadow and everything on your list needs the Workshop. Those days, tend your meadow. The Workshop is not helped by contempt.
 
