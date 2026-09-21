@@ -1,7 +1,7 @@
 ---
 title: "The Alignment System"
 version: "1.0.0"
-last_updated: "2026-09-20"
+last_updated: "2026-09-21"
 maintainers: ["Beau"]
 summary: "Finding flow between Being, Doing, Feeling, and Thinking — so effort turns into ease, and practice turns into growth."
 mvp_time_per_day: "≤10 min"
