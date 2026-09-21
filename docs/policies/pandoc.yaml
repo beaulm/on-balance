@@ -5,3 +5,7 @@ variables:
   sansfont: "DejaVu Sans"
   monofont: "DejaVu Sans Mono"
   mathfont: "Latin Modern Math"
+resource-path:
+  - "."
+  - "content/the-alignment-system"
+  - "content/attention-as-lever"

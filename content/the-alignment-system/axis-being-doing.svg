@@ -1,0 +1,25 @@
+<svg width="680" height="104" viewBox="0 0 680 104" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The Being–Doing axis, a continuum from Being (receptive, still, aware, settled) to Doing (active, generating, creating, moving).">
+<defs>
+<linearGradient id="axis-bd" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#2E8B6E"/>
+<stop offset="1" stop-color="#C56A2C"/>
+</linearGradient>
+</defs>
+<style>
+  .axc-cap  { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; fill: #807E77; }
+  .axc-pole { font-family: system-ui, -apple-system, sans-serif; font-size: 21px; font-weight: 600; }
+  .axc-desc { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6B6A64; }
+  @media (prefers-color-scheme: dark) {
+    .axc-cap { fill: #B4B2A9; } .axc-desc { fill: #B4B2A9; }
+  }
+</style>
+<text class="axc-cap" x="340" y="28" text-anchor="middle">presence ↔ action</text>
+<text class="axc-pole" x="64" y="57" text-anchor="start" fill="#2E8B6E">Being</text>
+<text class="axc-pole" x="616" y="57" text-anchor="end" fill="#C56A2C">Doing</text>
+<rect x="168" y="44" width="344" height="12" rx="6" fill="url(#axis-bd)"/>
+<polygon points="150,50 168,41 168,59" fill="#2E8B6E"/>
+<polygon points="530,50 512,41 512,59" fill="#C56A2C"/>
+<circle cx="340" cy="50" r="7" fill="#FBFAF7" stroke="#807E77" stroke-width="2"/>
+<text class="axc-desc" x="64" y="84" text-anchor="start">receptive · still · aware · settled</text>
+<text class="axc-desc" x="616" y="84" text-anchor="end">active · generating · creating · moving</text>
+</svg>

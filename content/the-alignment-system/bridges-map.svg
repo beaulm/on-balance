@@ -1,0 +1,56 @@
+<svg width="680" height="520" viewBox="0 0 680 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A navigation map of the four territories. Territories that are adjacent — sharing one axis — connect by a single bridge (solid lines along the sides). Territories on a diagonal, which differ on both axes, are joined by dashed lines marked as needing a layover: you cannot cross them directly.">
+<style>
+  .nv-title { font-family: system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 600; }
+  .nv-legend { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6B6A64; }
+  .nav-edge { stroke: #9C9A90; }
+  @media (prefers-color-scheme: dark) {
+    .ax-line { stroke: #B4B2A9; } .ax-label { fill: #B4B2A9; }
+    .nav-edge { stroke: #B4B2A9; } .nv-legend { fill: #B4B2A9; }
+    .q-library .nv-title { fill: #CECBF6; } .q-workshop .nv-title { fill: #B5D4F4; }
+    .q-meadow .nv-title { fill: #F3DFA0; } .q-garden .nv-title { fill: #9FE1CB; }
+  }
+</style>
+<!-- Orientation axes -->
+<line x1="55" y1="243" x2="625" y2="243" class="ax-line" stroke="#D3D1C7" stroke-width="0.5"/>
+<line x1="340" y1="70" x2="340" y2="416" class="ax-line" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="ax-label" x="42" y="247" text-anchor="end">being</text>
+<text class="ax-label" x="638" y="247" text-anchor="start">doing</text>
+<text class="ax-label" x="340" y="60" text-anchor="middle">thinking</text>
+<text class="ax-label" x="340" y="432" text-anchor="middle">feeling</text>
+<!-- Diagonal crossings (need a layover) -->
+<line x1="272" y1="180" x2="407" y2="306" class="nav-edge" stroke-width="2" stroke-dasharray="6 6"/>
+<line x1="407" y1="180" x2="272" y2="306" class="nav-edge" stroke-width="2" stroke-dasharray="6 6"/>
+<!-- Adjacent bridges (single axis) -->
+<line x1="272" y1="150" x2="407" y2="150" class="nav-edge" stroke-width="2.5"/>
+<line x1="272" y1="336" x2="407" y2="336" class="nav-edge" stroke-width="2.5"/>
+<line x1="202" y1="180" x2="202" y2="306" class="nav-edge" stroke-width="2.5"/>
+<line x1="477" y1="180" x2="477" y2="306" class="nav-edge" stroke-width="2.5"/>
+<!-- Territory nodes -->
+<g class="q-library">
+<rect x="132" y="120" width="140" height="60" rx="12" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="nv-title" x="202" y="150" text-anchor="middle" dominant-baseline="central" fill="#3C3489">The library</text>
+</g>
+<g class="q-workshop">
+<rect x="407" y="120" width="140" height="60" rx="12" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text class="nv-title" x="477" y="150" text-anchor="middle" dominant-baseline="central" fill="#0C447C">The workshop</text>
+</g>
+<g class="q-meadow">
+<rect x="132" y="306" width="140" height="60" rx="12" fill="#FBF1D5" stroke="#A07814" stroke-width="0.5"/>
+<text class="nv-title" x="202" y="336" text-anchor="middle" dominant-baseline="central" fill="#6B520F">The meadow</text>
+</g>
+<g class="q-garden">
+<rect x="407" y="306" width="140" height="60" rx="12" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="nv-title" x="477" y="336" text-anchor="middle" dominant-baseline="central" fill="#085041">The garden</text>
+</g>
+
+<!-- Diagonal labels -->
+<rect x="312" y="212" width="56" height="22" rx="4" fill="#FBFAF7" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="nv-legend" x="340" y="223" text-anchor="middle" dominant-baseline="central" font-size="11">layover</text>
+<rect x="312" y="253" width="56" height="22" rx="4" fill="#FBFAF7" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="nv-legend" x="340" y="264" text-anchor="middle" dominant-baseline="central" font-size="11">layover</text>
+<!-- Legend -->
+<line x1="150" y1="474" x2="184" y2="474" class="nav-edge" stroke-width="2.5"/>
+<text class="nv-legend" x="192" y="478">Adjacent — cross with one bridge</text>
+<line x1="150" y1="498" x2="184" y2="498" class="nav-edge" stroke-width="2" stroke-dasharray="6 6"/>
+<text class="nv-legend" x="192" y="502">Diagonal — needs a layover</text>
+</svg>
