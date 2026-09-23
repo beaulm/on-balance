@@ -4,6 +4,10 @@ import Base from '../../../layouts/Base.astro';
 
 export async function getStaticPaths() {
   const supplements = await getCollection('supplements');
+  const modules = await getCollection('modules');
+  const moduleMap = Object.fromEntries(
+    modules.map((m) => [m.id, m.data.title])
+  );
 
   return supplements
     .filter((entry) => !entry.id.toLowerCase().includes('readme')) // Exclude READMEs
@@ -12,12 +16,15 @@ export async function getStaticPaths() {
       const supplement = rest.join('/') + '.md'; // Restore .md extension for URL matching
       return {
         params: { module, supplement },
-        props: { entry },
+        props: {
+          entry,
+          moduleTitle: moduleMap[module] || module,
+        },
       };
     });
 }
 
-const { entry } = Astro.props;
+const { entry, moduleTitle } = Astro.props;
 const { Content, headings } = await render(entry);
 
 // Extract title from frontmatter or first H1
@@ -27,8 +34,12 @@ const title = entry.data.title || firstH1 || entry.id.split('/').pop();
 
 <Base title={title}>
   <article>
-    <nav class="breadcrumb">
-      <a href={`/modules/${Astro.params.module}/`}>← Back to module</a>
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">On Balance</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href={`/modules/${Astro.params.module}/`}>{moduleTitle}</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <span class="current" aria-current="page">{title}</span>
     </nav>
     <Content />
   </article>
@@ -43,14 +54,24 @@ const title = entry.data.title || firstH1 || entry.id.split('/').pop();
   .breadcrumb {
     margin-bottom: 1.5rem;
     font-size: 0.875rem;
+    color: #666;
   }
 
   .breadcrumb a {
-    color: #666;
+    color: var(--color-link);
     text-decoration: none;
   }
 
   .breadcrumb a:hover {
     text-decoration: underline;
+  }
+
+  .breadcrumb .sep {
+    margin: 0 0.5rem;
+    color: #999;
+  }
+
+  .breadcrumb .current {
+    color: var(--color-text);
   }
 </style>

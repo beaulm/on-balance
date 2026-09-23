@@ -1,10 +1,52 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+
+const allModules = await getCollection('modules');
+
+const MODULE_METADATA: Record<
+  string,
+  {
+    order: number;
+    description: string;
+  }
+> = {
+  'attention-as-lever': {
+    order: 1,
+    description:
+      'A practice for noticing where your attention goes — and choosing where to send it. About ten minutes a day.',
+  },
+  'the-alignment-system': {
+    order: 2,
+    description:
+      'A navigational framework for matching your task to your state across Being, Doing, Feeling, and Thinking — so effort turns into ease.',
+  },
+  'the-case-for-self-work-as-service': {
+    order: 3,
+    description:
+      'An exploration of the three illusions of growth — identity, guilt, and service — showing why inner work is a generous gift to everyone around you.',
+  },
+};
+
+const MODULE_ORDER = [
+  'attention-as-lever',
+  'the-alignment-system',
+  'the-case-for-self-work-as-service',
+];
+
+const sortedModules = allModules.sort((a, b) => {
+  const indexA = MODULE_ORDER.indexOf(a.id);
+  const indexB = MODULE_ORDER.indexOf(b.id);
+  if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+  if (indexA !== -1) return -1;
+  if (indexB !== -1) return 1;
+  return a.data.title.localeCompare(b.data.title);
+});
 ---
 
 <Base
   title="On Balance"
-  description="An open playbook for self-actualization practices. Start with Attention as Lever — a 10-minute-a-day practice for noticing where your attention goes."
+  description="An open playbook for self-actualization practices — exploring attention, alignment, and self-work as service."
 >
   <main>
     <header class="hero">
@@ -24,23 +66,27 @@ import Base from '../layouts/Base.astro';
       </p>
     </section>
 
-    <section class="modules" aria-labelledby="start-here">
-      <h2 id="start-here">Start with the first module</h2>
-      <article class="module-card">
-        <h3>
-          <a href="/modules/attention-as-lever">Attention as Lever</a>
-        </h3>
-        <p class="module-summary">
-          Attention funds reality. Spend it where care can compound.
-        </p>
-        <p>
-          A practice for noticing where your attention goes — and choosing where
-          to send it. About ten minutes a day.
-        </p>
-        <p class="cta">
-          <a href="/modules/attention-as-lever">Read the module →</a>
-        </p>
-      </article>
+    <section class="modules" aria-labelledby="modules-heading">
+      <h2 id="modules-heading">Modules</h2>
+      <div class="modules-list">
+        {sortedModules.map((entry) => {
+          const meta = MODULE_METADATA[entry.id];
+          return (
+            <article class="module-card">
+              <h3>
+                <a href={`/modules/${entry.id}`}>{entry.data.title}</a>
+              </h3>
+              <p class="module-summary">{entry.data.summary}</p>
+              {meta?.description && (
+                <p class="module-description">{meta.description}</p>
+              )}
+              <p class="cta">
+                <a href={`/modules/${entry.id}`}>Read the module →</a>
+              </p>
+            </article>
+          );
+        })}
+      </div>
     </section>
 
     <footer class="about" aria-labelledby="about">
@@ -88,15 +134,27 @@ import Base from '../layouts/Base.astro';
     margin: 3rem 0;
   }
 
+  .modules-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
   .module-card {
     border: 1px solid #ddd;
     border-radius: 6px;
     padding: 1.5rem;
     background: #fafafa;
+    transition: border-color 0.15s ease;
+  }
+
+  .module-card:hover {
+    border-color: #bbb;
   }
 
   .module-card h3 {
     margin-top: 0;
+    margin-bottom: 0.25rem;
   }
 
   .module-card h3 a {
@@ -110,7 +168,12 @@ import Base from '../layouts/Base.astro';
   .module-summary {
     font-style: italic;
     color: var(--color-accent);
-    margin-top: 0.25rem;
+    margin: 0.25rem 0 0.5rem;
+  }
+
+  .module-description {
+    margin: 0.5rem 0 1rem;
+    color: var(--color-text);
   }
 
   .cta {

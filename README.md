@@ -8,6 +8,8 @@ Contributions welcome via PRs under the licenses below.
 ```txt
 content/
 ├── attention-as-lever/
+├── the-alignment-system/
+└── the-case-for-self-work-as-service/
 docs/
 ├── adr/               # Architectural decision records
 ├── ops/               # Operational docs (heartbeat, synthesis)
