@@ -4,19 +4,50 @@ import Base from '../../layouts/Base.astro';
 import ResonanceWrapper from '../../components/ResonanceWrapper';
 
 export async function getStaticPaths() {
+  const MODULE_ORDER = [
+    'attention-as-lever',
+    'the-alignment-system',
+    'the-case-for-self-work-as-service',
+  ];
+
   const modules = await getCollection('modules');
-  return modules.map((entry) => ({
-    params: { slug: entry.id },
-    props: { entry },
-  }));
+
+  const sortedModules = modules.sort((a, b) => {
+    const indexA = MODULE_ORDER.indexOf(a.id);
+    const indexB = MODULE_ORDER.indexOf(b.id);
+    if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+    if (indexA !== -1) return -1;
+    if (indexB !== -1) return 1;
+    return a.data.title.localeCompare(b.data.title);
+  });
+
+  return sortedModules.map((entry, index) => {
+    const prevModule = index > 0 ? sortedModules[index - 1] : null;
+    const nextModule =
+      index < sortedModules.length - 1 ? sortedModules[index + 1] : null;
+    return {
+      params: { slug: entry.id },
+      props: {
+        entry,
+        prevModule,
+        nextModule,
+        allModules: sortedModules,
+      },
+    };
+  });
 }
 
-const { entry } = Astro.props;
+const { entry, prevModule, nextModule, allModules } = Astro.props;
 const { Content } = await render(entry);
 ---
 
 <Base title={entry.data.title} description={entry.data.summary}>
   <article>
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">On Balance</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <span class="current" aria-current="page">{entry.data.title}</span>
+    </nav>
     <header>
       <h1>{entry.data.title}</h1>
       <p class="summary">{entry.data.summary}</p>
@@ -31,6 +62,49 @@ const { Content } = await render(entry);
     <ResonanceWrapper moduleSlug={entry.id} client:load>
       <Content />
     </ResonanceWrapper>
+
+    <nav class="module-nav" aria-label="Module navigation">
+      <div class="nav-pagination">
+        {prevModule ? (
+          <a href={`/modules/${prevModule.id}`} class="pagination-link prev">
+            <span class="pagination-label">← Previous module</span>
+            <span class="pagination-title">{prevModule.data.title}</span>
+          </a>
+        ) : (
+          <div class="pagination-empty" />
+        )}
+        {nextModule ? (
+          <a href={`/modules/${nextModule.id}`} class="pagination-link next">
+            <span class="pagination-label">Next module →</span>
+            <span class="pagination-title">{nextModule.data.title}</span>
+          </a>
+        ) : (
+          <div class="pagination-empty" />
+        )}
+      </div>
+
+      <div class="module-directory">
+        <h2 class="directory-title">All Modules</h2>
+        <ul class="directory-list">
+          {allModules.map((mod) => (
+            <li>
+              {mod.id === entry.id ? (
+                <span class="current-item" aria-current="page">
+                  <strong class="item-title">{mod.data.title}</strong>
+                  <span class="item-summary">— {mod.data.summary}</span>
+                  <span class="current-badge">(current)</span>
+                </span>
+              ) : (
+                <a href={`/modules/${mod.id}`}>
+                  <strong class="item-title">{mod.data.title}</strong>
+                  <span class="item-summary">— {mod.data.summary}</span>
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
   </article>
 </Base>
 
@@ -38,6 +112,30 @@ const { Content } = await render(entry);
   article {
     max-width: 65ch;
     margin: 0 auto;
+  }
+
+  .breadcrumb {
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+    color: #666;
+  }
+
+  .breadcrumb a {
+    color: var(--color-link);
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+
+  .breadcrumb .sep {
+    margin: 0 0.5rem;
+    color: #999;
+  }
+
+  .breadcrumb .current {
+    color: var(--color-text);
   }
 
   header {
@@ -65,10 +163,130 @@ const { Content } = await render(entry);
     color: #666;
   }
 
+  .module-nav {
+    margin-top: 3.5rem;
+  }
+
+  .nav-pagination {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    padding-top: 2rem;
+    border-top: 1px solid #ddd;
+  }
+
+  .pagination-link {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fafafa;
+    text-decoration: none;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .pagination-link:hover {
+    border-color: #bbb;
+    background: #f5f5f5;
+  }
+
+  .pagination-link.next {
+    text-align: right;
+    grid-column: 2;
+  }
+
+  .pagination-link.prev {
+    text-align: left;
+    grid-column: 1;
+  }
+
+  .pagination-label {
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .pagination-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-link);
+  }
+
+  .pagination-link:hover .pagination-title {
+    color: var(--color-link-hover);
+  }
+
+  .module-directory {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border: 1px solid #e8e8e8;
+    border-radius: 6px;
+    background: #faf9f6;
+  }
+
+  .directory-title {
+    font-size: 1.1rem;
+    margin: 0 0 1rem;
+  }
+
+  .directory-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .directory-list li {
+    margin: 0.6em 0;
+    line-height: 1.4;
+    font-size: 0.95rem;
+  }
+
+  .directory-list a {
+    text-decoration: none;
+  }
+
+  .directory-list a:hover {
+    text-decoration: underline;
+  }
+
+  .current-item {
+    color: var(--color-text);
+  }
+
+  .item-title {
+    font-weight: 600;
+  }
+
+  .item-summary {
+    color: var(--color-accent);
+    margin-left: 0.25rem;
+  }
+
+  .current-badge {
+    display: inline-block;
+    margin-left: 0.5rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-accent);
+  }
+
   @media (max-width: 640px) {
     .meta {
       flex-direction: column;
       gap: 0.5rem;
+    }
+
+    .nav-pagination {
+      grid-template-columns: 1fr;
+    }
+
+    .pagination-link.next {
+      grid-column: 1;
+      text-align: left;
     }
   }
 </style>
