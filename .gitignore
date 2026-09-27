@@ -15,3 +15,6 @@ deno.lock
 __pycache__/
 site/playwright-report/
 site/test-results/
+
+# Export temporary directories
+.export.*/

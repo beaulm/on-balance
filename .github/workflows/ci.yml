@@ -25,13 +25,14 @@ jobs:
           cache: 'npm'              # built-in cache for ~/.npm keyed by package-lock.json
       - run: npm ci                 # lockfile present in repo -> deterministic install
       - run: npm run check          # markdownlint
+      - run: python3 -m unittest discover -s tests -v
 
   build_epub:
     name: build_epub
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: sudo apt-get update && sudo apt-get install -y pandoc texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texlive-xetex lmodern librsvg2-bin
+      - run: sudo apt-get update && sudo apt-get install -y pandoc librsvg2-bin
       - run: make epub
 
   build_pdf:
