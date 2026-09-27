@@ -10,3 +10,8 @@ dist/
 # Local Netlify folder
 .netlify
 deno.lock
+
+# Automated test output
+__pycache__/
+site/playwright-report/
+site/test-results/

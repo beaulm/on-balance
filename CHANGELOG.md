@@ -1,5 +1,7 @@
 ## Unreleased
 
+- test(site): add automated resonance unit, handler, and browser regression tests to CI (#87).
+
 ## 2026-05-13 — v1.0.0
 
 **First production release.** Ships the platform — an Astro site deployed on Netlify with the interactive resonance system — alongside the first official module (Attention as Lever v1.0.0). On Balance exits beta.
