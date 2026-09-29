@@ -39,6 +39,32 @@ Most site commands run from the `site/` directory:
 4. `npm run build` — build production site to `site/dist/`.
 5. `npm run preview` — preview the production build locally.
 
+### Automated tests
+
+From `site/` (Node 22 recommended):
+
+```bash
+npm ci
+npm test
+npx playwright install chromium
+npm run test:e2e
+```
+
+`npm test` runs unit and Netlify handler tests with Vitest. `npm run test:watch`
+keeps them running during development. The suite covers text matching, personal
+resonance ownership and counts, error handling, origin validation, deployment
+isolation, duplicate submissions, conflict retries, and rate limits.
+
+`npm run test:e2e` builds the site and starts an isolated preview on port 4322.
+Playwright checks selection, saving, immediate highlights despite read lag,
+persistence after reload, and retry/dismiss behavior. Unit tests replace network
+access; browser tests mock the Netlify function endpoints and block off-site
+requests. No GitHub token, Netlify CLI, or live data branch is needed.
+
+CI runs both suites in `test_site` and uploads browser traces/screenshots on
+failure. Desktop Chromium is the initial browser target; native mobile selection
+and real Netlify/GitHub integration still need manual verification.
+
 ### Local dev with Netlify Functions (Resonance, etc.)
 
 The Astro dev server on `:4321` does **not** serve `/.netlify/functions/*`. If
