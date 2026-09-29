@@ -13,8 +13,9 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-async function mockFunctions(page: Page, options: { status?: number; lag?: boolean } = {}) {
+async function mockFunctions(page: Page, options: { status?: number; failWrites?: number; lag?: boolean } = {}) {
   const writes: ResonancePayload[] = [];
+  let writeAttempts = 0;
   let reads = 0;
   await page.route('**/.netlify/functions/get-resonance?*', async route => {
     reads++;
@@ -28,11 +29,13 @@ async function mockFunctions(page: Page, options: { status?: number; lag?: boole
     } });
   });
   await page.route('**/.netlify/functions/record-resonance', async route => {
-    const status = options.status ?? 200;
+    writeAttempts++;
+    const shouldFail = options.failWrites !== undefined && writeAttempts <= options.failWrites;
+    const status = shouldFail ? (options.status ?? 500) : (options.failWrites !== undefined ? 200 : (options.status ?? 200));
     if (status === 200) writes.push(route.request().postDataJSON());
     await route.fulfill({ status, json: { status: status === 200 ? 'success' : 'error' } });
   });
-  return { writes, reads: () => reads };
+  return { writes, attempts: () => writeAttempts, reads: () => reads };
 }
 
 async function openModule(page: Page) {
@@ -114,15 +117,23 @@ test('saved highlight and personal tooltip return after reload', async ({ page }
 });
 
 test('transient failures allow retry without recording ownership or glow', async ({ page }) => {
-  const api = await mockFunctions(page, { status: 429 });
+  const api = await mockFunctions(page, { status: 429, failWrites: 1 });
   await openModule(page);
-  await selectPassage(page);
-  await page.getByRole('button', { name: 'Mark this text as resonating with you' }).click();
-  await expect(page.getByRole('button', { name: 'Mark this text as resonating with you' }).filter({ hasText: 'Error — try again' })).toBeEnabled();
-  await expect(page.getByRole('button', { name: 'Mark this text as resonating with you' })).toHaveText('👍 Resonates');
+  const exact = await selectPassage(page);
+  const button = page.getByRole('button', { name: 'Mark this text as resonating with you' });
+
+  await button.click();
+  await expect(button.filter({ hasText: 'Error — try again' })).toBeEnabled();
+  await expect(button).toHaveText('👍 Resonates');
+  expect(api.attempts()).toBe(1);
   expect(api.writes).toHaveLength(0);
   expect(await highlightedTexts(page)).toEqual([]);
   expect(await page.evaluate(() => Object.keys(localStorage).filter(k => k.startsWith('onbalance-resonated:')))).toEqual([]);
+
+  await button.click();
+  await expect.poll(() => api.writes.length).toBe(1);
+  await expect.poll(() => highlightedTexts(page)).toContain(exact);
+  await expect(page.getByRole('dialog', { name: 'Resonance feedback' })).toBeHidden();
 });
 
 test('terminal failures disable submission and Escape dismisses the popup', async ({ page }) => {
