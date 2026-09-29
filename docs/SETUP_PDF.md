@@ -29,6 +29,17 @@ brew install pandoc librsvg
 sudo tlmgr update --self && sudo tlmgr install collection-latexrecommended collection-fontsrecommended xetex
 ```
 
+## Build guarantees
+
+`make pdf` builds only PDFs and requires a LaTeX engine. `make epub` builds only
+EPUBs and does not require LaTeX. Both commands fail on conversion errors, an
+empty source directory, or a missing/empty output. Outputs are built in a temporary
+directory before replacing existing files, so stale printables cannot hide failures.
+Direct `bash scripts/export.sh content printables` builds both formats.
+
+Run the export regression checks with `python3 -m unittest discover -s tests -v`.
+They use fake converters and do not require Pandoc or LaTeX.
+
 ## Fallbacks
 
 - If PDF continues to fail, `make epub` will still generate EPUBs.

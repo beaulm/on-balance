@@ -102,8 +102,8 @@ The `scripts/export.sh` script:
 
 1. Finds all `README.md` files in content modules
 2. Uses pandoc with defaults from `docs/policies/pandoc.yaml` if available
-3. Generates both PDF and EPUB for each module
-4. Gracefully handles missing LaTeX engines
+3. Generates PDF (`make pdf`), EPUB (`make epub`), or both (`bash scripts/export.sh content printables` with no format argument)
+4. Fails fast on conversion errors, missing Pandoc, missing LaTeX engines, or empty outputs
 5. Names output files based on module directory name
 
 ## Git Workflow
