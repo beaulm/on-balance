@@ -31,6 +31,10 @@ test.each(['invalid JSON', '{}', '[42,null,"module-a"]'])('tolerates malformed s
 test('blocked storage reads yield an empty set and failed writes remain best effort', () => {
   vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => { throw new Error('blocked'); });
   expect([...getResonatedPassageIds()]).toEqual([]);
+
+  vi.restoreAllMocks();
+  getUserFingerprint(); // initialize user ID so setItem failure specifically exercises markPassageResonated
+  vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('quota'); });
   expect(markPassageResonated('module-a')).toBe(true);
 });
 
