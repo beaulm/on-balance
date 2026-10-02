@@ -2,6 +2,7 @@
 
 - fix(ci): fail printable builds on export errors or missing outputs; separate PDF and EPUB targets (#22).
 - test(site): add automated resonance unit, handler, and browser regression tests to CI (#87).
+- docs(retro): add Phase 1 resonance system retrospective and Phase 2 recommendation (#52).
 
 ## 2026-05-13 — v1.0.0
 
