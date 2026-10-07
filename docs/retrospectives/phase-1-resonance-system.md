@@ -3,7 +3,7 @@
 - **Covers:** #37 (Phase 1) and its sub-issues #38–#51, under the epic #36 and [ADR 0004](../adr/0004-interactive-resonance-system.md)
 - **Closes:** #52
 - **Written:** 2026-10-02
-- **Data sources:** pilot feedback form (3 responses), production `data/resonance` branch (all records to date), issues #50 and #51, monthly syntheses for 2026-04 to 2026-09
+- **Data sources:** pilot feedback form (3 responses), production `data/resonance` branch (all records to date), issues #50 and #51, monthly syntheses and weekly heartbeats for 2026-01 to 2026-09
 
 ## Summary
 
@@ -59,7 +59,7 @@ What readers chose:
   Each reader's selection covered a slightly different span, so each span got its own passage ID. On the site they show as separate "1 person" highlights. This is filed as #149.
 - **Selections cluster on the "why it matters" and relational sections** (offsets ~5,100–6,900: contagion, presence, "how life becomes life"), plus the opening definition ("Attention is pattern amplification") and the love-as-attention passage.
 - **Selection length varies widely:** from single words ("contagious", "patterns") to whole multi-line lists (~270 characters).
-- **One record is a same-reader double click** about 11 seconds apart. Read-time counts already count distinct fingerprints, so this doesn't inflate what readers see. Since #111 the client also tracks what you've resonated with.
+- **One record is a same-reader double click** about 11 seconds apart. Counts shown on the site already count distinct fingerprints, so this doesn't inflate what readers see. Since #111 the client also tracks what you've resonated with.
 
 ### Form answers against the #51 questions
 
@@ -97,9 +97,9 @@ The epic's 3-month success criteria (#36: ≥50% adoption among active readers, 
 
 ## Answers to the Key Questions (#52)
 
-1. **Did users discover the feature naturally?** Not really. Two of three noticed it but needed the invitation to understand it, and the third found it only because the email mentioned it. The feature has no affordance until you select text.
+1. **Did users discover the feature naturally?** Not really. Two of three only partly noticed it on their own, and the third found it only because the email mentioned it. The feature has no affordance until you select text.
 2. **Did resonance add value to reading?** For the people who used it, yes. Two of three said seeing others' highlights enhanced their reading, and the third had seen no one else's yet.
-3. **Were there technical issues that blocked usage?** No. The one functional bug, own highlights not appearing until reload, didn't block use and was fixed in June (#111). Mobile selection bugs were fixed before the pilot (#63, #89). iOS Safari and Windows were never tested (#50).
+3. **Were there technical issues that blocked usage?** No. The one functional bug, own highlights not appearing until reload, didn't block use and was fixed in June (#111). Mobile selection bugs were fixed before the pilot (#63, #89). iOS Safari and Windows were still outstanding when #50 closed, and both were verified under #97 before v1.0.0.
 4. **What should we prioritize next?** Counting accuracy (#149) and discoverability come before new feedback types. See below.
 5. **Expand to more modules, or refine with one?** This has already happened: resonance runs on all three modules. The two newer modules have received no resonance since publishing on 2026-09-21, which points to readership rather than content.
 
@@ -107,9 +107,9 @@ The epic's 3-month success criteria (#36: ≥50% adoption among active readers, 
 
 - **The interaction design works.** Selection plus one button is understood immediately once seen, and rated 5, 5 and 4 for naturalness. Keeping Phase 1 to "Resonates" only was the right call.
 - **Readership is the constraint, not features.** Once the invited cohort stopped, usage stopped. No organic readers have used the feature since June. Every Phase 2–4 capability in ADR 0004 assumes more readers than the project has.
-- **Readers want to agree with each other.** Three of the 15 passages overlap another reader's choice. The system hides this because free-text spans fragment the passage IDs. Fixing that is the cheapest way to make the collective glow meaningful at low volume.
+- **Readers want to agree with each other.** Six of the 15 passages form three overlapping pairs. The system hides this because free-text spans fragment the passage IDs. Fixing that is the cheapest way to make the collective glow meaningful at low volume.
 - **Readers didn't ask for dissonance, reference, suggest or translate reactions.** The one request was for comments, which is closer to ADR 0004's open question about Giscus than to the five-emoji model.
-- **Building from foundation to pilot took about three times the plan.** The epic budgeted Phase 1 at months 1–2. The Astro work started 2026-01-11, v1.0.0 shipped 2026-05-13, and the pilot closed 2026-05-29. #50 alone stalled at about a third done for three months (syntheses 2026-02 to 2026-04). The retrospective then sat for four months (2026-06 to 2026-09 syntheses), limited by capacity rather than blocked.
+- **Building from foundation to pilot took more than twice the plan.** The epic budgeted Phase 1 at months 1–2. The Astro work started 2026-01-11, v1.0.0 shipped 2026-05-13, and the pilot closed 2026-05-29. #50 alone stalled at about a third done for three months (syntheses 2026-02 to 2026-04). The retrospective then sat for four months (2026-06 to 2026-09 syntheses), limited by capacity rather than blocked.
 - **Git-as-database held up.** At this volume it has been reliable, auditable and free. Staging isolation (#90) and the follow-up fixes in #94–#96 were the only data-path incidents, and each was fixed the same day.
 
 ## Bugs and Issues
@@ -118,9 +118,8 @@ The epic's 3-month success criteria (#36: ≥50% adoption among active readers, 
 |---|---|
 | #63 Firefox Mobile: selection limited to one word | Fixed before the pilot (#81, #82) |
 | #89 Chrome Android: can't start a selection inside an existing highlight | Fixed before the pilot (#91) |
-| #110 Own resonance not shown until reload (pilot form R3) | Fixed (#111, #120) |
+| #110 Own resonance not shown until reload (pilot form R3) | Fixed (#111, #113) |
 | #149 Overlapping selections of the same passage split resonance counts | **Open, found in this retrospective** |
-| iOS Safari and Windows never verified (#50) | Untested; no reports. Worth one check before any outreach push. |
 
 ## Recommendations for Phase 2
 
@@ -137,4 +136,4 @@ Phase 1.5, in priority order:
 
 **Trigger to reopen Phase 2:** at least 10 distinct fingerprints resonating within any 30-day window, **or** at least 2 independent requests for a specific new reaction type. Until one fires, #36 stays open as the long-term direction with Phase 2–4 unstarted.
 
-**Timeline estimate:** each Phase 1.5 item is about one PR. Given the project's work-and-rest rhythm (syntheses 2026-06 to 2026-09), plan for it to land over one to two focused windows rather than by a calendar date. If the trigger fires, Phase 2 should be re-sized from scratch at that point. The epic's original "months 2–3" estimate was off by about 3× for Phase 1.
+**Timeline estimate:** each Phase 1.5 item is about one PR. Given the project's work-and-rest rhythm (syntheses 2026-06 to 2026-09), plan for it to land over one to two focused windows rather than by a calendar date. If the trigger fires, Phase 2 should be re-sized from scratch at that point. The epic's original "months 2–3" estimate was off by more than 2× for Phase 1.
